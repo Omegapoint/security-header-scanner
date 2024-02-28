@@ -19,8 +19,6 @@ public class AccessControlAllowOriginSecurityConcept : ISecurityConcept
     {
         var infos = new List<SecurityConceptResultInfo>();
         var result = new SimpleSecurityConceptResult(HeaderName, infos);
-
-        result.SetGrade(SecurityGrade.NonInfluencing);
         
         if (!rawHeaders.TryGetValue(HeaderName, out var headers) || string.IsNullOrWhiteSpace(headers.First()))
         {

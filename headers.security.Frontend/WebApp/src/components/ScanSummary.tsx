@@ -13,9 +13,9 @@ interface ColourConfig {
 const getBackgroundColour = (grade: SecurityGrade): string => {
   switch (grade) {
     case SecurityGrade.F:
-      return '#EE3333';
+      return '#DD4433';
     case SecurityGrade.E:
-      return '#EE6633';
+      return '#DD6633';
     case SecurityGrade.D:
       return '#DD9933';
     case SecurityGrade.C:
@@ -24,6 +24,8 @@ const getBackgroundColour = (grade: SecurityGrade): string => {
       return '#669933';
     case SecurityGrade.A:
       return '#33AA33';
+    case SecurityGrade.APlus:
+      return '#22BB33';
   }
   return '#4444FF';
 };
@@ -48,7 +50,7 @@ export const ScanSummary = ({ data, response }: ScanSummaryProps) => {
   const colours = getColours(grade);
   const overflowComponent = (
     <Typography level="h1" sx={{ color: colours.foreground, fontSize: '4em' }}>
-      {grade}
+      {grade == SecurityGrade.APlus ? 'A+' : grade}
     </Typography>
   );
 

@@ -34,12 +34,12 @@ public class PermissionsPolicySecurityConcept : ISecurityConcept
         if (!rawHeaders.TryGetValue(HeaderName, out var policyHeaders))
         {
             //TODO: how bad is not declaring permissions-policy?
-            result.SetGrade(SecurityGrade.B);
+            result.SetImpact(SecurityImpact.Medium);
             
             return result;
         }
         
-        result.SetGrade(SecurityGrade.NonInfluencing);
+        result.SetImpact(SecurityImpact.None);
         //TODO: how handle multiple? merge like with CSP?
         result.MutableValue = string.Join(", ", policyHeaders);
 

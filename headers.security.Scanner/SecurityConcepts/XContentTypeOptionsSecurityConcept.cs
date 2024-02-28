@@ -19,7 +19,7 @@ public class XContentTypeOptionsSecurityConcept : ISecurityConcept
     public ISecurityConceptResult Execute(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message)
     {
         var infos = new List<SecurityConceptResultInfo>();
-        var result = new SimpleSecurityConceptResult(HeaderName, infos, SecurityGrade.B);
+        var result = new SimpleSecurityConceptResult(HeaderName, infos, SecurityImpact.Low);
         
         if (!rawHeaders.TryGetValue(HeaderName, out var headers))
         {
@@ -49,7 +49,7 @@ public class XContentTypeOptionsSecurityConcept : ISecurityConcept
         var lowerCaseConfiguration = result.MutableValue.ToLowerInvariant();
         if (lowerCaseConfiguration is "nosniff")
         {
-            result.SetGrade(SecurityGrade.A);
+            result.SetImpact(SecurityImpact.None);
         }
     }
 }

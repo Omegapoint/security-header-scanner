@@ -16,9 +16,6 @@ public partial class ServerSecurityConcept : ISecurityConcept
         "this allows automation of CVE susceptibility scanning and should be disabled. " +
         "Consider removing the header altogether.";
 
-    // private const string MessageVendor =
-    //     "The Server header reveals server software vendor, consider removing";
-
     public Task<ISecurityConceptResult> ExecuteAsync(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message) 
         => Task.FromResult(Execute(rawHeaders, rawHttpEquivMetas, message));
     
@@ -26,8 +23,6 @@ public partial class ServerSecurityConcept : ISecurityConcept
     {
         var infos = new List<SecurityConceptResultInfo>();
         var result = new SimpleSecurityConceptResult(HeaderName, infos);
-
-        result.SetGrade(SecurityGrade.NonInfluencing);
         
         if (!rawHeaders.TryGetValue(HeaderName, out var headers) || string.IsNullOrWhiteSpace(headers.First()))
         {
@@ -40,11 +35,6 @@ public partial class ServerSecurityConcept : ISecurityConcept
         {
             infos.Add(SecurityConceptResultInfo.Create(MessageVersion));
         }
-        // else
-        // {
-        //     infos.Add(SecurityConceptResultInfo.Create(MessageVendor));
-        // }
-
         
         return result;
     }

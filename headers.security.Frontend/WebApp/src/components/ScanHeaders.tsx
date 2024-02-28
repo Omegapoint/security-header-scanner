@@ -5,7 +5,7 @@ import { CspSecurityConceptResult } from '../contracts/securityConcepts/cspSecur
 import { HstsSecurityConceptResult } from '../contracts/securityConcepts/hstsSecurityConceptResult.ts';
 import { AppCard } from './AppCard.tsx';
 import { AppTableRow } from './AppTableRow.tsx';
-import { GradingIcon } from './GradingIcon.tsx';
+import { ImpactIcon } from './ImpactIcon.tsx';
 import { CSPSecurityConceptResultView } from './securityConcepts/CSPSecurityConceptResultView.tsx';
 import { HSTSSecurityConceptResultView } from './securityConcepts/HSTSSecurityConceptResultView.tsx';
 
@@ -117,7 +117,7 @@ const ScanHeadersTable = ({ handlerResults }: { handlerResults: ISecurityConcept
           >
             <Stack height="100%" alignItems="center">
               <Stack height="2em" direction="row" alignItems="center">
-                <GradingIcon grade={h.grade} />
+                <ImpactIcon impact={h.impact} />
               </Stack>
             </Stack>
             <ScanHeadersInfos handlerResult={h} />

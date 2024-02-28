@@ -1,6 +1,7 @@
 import { CspHandlerName } from './securityConcepts/cspSecurityConcept.ts';
 import { HSTSHandlerName } from './securityConcepts/hstsSecurityConceptResult.ts';
-import { OverallSecurityGrade, SecurityGrade } from './securityGrade.ts';
+import { OverallSecurityGrade } from './securityGrade.ts';
+import { SecurityImpact } from './securityImpact.ts';
 
 export interface SecurityConceptResultInfo {
   message: string;
@@ -28,7 +29,7 @@ export interface ISecurityConceptResult {
   handlerName: SecurityConceptHandlerName;
   headerName: string;
   infos: SecurityConceptResultInfo[];
-  grade: SecurityGrade;
+  impact: SecurityImpact;
   processedValue: object | string;
 }
 

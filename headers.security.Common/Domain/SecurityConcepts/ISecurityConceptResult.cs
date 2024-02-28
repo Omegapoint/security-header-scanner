@@ -8,7 +8,7 @@ public interface ISecurityConceptResult
     
     List<SecurityConceptResultInfo> Infos { get; }
     
-    SecurityGrade Grade { get; }
+    SecurityImpact Impact { get; }
     
     object ProcessedValue { get; }
 }
@@ -25,7 +25,7 @@ public abstract class AbstractSecurityConceptResult(List<SecurityConceptResultIn
     public List<SecurityConceptResultInfo> Infos { get; init; } = infos;
 
     [Compare]
-    public abstract SecurityGrade Grade { get; }
+    public abstract SecurityImpact Impact { get; }
     
     [Compare]
     public abstract object ProcessedValue { get; }

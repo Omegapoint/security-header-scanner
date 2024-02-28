@@ -18,7 +18,7 @@ public class ReferrerPolicySecurityConcept : ISecurityConcept
     public ISecurityConceptResult Execute(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message)
     {
         var infos = new List<SecurityConceptResultInfo>();
-        var result = new SimpleSecurityConceptResult(HeaderName, infos, SecurityGrade.NonInfluencing);
+        var result = new SimpleSecurityConceptResult(HeaderName, infos);
         
         if (!rawHeaders.TryGetValue(HeaderName, out var headers))
         {
@@ -72,13 +72,13 @@ public class ReferrerPolicySecurityConcept : ISecurityConcept
         var grade = lowerCaseConfiguration switch
         {
             NoReferrer or Origin or StrictOrigin 
-                => SecurityGrade.A,
+                => SecurityImpact.None,
             NoReferrerWhenDowngrade 
-                => SecurityGrade.C,
+                => SecurityImpact.Low,
             UnsafeUrl
-                => SecurityGrade.D,
-            _ => SecurityGrade.NonInfluencing
+                => SecurityImpact.Medium,
+            _ => SecurityImpact.None
         };
-        result.SetGrade(grade);
+        result.SetImpact(grade);
     }
 }

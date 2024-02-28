@@ -71,8 +71,8 @@ public class StrictTransportSecurityConcept : ISecurityConcept
 /// </summary>
 public class StrictTransportSecurityConceptResult : AbstractSecurityConceptResult
 {
-    private static readonly int OneYear = TimeSpan.FromDays(365).Seconds;
-    private static readonly int HalfYear = TimeSpan.FromDays(180).Seconds;
+    private static readonly int OneYear = 31536000;
+    private static readonly int HalfYear = 15768000;
     
     public static ISecurityConceptResult Missing => new StrictTransportSecurityConceptResult();
 
@@ -83,7 +83,7 @@ public class StrictTransportSecurityConceptResult : AbstractSecurityConceptResul
     public override string HandlerName => StrictTransportSecurityConcept.HandlerName;
     public override string HeaderName => HeaderNames.StrictTransportSecurity;
 
-    public override SecurityGrade Grade => GetGrade();
+    public override SecurityImpact Impact => GetImpact();
 
     public override object ProcessedValue => new
     {
@@ -101,24 +101,24 @@ public class StrictTransportSecurityConceptResult : AbstractSecurityConceptResul
         Preload = preload;
     }
 
-    private SecurityGrade GetGrade()
+    private SecurityImpact GetImpact()
     {
         if (MaxAge is null)
         {
-            return SecurityGrade.F;
+            return SecurityImpact.Critical;
         }
         
         if (MaxAge >= OneYear)
         {
-            return SecurityGrade.A.Lowered(!IncludeSubdomains);
+            return SecurityImpact.None.Lowered(!IncludeSubdomains);
         }
         else if (MaxAge >= HalfYear)
         {
-            return SecurityGrade.B.Lowered(!IncludeSubdomains);
+            return SecurityImpact.Low.Lowered(!IncludeSubdomains);
         }
         
         // TODO: decide how this is handled
 
-        return SecurityGrade.F;
+        return SecurityImpact.Critical;
     }
 }

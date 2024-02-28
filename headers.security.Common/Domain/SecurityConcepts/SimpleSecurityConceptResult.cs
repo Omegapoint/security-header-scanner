@@ -1,16 +1,16 @@
 ﻿namespace headers.security.Common.Domain.SecurityConcepts;
 
-public class SimpleSecurityConceptResult(string headerName, List<SecurityConceptResultInfo> infos, SecurityGrade initialSecurityGrade = SecurityGrade.Unknown) : AbstractSecurityConceptResult(infos)
+public class SimpleSecurityConceptResult(string headerName, List<SecurityConceptResultInfo> infos, SecurityImpact initialSecurityImpact = SecurityImpact.None) : AbstractSecurityConceptResult(infos)
 {
     public override string HandlerName { get; } = headerName;
     
     public override string HeaderName { get; } = headerName;
     
-    private SecurityGrade FixedSecurityGrade { get; set; } = initialSecurityGrade;
+    private SecurityImpact FixedSecurityImpact { get; set; } = initialSecurityImpact;
     
-    public void SetGrade(SecurityGrade grade) => FixedSecurityGrade = grade;
+    public void SetImpact(SecurityImpact impact) => FixedSecurityImpact = impact;
     
-    public override SecurityGrade Grade => FixedSecurityGrade;
+    public override SecurityImpact Impact => FixedSecurityImpact;
 
     public string MutableValue { get; set; }
     

@@ -39,25 +39,25 @@ public class CspSecurityConceptResult(CspConfiguration configuration, List<Secur
     public override string HandlerName => CspSecurityConcept.HandlerName;
     public override string HeaderName => HeaderNames.ContentSecurityPolicy;
 
-    public override SecurityGrade Grade => GetGrade();
+    public override SecurityImpact Impact => GetImpact();
     public override CspConfiguration ProcessedValue => configuration;
     
     public bool NonceReuse { get; set; }
 
-    private SecurityGrade GetGrade()
+    private SecurityImpact GetImpact()
     {
         if (!configuration.HasPolicy)
         {
-            return SecurityGrade.D;
+            return SecurityImpact.Medium;
         }
 
         if (NonceReuse)
         {
-            return SecurityGrade.F;
+            return SecurityImpact.Critical;
         }
         
         //TODO: more complex logic for grading?
 
-        return SecurityGrade.NonInfluencing;
+        return SecurityImpact.None;
     }
 }

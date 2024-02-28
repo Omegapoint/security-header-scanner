@@ -6,7 +6,5 @@ export enum SecurityGrade {
   C = 'C',
   B = 'B',
   A = 'A',
-  NonInfluencing = 'NonInfluencing',
+  APlus = 'APlus',
 }
-
-export type OverallSecurityGrade = Exclude<SecurityGrade, SecurityGrade.NonInfluencing | SecurityGrade.Unknown>;
