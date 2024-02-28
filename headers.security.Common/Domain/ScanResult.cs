@@ -8,9 +8,9 @@ public class ScanResult
     [Compare]
     public List<ISecurityConceptResult> HandlerResults { get; init; }
 
-    public Dictionary<string, List<string>> RawHeaders { get; init; }
+    public RawHeaders RawHeaders { get; init; }
 
-    public ScanResult(IEnumerable<ISecurityConceptResult> handlerResults, Dictionary<string, List<string>> rawHeaders)
+    public ScanResult(IEnumerable<ISecurityConceptResult> handlerResults, RawHeaders rawHeaders)
     {
         HandlerResults = handlerResults.Where(result => result != null).ToList();
         RawHeaders = rawHeaders;

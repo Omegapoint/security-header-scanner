@@ -18,7 +18,7 @@ public class ReferrerPolicySecurityConcept : ISecurityConcept
     public ISecurityConceptResult Execute(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message)
     {
         var infos = new List<SecurityConceptResultInfo>();
-        var result = new BasicSecurityConceptResult(HeaderName, infos);
+        var result = new SimpleSecurityConceptResult(HeaderName, infos);
         
         if (!rawHeaders.TryGetValue(HeaderName, out var headers))
         {
@@ -69,7 +69,7 @@ public class ReferrerPolicySecurityConcept : ISecurityConcept
         return result;
     }
 
-    private void SetGrade(BasicSecurityConceptResult result)
+    private void SetGrade(SimpleSecurityConceptResult result)
     {
         var lowerCaseConfiguration = result.MutableValue.ToLowerInvariant();
         var grade = lowerCaseConfiguration switch

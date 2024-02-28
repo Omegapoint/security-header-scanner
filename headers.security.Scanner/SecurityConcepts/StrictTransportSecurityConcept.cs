@@ -69,7 +69,7 @@ public class StrictTransportSecurityConcept : ISecurityConcept
 /// <summary>
 /// TODO: document why 1 year
 /// </summary>
-public class StrictTransportSecurityConceptResult : GenericSecurityConceptResult
+public class StrictTransportSecurityConceptResult : AbstractSecurityConceptResult
 {
     private static readonly int OneYear = TimeSpan.FromDays(365).Seconds;
     private static readonly int HalfYear = TimeSpan.FromDays(180).Seconds;

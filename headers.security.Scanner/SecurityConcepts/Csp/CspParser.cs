@@ -1,4 +1,5 @@
 using headers.security.Common.Constants;
+using headers.security.Common.Domain;
 using Microsoft.Net.Http.Headers;
 using static headers.security.Common.Constants.CspDirective;
 
@@ -8,7 +9,7 @@ public static class CspParser
 {
     public const string NoncePrefix = "'nonce-";
     
-    public static CspConfiguration ExtractAll(Dictionary<string, List<string>> rawHeaders, Dictionary<string, List<string>> rawHttpEquivMetas)
+    public static CspConfiguration ExtractAll(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas)
     {
         var enforcingPolicies = ExtractPolicies(HeaderNames.ContentSecurityPolicy, true);
         var nonEnforcingPolicies = ExtractPolicies(HeaderNames.ContentSecurityPolicyReportOnly, false);

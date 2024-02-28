@@ -18,7 +18,7 @@ public class AccessControlAllowOriginSecurityConcept : ISecurityConcept
     public ISecurityConceptResult Execute(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage httpMessage)
     {
         var infos = new List<SecurityConceptResultInfo>();
-        var result = new BasicSecurityConceptResult(HeaderName, infos);
+        var result = new SimpleSecurityConceptResult(HeaderName, infos);
 
         result.SetGrade(SecurityGrade.NonInfluencing);
         

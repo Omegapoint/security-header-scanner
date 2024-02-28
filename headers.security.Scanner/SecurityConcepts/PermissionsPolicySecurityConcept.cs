@@ -24,7 +24,7 @@ public class PermissionsPolicySecurityConcept : ISecurityConcept
     {
         var infos = new List<SecurityConceptResultInfo>();
         
-        var result = new BasicSecurityConceptResult(HeaderName, infos);
+        var result = new SimpleSecurityConceptResult(HeaderName, infos);
         
         if (rawHeaders.TryGetValue(DeprecatedHeaderName, out _))
         {
@@ -41,9 +41,9 @@ public class PermissionsPolicySecurityConcept : ISecurityConcept
         
         result.SetGrade(SecurityGrade.NonInfluencing);
         //TODO: how handle multiple? merge like with CSP?
-        result.MutableValue = policyHeaders.First();
+        result.MutableValue = string.Join(", ", policyHeaders);
 
-        if (policyHeaders.Count >= 1)
+        if (policyHeaders.Count > 1)
         {
             infos.Add(SecurityConceptResultInfo.Create($"Multiple \"{HeaderName}\" headers present."));
         }

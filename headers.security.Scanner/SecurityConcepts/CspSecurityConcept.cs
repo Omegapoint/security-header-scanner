@@ -34,7 +34,7 @@ public class CspSecurityConcept : ISecurityConcept
     }
 }
 
-public class CspSecurityConceptResult(CspConfiguration configuration, List<SecurityConceptResultInfo> infos) : GenericSecurityConceptResult(infos)
+public class CspSecurityConceptResult(CspConfiguration configuration, List<SecurityConceptResultInfo> infos) : AbstractSecurityConceptResult(infos)
 {
     public override string HandlerName => CspSecurityConcept.HandlerName;
     public override string HeaderName => HeaderNames.ContentSecurityPolicy;
