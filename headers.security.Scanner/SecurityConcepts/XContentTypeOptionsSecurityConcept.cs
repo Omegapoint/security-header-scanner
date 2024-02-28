@@ -19,7 +19,7 @@ public class XContentTypeOptionsSecurityConcept : ISecurityConcept
     public ISecurityConceptResult Execute(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message)
     {
         var infos = new List<SecurityConceptResultInfo>();
-        var result = new SimpleSecurityConceptResult(HeaderName, infos);
+        var result = new SimpleSecurityConceptResult(HeaderName, infos, SecurityGrade.B);
         
         if (!rawHeaders.TryGetValue(HeaderName, out var headers))
         {
@@ -29,7 +29,7 @@ public class XContentTypeOptionsSecurityConcept : ISecurityConcept
         if (headers.Count > 1)
         {
             infos.Add(SecurityConceptResultInfo.Create($"Multiple {HeaderName} headers present."));
-            if (headers.All(header => header.ToLowerInvariant() == headers.First()))
+            if (headers.All(header => string.Equals(header, headers.First(), StringComparison.OrdinalIgnoreCase)))
             {
                 result.MutableValue = headers.First();
             }
@@ -39,10 +39,7 @@ public class XContentTypeOptionsSecurityConcept : ISecurityConcept
             result.MutableValue = headers.Single();
         }
 
-        if (!string.IsNullOrWhiteSpace(result.MutableValue))
-        {
-            SetGrade(result);
-        }
+        SetGrade(result);
         
         return result;
     }

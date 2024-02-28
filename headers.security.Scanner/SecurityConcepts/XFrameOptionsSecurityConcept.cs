@@ -21,7 +21,7 @@ public class XFrameOptionsSecurityConcept : ISecurityConcept
     public ISecurityConceptResult Execute(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message)
     {
         var infos = new List<SecurityConceptResultInfo>();
-        var result = new SimpleSecurityConceptResult(HeaderName, infos);
+        var result = new SimpleSecurityConceptResult(HeaderName, infos, SecurityGrade.C);
         
         if (!rawHeaders.TryGetValue(HeaderName, out var headers))
         {
@@ -58,11 +58,8 @@ public class XFrameOptionsSecurityConcept : ISecurityConcept
         {
             result.MutableValue = headers.Single();
         }
-
-        if (!string.IsNullOrWhiteSpace(result.MutableValue))
-        {
-            SetGrade(result);
-        }
+        
+        SetGrade(result);
         
         return result;
     }

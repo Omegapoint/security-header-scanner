@@ -18,7 +18,7 @@ public class ReferrerPolicySecurityConcept : ISecurityConcept
     public ISecurityConceptResult Execute(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message)
     {
         var infos = new List<SecurityConceptResultInfo>();
-        var result = new SimpleSecurityConceptResult(HeaderName, infos);
+        var result = new SimpleSecurityConceptResult(HeaderName, infos, SecurityGrade.NonInfluencing);
         
         if (!rawHeaders.TryGetValue(HeaderName, out var headers))
         {
@@ -61,10 +61,7 @@ public class ReferrerPolicySecurityConcept : ISecurityConcept
             result.MutableValue = StrictOriginWhenCrossOrigin;
         }
 
-        if (!string.IsNullOrWhiteSpace(result.MutableValue))
-        {
-            SetGrade(result);
-        }
+        SetGrade(result);
         
         return result;
     }
