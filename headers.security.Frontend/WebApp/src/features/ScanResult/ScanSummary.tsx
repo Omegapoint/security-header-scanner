@@ -1,8 +1,8 @@
 import { Typography } from '@mui/joy';
-import { ApiResponse } from '../contracts/apiResponse.ts';
-import { ServerResult } from '../contracts/apiTypes.ts';
-import { SecurityGrade } from '../contracts/securityGrade.ts';
-import { AppCard } from './AppCard.tsx';
+import { AppCard } from '../../components/AppCard.tsx';
+import { ApiResponse } from '../../contracts/apiResponse.ts';
+import { ServerResult } from '../../contracts/apiTypes.ts';
+import { SecurityGrade } from '../../contracts/securityGrade.ts';
 import { SummaryTable } from './summaryTable/SummaryTable.tsx';
 
 interface ColourConfig {
@@ -13,13 +13,13 @@ interface ColourConfig {
 const getBackgroundColour = (grade: SecurityGrade): string => {
   switch (grade) {
     case SecurityGrade.F:
-      return '#DD4433';
+      return '#EE4433';
     case SecurityGrade.E:
       return '#DD6633';
     case SecurityGrade.D:
       return '#DD9933';
     case SecurityGrade.C:
-      return '#999933';
+      return '#AA9933';
     case SecurityGrade.B:
       return '#669933';
     case SecurityGrade.A:

@@ -1,6 +1,4 @@
-import { ISecurityConceptResult } from '../apiTypes.ts';
-
-export type HSTSHandlerName = 'HTTP Strict Transport Security';
+import { ISecurityConceptResult, SecurityConceptHandlerName } from '../apiTypes.ts';
 
 interface HSTSValue {
   maxAge?: number;
@@ -9,6 +7,6 @@ interface HSTSValue {
 }
 
 export interface HstsSecurityConceptResult extends ISecurityConceptResult {
-  handlerName: HSTSHandlerName;
+  handlerName: SecurityConceptHandlerName.HTTPStrictTransportSecurity;
   processedValue: HSTSValue;
 }

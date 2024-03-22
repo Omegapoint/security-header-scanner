@@ -19,6 +19,7 @@ public class ScanController(ILogger<ScanController> logger, Worker worker) : Con
             var conf = new CrawlerConfiguration
             {
                 FollowRedirects = req.FollowRedirects,
+                TargetKind = req.Kind,
                 CancellationToken = cancellationToken
             };
             

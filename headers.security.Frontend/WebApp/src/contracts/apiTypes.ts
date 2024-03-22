@@ -1,29 +1,29 @@
-import { CspHandlerName } from './securityConcepts/cspSecurityConcept.ts';
-import { HSTSHandlerName } from './securityConcepts/hstsSecurityConceptResult.ts';
-import { OverallSecurityGrade } from './securityGrade.ts';
+import { SecurityGrade } from './securityGrade.ts';
 import { SecurityImpact } from './securityImpact.ts';
 
 export interface SecurityConceptResultInfo {
   message: string;
+  externalLink?: URL;
+  formatTokens?: string[][];
 }
 
-type XContentTypeOptionsHandlerName = 'X-Content-Type-Options';
-type XFrameOptionsHandlerName = 'X-Frame-Options';
-type PermissionsPolicyHandlerName = 'Permissions-Policy';
-type ReferrerPolicyHandlerName = 'Referrer-Policy';
-export type GradeInfluencingHandlerName =
-  | CspHandlerName
-  | HSTSHandlerName
-  | XContentTypeOptionsHandlerName
-  | XFrameOptionsHandlerName
-  | PermissionsPolicyHandlerName
-  | ReferrerPolicyHandlerName;
+export enum SecurityConceptHandlerName {
+  AccessControlAllowOrigin = 'Access-Control-Allow-Origin',
+  ContentSecurityPolicy = 'Content Security Policy',
+  HTTPStrictTransportSecurity = 'HTTP Strict Transport Security',
+  PermissionsPolicy = 'Permissions-Policy',
+  ReferrerPolicy = 'Referrer-Policy',
+  Server = 'Server',
+  XContentTypeOptions = 'X-Content-Type-Options',
+  XFrameOptions = 'X-Frame-Options',
+}
 
-type CorsHandlerName = 'Access-Control-Allow-Origin';
-type ServerHandlerName = 'Server';
-export type NonInfluencingHandlerName = ServerHandlerName | CorsHandlerName;
-
-export type SecurityConceptHandlerName = GradeInfluencingHandlerName | NonInfluencingHandlerName;
+export enum TargetKind {
+  'Detect' = 'Detect',
+  'Frontend' = 'Frontend',
+  'Api' = 'Api',
+  'Both' = 'Both',
+}
 
 export interface ISecurityConceptResult {
   handlerName: SecurityConceptHandlerName;
@@ -36,6 +36,7 @@ export interface ISecurityConceptResult {
 export interface ScanResult {
   handlerResults: ISecurityConceptResult[];
   rawHeaders: Record<string, string[]>;
+  targetKind: TargetKind;
 }
 
 export interface UriData {
@@ -71,7 +72,7 @@ export interface ServerResult {
   finalTarget: UriData;
   ips: string[];
   result: ScanResult;
-  grade: OverallSecurityGrade;
+  grade: SecurityGrade;
   error: ApiError;
 }
 

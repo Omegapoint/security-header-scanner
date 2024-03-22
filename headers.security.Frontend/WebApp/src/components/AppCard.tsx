@@ -8,19 +8,11 @@ interface AppCardProps {
   overflowComponent?: ReactNode;
   overflowProps?: CardOverflowProps;
   children?: ReactNode;
-  hideable?: boolean;
-  revealedByDefault?: boolean;
+  expandable?: boolean;
 }
 
-export const AppCard = ({
-  children,
-  overflowComponent,
-  overflowProps,
-  title,
-  hideable,
-  revealedByDefault = false,
-}: AppCardProps) => {
-  const [open, setOpen] = useState(revealedByDefault || !hideable);
+export const AppCard = ({ children, overflowComponent, overflowProps, title, expandable = false }: AppCardProps) => {
+  const [open, setOpen] = useState(!expandable);
   const reveal = () => setOpen(true);
 
   const titleProps: TypographyProps = {
@@ -35,7 +27,7 @@ export const AppCard = ({
   const fullTitle = open ? title : `Show ${title}`;
 
   return (
-    <Stack spacing={1} sx={{ width: '80%' }}>
+    <Stack spacing={1} sx={{ width: '80%', maxWidth: '50em' }}>
       <Typography {...titleProps}>{fullTitle}</Typography>
       {open && (
         <Card sx={{ boxShadow: 'md', paddingBottom: '0.3em' }}>

@@ -16,12 +16,20 @@ public partial class ServerSecurityConcept : ISecurityConcept
         "this allows automation of CVE susceptibility scanning and should be disabled. " +
         "Consider removing the header altogether.";
 
-    public Task<ISecurityConceptResult> ExecuteAsync(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message) 
-        => Task.FromResult(Execute(rawHeaders, rawHttpEquivMetas, message));
-    
-    public ISecurityConceptResult Execute(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage httpMessage)
+    public Task<ISecurityConceptResult> ExecuteAsync(
+        CrawlerConfiguration crawlerConf,
+        RawHeaders rawHeaders,
+        RawHeaders rawHttpEquivMetas,
+        HttpResponseMessage message) 
+        => Task.FromResult(Execute(crawlerConf, rawHeaders, rawHttpEquivMetas, message));
+
+    private ISecurityConceptResult Execute(
+        CrawlerConfiguration crawlerConf,
+        RawHeaders rawHeaders,
+        RawHeaders rawHttpEquivMetas,
+        HttpResponseMessage message)
     {
-        var infos = new List<SecurityConceptResultInfo>();
+        var infos = new List<ISecurityConceptResultInfo>();
         var result = new SimpleSecurityConceptResult(HeaderName, infos);
         
         if (!rawHeaders.TryGetValue(HeaderName, out var headers) || string.IsNullOrWhiteSpace(headers.First()))
@@ -29,10 +37,11 @@ public partial class ServerSecurityConcept : ISecurityConcept
             return null;
         }
 
-        result.MutableValue = string.Join(' ', headers);
+        result.StringValue = string.Join(' ', headers);
 
         if (headers.Any(header => VersionRegex().IsMatch(header)))
         {
+            result.SetImpact(SecurityImpact.Info);
             infos.Add(SecurityConceptResultInfo.Create(MessageVersion));
         }
         

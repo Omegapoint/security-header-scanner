@@ -3,12 +3,13 @@ import { TypographyProps } from '@mui/joy/Typography/TypographyProps';
 import { Typography } from '@mui/material';
 import { CspPolicy, CspSecurityConceptResult } from '../../contracts/securityConcepts/cspSecurityConcept.ts';
 
-interface CSPSecurityConceptResultViewProps {
-  cspResult: CspSecurityConceptResult;
-}
+export const CSPSecurityConceptResultView = (cspResult: CspSecurityConceptResult) => {
+  const { hasPolicy, all, effective } = cspResult.processedValue;
 
-export const CSPSecurityConceptResultView = ({ cspResult }: CSPSecurityConceptResultViewProps) => {
-  const { all, effective } = cspResult.processedValue;
+  if (!hasPolicy) {
+    return null;
+  }
+
   const hasMultiple = all.length > 1;
 
   const effectiveExplanation = hasMultiple
@@ -25,8 +26,8 @@ export const CSPSecurityConceptResultView = ({ cspResult }: CSPSecurityConceptRe
             be allowed.
           </Typography>
           <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap>
-            {all.map((policy) => (
-              <CSPPolicyView policy={policy} effective={effective} />
+            {all.map((policy, idx) => (
+              <CSPPolicyView policy={policy} effective={effective} key={idx} />
             ))}
           </Stack>
         </Stack>
@@ -73,18 +74,18 @@ const CSPPolicyView = ({
       {!hideOrigin && <Typography fontSize="small">Policy origin: {policy.source}</Typography>}
       <Typography fontSize="x-small" variant="outlined" fontFamily="code">
         {directives.map((directive, idx) => (
-          <>
+          <span key={idx}>
             <Typography {...directiveProps(directive)}>
               {directive}{' '}
               {policy.directives[directive].map((token, tokenIdx) => (
-                <>
+                <span key={tokenIdx}>
                   <Typography {...tokenProps(directive, token)}>{token}</Typography>
                   <Typography>{isLastToken(directive, tokenIdx) ? ';' : ' '}</Typography>
-                </>
+                </span>
               ))}
             </Typography>
             {!isLast(idx) && <br />}
-          </>
+          </span>
         ))}
       </Typography>
     </Stack>

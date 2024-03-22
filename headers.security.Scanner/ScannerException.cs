@@ -5,11 +5,13 @@ namespace headers.security.Scanner;
 
 public abstract class ScannerException(string message) : ArgumentException(message)
 {
+    private readonly string _message = message;
+    
     public abstract ErrorOrigin Origin { get; }
 
     public ScanError ToContract() => new()
     {
-        Message = message,
+        Message = _message,
         Origin = Origin
     };
 }

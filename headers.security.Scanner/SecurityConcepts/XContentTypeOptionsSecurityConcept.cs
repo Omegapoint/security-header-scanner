@@ -10,19 +10,30 @@ namespace headers.security.Scanner.SecurityConcepts;
 public class XContentTypeOptionsSecurityConcept : ISecurityConcept
 {
     public static readonly string HeaderName = HeaderNames.XContentTypeOptions;
+    
+    private const string NoSniff = "nosniff";
 
     public static ISecurityConcept Create() => new XContentTypeOptionsSecurityConcept();
 
-    public Task<ISecurityConceptResult> ExecuteAsync(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message) 
-        => Task.FromResult(Execute(rawHeaders, rawHttpEquivMetas, message));
-    
-    public ISecurityConceptResult Execute(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message)
+    public Task<ISecurityConceptResult> ExecuteAsync(
+        CrawlerConfiguration crawlerConf,
+        RawHeaders rawHeaders,
+        RawHeaders rawHttpEquivMetas,
+        HttpResponseMessage message) 
+        => Task.FromResult(Execute(crawlerConf, rawHeaders, rawHttpEquivMetas, message));
+
+    private ISecurityConceptResult Execute(
+        CrawlerConfiguration crawlerConf,
+        RawHeaders rawHeaders,
+        RawHeaders rawHttpEquivMetas,
+        HttpResponseMessage message)
     {
-        var infos = new List<SecurityConceptResultInfo>();
+        var infos = new List<ISecurityConceptResultInfo>();
         var result = new SimpleSecurityConceptResult(HeaderName, infos, SecurityImpact.Low);
         
         if (!rawHeaders.TryGetValue(HeaderName, out var headers))
         {
+            infos.Add(SecurityConceptResultInfo.Create($"Header missing."));
             return result;
         }
         
@@ -31,12 +42,12 @@ public class XContentTypeOptionsSecurityConcept : ISecurityConcept
             infos.Add(SecurityConceptResultInfo.Create($"Multiple {HeaderName} headers present."));
             if (headers.All(header => string.Equals(header, headers.First(), StringComparison.OrdinalIgnoreCase)))
             {
-                result.MutableValue = headers.First();
+                result.StringValue = headers.First();
             }
         }
         else
         {
-            result.MutableValue = headers.Single();
+            result.StringValue = headers.Single();
         }
 
         SetGrade(result);
@@ -46,10 +57,14 @@ public class XContentTypeOptionsSecurityConcept : ISecurityConcept
 
     private void SetGrade(SimpleSecurityConceptResult result)
     {
-        var lowerCaseConfiguration = result.MutableValue.ToLowerInvariant();
-        if (lowerCaseConfiguration is "nosniff")
+        var lowerCaseConfiguration = result.StringValue.ToLowerInvariant();
+        if (lowerCaseConfiguration is NoSniff)
         {
             result.SetImpact(SecurityImpact.None);
+        }
+        else
+        {
+            result.Infos.Add(SecurityConceptResultInfo.Create($"{HeaderName} found but its value \"{result.StringValue}\" differs from the expected value \"{NoSniff}\"."));
         }
     }
 }

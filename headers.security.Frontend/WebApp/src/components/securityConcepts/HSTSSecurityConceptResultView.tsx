@@ -1,46 +1,53 @@
-import { Stack, Typography } from '@mui/joy';
+import { Typography } from '@mui/joy';
 import { HstsSecurityConceptResult } from '../../contracts/securityConcepts/hstsSecurityConceptResult.ts';
 
-const OneYear = 31536000;
-const HalfYear = 15768000;
-const Month = 2628000;
+const Day = 86_400;
 
-interface HSTSSecurityConceptResultViewProps {
-  hstsResult: HstsSecurityConceptResult;
-}
+export const HSTSSecurityConceptResultView = (hstsResult: HstsSecurityConceptResult) => {
+  const { maxAge, includeSubdomains } = hstsResult.processedValue;
+  const noPolicy = maxAge == null;
 
-export const HSTSSecurityConceptResultView = ({ hstsResult }: HSTSSecurityConceptResultViewProps) => {
-  const { maxAge, preload, includeSubdomains } = hstsResult.processedValue;
+  const MaxAge = () => {
+    if (noPolicy) {
+      return <Typography>No Strict-Transport-Security header configured.</Typography>;
+    }
 
-  if (maxAge == null) {
-    // TODO: need to know if site is fetched over HTTPS or not here
-    return <Typography>No {hstsResult.headerName} header configured for site fetched over HTTPS.</Typography>;
-  }
-
-  const getExpiryTime = (maxAge: number) => {
-    if (maxAge >= OneYear) {
-      const count = Math.floor(maxAge / OneYear);
-      const suffix = count > 1 ? 'years' : 'year';
+    const getExpiryTime = (maxAge: number) => {
+      const count = Math.floor(maxAge / Day);
+      const suffix = count > 1 ? 'days' : 'day';
       return `${count} ${suffix}`;
-    }
-    if (maxAge >= HalfYear) {
-      return 'half a year';
-    }
+    };
 
-    if (maxAge >= Month) {
-      const count = Math.floor(maxAge / Month);
-      const suffix = count > 1 ? 'months' : 'month';
-      return `${count} ${suffix}`;
-    }
+    return (
+      <Typography>
+        The configured Strict-Transport-Security header has an expiry time of{' '}
+        <Typography variant="outlined">{getExpiryTime(maxAge)}</Typography>.
+      </Typography>
+    );
+  };
 
-    return 'less than a month';
+  const IncludeSubdomains = () => {
+    const suffix = includeSubdomains
+      ? 'is effective for the scanned domain and any subdomains'
+      : 'only affects the current domain';
+    return (
+      <Typography>
+        The{' '}
+        <Typography fontFamily="code" variant="outlined">
+          includeSubdomains
+        </Typography>{' '}
+        directive is set to{' '}
+        <Typography fontFamily="code" variant="outlined">
+          {String(includeSubdomains)}
+        </Typography>
+        , which means the policy {suffix}.
+      </Typography>
+    );
   };
 
   return (
-    <Stack>
-      <Typography>
-        The configured {hstsResult.headerName} header has an expiry time of {getExpiryTime(maxAge)}.
-      </Typography>
-    </Stack>
+    <Typography>
+      <MaxAge /> {!noPolicy && <IncludeSubdomains />}
+    </Typography>
   );
 };

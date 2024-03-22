@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using headers.security.Common.Domain;
 
 namespace headers.security.Frontend;
 
@@ -8,6 +9,8 @@ public class ScanRequestContract : IValidatableObject
 {
     [Required]
     public Uri Target { get; set; }
+
+    public TargetKind Kind { get; set; } = TargetKind.Detect;
     
     public bool FollowRedirects { get; set; }
 

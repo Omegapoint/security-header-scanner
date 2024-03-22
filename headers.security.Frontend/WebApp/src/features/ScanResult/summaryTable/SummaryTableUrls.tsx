@@ -1,8 +1,8 @@
 import { ArrowForward } from '@mui/icons-material';
 import { Stack } from '@mui/joy';
 import { isEqual } from 'lodash';
-import { ServerResult } from '../../contracts/apiTypes.ts';
-import { UriDataComponent } from '../UriDataComponent.tsx';
+import { UriDataComponent } from '../../../components/UriDataComponent.tsx';
+import { ServerResult } from '../../../contracts/apiTypes.ts';
 
 export const SummaryTableUrls = ({ data }: { data: ServerResult }) => {
   const hasRedirect = !isEqual(data.requestTarget, data.finalTarget);

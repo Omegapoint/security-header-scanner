@@ -5,8 +5,11 @@ namespace headers.security.Common.Domain;
 
 public class RawHeaders : ReadOnlyDictionary<string, List<string>>
 {
-    public RawHeaders(HttpResponseHeaders headers)
-        : base(headers.ToDictionary(p => p.Key, p => p.Value.ToList(), StringComparer.OrdinalIgnoreCase).AsReadOnly())
+    public RawHeaders(params HttpHeaders[] headerBags)
+        : base(headerBags.SelectMany(h => h)
+            .ToLookup(p => p.Key, p => p.Value.ToList(), StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(p => p.Key, p => p.SelectMany(v => v).ToList(), StringComparer.OrdinalIgnoreCase)
+            .AsReadOnly())
     {
     }
 

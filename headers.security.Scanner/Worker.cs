@@ -27,20 +27,18 @@ public class Worker(ICrawler crawler)
                 var crawlerResponses = await crawler.Crawl(targetUri, crawlerConf);
 
                 var successful = crawlerResponses.Where(response => !response.IsFailure);
-                var failures = crawlerResponses.Where(response => response.IsFailure);
-            
                 var uriResults = await Task.WhenAll(
                     successful.Select(async response => (
                         response.IP,
                         response.FinalUri,
                         response.FetchedAt,
-                        await SecurityEngine.Parse(response.HttpMessage)
+                        await SecurityEngine.Parse(response.HttpMessage, crawlerConf)
                     ))
                 );
-
                 SecurityEngine.ExamineNonceUsage(uriResults);
-            
                 results.AddRange(ServerResultComparer.MergeEqual(uriResults.ToList(), targetUri));
+                
+                var failures = crawlerResponses.Where(response => response.IsFailure);
                 results.AddRange(failures.Select(response => new ServerResult
                 {
                     RequestTarget = ScanTarget.From(targetUri),

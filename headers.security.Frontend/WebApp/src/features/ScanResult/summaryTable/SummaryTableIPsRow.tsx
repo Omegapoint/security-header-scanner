@@ -1,5 +1,5 @@
 import { Stack, Typography } from '@mui/joy';
-import { AppTableRow } from '../AppTableRow.tsx';
+import { AppTableRow } from '../../../components/AppTableRow.tsx';
 
 const SummaryTableIP = ({ ip }: { ip: string }) => (
   <Typography fontFamily="code" variant="outlined" marginRight="0.2em">

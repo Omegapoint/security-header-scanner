@@ -41,6 +41,7 @@ public class IPAddressExtensionsTests
 
     [Theory]
     [InlineData("127.0.0.1")]
+    [InlineData("127.0.0.2")]
     [InlineData("127.10.20.30")]
     [InlineData("127.255.255.255")]
     [InlineData("10.0.0.0")]
@@ -66,6 +67,7 @@ public class IPAddressExtensionsTests
 
     [Theory]
     [InlineData("::ffff:127.0.0.1")]
+    [InlineData("::ffff:127.0.0.2")]
     [InlineData("::ffff:127.10.20.30")]
     [InlineData("::ffff:127.255.255.254")]
     [InlineData("::ffff:10.0.0.0")]

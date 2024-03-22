@@ -1,6 +1,6 @@
 import { List, ListDivider, ListItem, ListItemContent, ListItemDecorator, Typography } from '@mui/joy';
-import { ISecurityConceptResult, ServerResult } from '../../contracts/apiTypes.ts';
-import { ImpactIcon } from '../ImpactIcon.tsx';
+import { ImpactIcon } from '../../../components/ImpactIcon.tsx';
+import { ISecurityConceptResult, ServerResult } from '../../../contracts/apiTypes.ts';
 
 interface SummaryTableHeadersItemProps {
   handlerResult: ISecurityConceptResult;

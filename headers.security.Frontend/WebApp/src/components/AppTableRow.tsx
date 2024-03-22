@@ -6,19 +6,23 @@ import { CSSProperties, ReactNode, useState } from 'react';
 interface AppTableRowProps {
   rowLabel: string;
   children: ReactNode[] | ReactNode;
+  labelDecorator?: ReactNode;
   initialOpen?: boolean;
   expansion?: ReactNode;
   fullWidthExpansion?: boolean;
   expansionColSpanPadding?: number;
+  thinCols?: Array<number>;
 }
 
 export const AppTableRow = ({
   rowLabel,
   children,
+  labelDecorator,
   initialOpen = false,
   expansion,
   fullWidthExpansion = false,
   expansionColSpanPadding = 0,
+  thinCols = [],
 }: AppTableRowProps) => {
   const [open, setOpen] = useState(initialOpen);
 
@@ -49,25 +53,35 @@ export const AppTableRow = ({
         padding: expansionColSpanPadding || 1,
         main: totalCols - (expansionColSpanPadding || 1),
       };
+  const getTdStyle = (idx: number) => {
+    const style: CSSProperties = { ...tdStyle };
+
+    if (idx in thinCols) {
+      style.paddingLeft = 0;
+      style.paddingRight = 0;
+    }
+
+    return style;
+  };
   return (
     <>
       <tr onClick={toggleOpen} style={rowStyle}>
-        <th scope="row" style={{ background: 'unset', maxWidth: '17vw', ...tdStyle }}>
+        <th scope="row" style={{ background: 'unset', maxWidth: '18vw', ...tdStyle }}>
           <Stack height="100%">
             <Stack height="2em" direction="row" alignItems="center">
-              <Typography noWrap title={rowLabel}>
+              <Typography noWrap title={rowLabel} endDecorator={labelDecorator}>
                 {rowLabel}
               </Typography>
             </Stack>
           </Stack>
         </th>
         {childrenArr.map((child, idx) => (
-          <td style={tdStyle} key={idx} colSpan={getColSpan(idx)}>
+          <td style={getTdStyle(idx)} key={idx} colSpan={getColSpan(idx)}>
             {child}
           </td>
         ))}
         {hasExpansion && (
-          <td style={{ verticalAlign: 'top', textAlign: 'right', padding: '0.3em 0.3em 0 0', ...tdStyle }}>
+          <td style={{ verticalAlign: 'top', textAlign: 'right', padding: '0.3em 0.3em 0.3em 0', ...tdStyle }}>
             <IconButton onClick={toggleOpen} size="sm" variant="outlined">
               <Icon />
             </IconButton>

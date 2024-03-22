@@ -13,10 +13,7 @@ const Entrypoint = () => {
           <Typography level="h1">Scan your URL</Typography>
         </Stack>
         <br />
-        <Typography maxWidth="26em">
-          We use a <Typography title="1 minute">short-lived cache</Typography> for performance reasons, but store no
-          data, metrics, recent scans, or results otherwise.
-        </Typography>
+        <Typography maxWidth="26em">We store no URLs or results.</Typography>
       </Stack>
       <Stack spacing={2}>
         <ModeAwareSymbol className={classes.symbol} />

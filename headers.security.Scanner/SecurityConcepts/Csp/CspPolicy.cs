@@ -33,7 +33,8 @@ public class CspPolicy
         Enforcing = enforcing;
     }
 
-    public HashSet<string> GetNonces() => Directives
-        .SelectMany(kvp => kvp.Value.Where(v => v.StartsWith(CspParser.NoncePrefix)))
+    public HashSet<string> ExtractNonces() => Directives.Values
+        .SelectMany(values => values.Where(v => v.StartsWith(CspParser.NoncePrefix)))
+        .Select(nonce => nonce[7..^1])
         .ToHashSet();
 }

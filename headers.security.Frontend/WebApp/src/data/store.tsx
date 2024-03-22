@@ -2,7 +2,7 @@ import { Store } from '@tanstack/react-store';
 import axios, { AxiosError } from 'axios';
 import { ApiRequest } from '../contracts/apiRequest.ts';
 import { ApiResponse } from '../contracts/apiResponse.ts';
-import { ApiError, ErrorOrigin } from '../contracts/apiTypes.ts';
+import { ApiError, ErrorOrigin, TargetKind } from '../contracts/apiTypes.ts';
 import { getUrl } from '../helpers/getUrl.ts';
 import { fallbackMessage } from '../routes/ErrorPage.tsx';
 import { ScanQuerySchema } from './router.tsx';
@@ -13,6 +13,7 @@ export interface RootState {
   apiError?: ApiError;
   loading: boolean;
   followRedirects: boolean;
+  kind?: TargetKind;
 }
 
 const initialState: RootState = { loading: false, followRedirects: true };
@@ -20,7 +21,11 @@ export const store = new Store(initialState);
 
 const queryDiffers = (current: ApiRequest, query: ScanQuerySchema) => {
   if (current.followRedirects != query.followRedirects) {
-    return false;
+    return true;
+  }
+
+  if (current.kind != query.kind) {
+    return true;
   }
 
   const currentUrl = getUrl(current.target);
@@ -31,7 +36,6 @@ const queryDiffers = (current: ApiRequest, query: ScanQuerySchema) => {
 
 export const ensureLoaded = async (scanQuery: ScanQuerySchema) => {
   const state = store.state;
-  // TODO: check if response is older than 1 minute as well, api will only respond with new scans once a minute anyway
   if (!state.apiResponse || queryDiffers(state.apiResponse.request, scanQuery)) {
     store.setState((state) => ({ ...state, ...scanQuery }));
     await scan();
@@ -42,10 +46,11 @@ export const ensureLoaded = async (scanQuery: ScanQuerySchema) => {
 };
 
 export const scan = async () => {
-  const { target, followRedirects } = store.state;
+  const { target, kind, followRedirects } = store.state;
 
   const payload: ApiRequest = {
     target: getUrl(target)?.href,
+    kind: kind ?? TargetKind.Detect,
     followRedirects,
   };
 

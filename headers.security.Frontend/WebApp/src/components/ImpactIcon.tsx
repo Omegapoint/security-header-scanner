@@ -40,7 +40,7 @@ export const ImpactIcon = ({ impact }: ImpactIconProps) => {
   const background = 'white';
 
   return (
-    <Avatar sx={{ '--Avatar-size': '1.69em', background }}>
+    <Avatar sx={{ '--Avatar-size': '1.6em', background, overflow: 'visible' }}>
       <Icon fontSize="xl" htmlColor={iconColour} />
     </Avatar>
   );

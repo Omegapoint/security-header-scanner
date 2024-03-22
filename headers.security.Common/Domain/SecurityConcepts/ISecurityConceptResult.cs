@@ -6,14 +6,14 @@ public interface ISecurityConceptResult
     
     string HeaderName { get; }
     
-    List<SecurityConceptResultInfo> Infos { get; }
+    List<ISecurityConceptResultInfo> Infos { get; }
     
     SecurityImpact Impact { get; }
     
     object ProcessedValue { get; }
 }
 
-public abstract class AbstractSecurityConceptResult(List<SecurityConceptResultInfo> infos) : ISecurityConceptResult
+public abstract class AbstractSecurityConceptResult(List<ISecurityConceptResultInfo> infos) : ISecurityConceptResult
 {
     [Compare]
     public abstract string HandlerName { get; }
@@ -22,7 +22,7 @@ public abstract class AbstractSecurityConceptResult(List<SecurityConceptResultIn
     public abstract string HeaderName { get; }
 
     [Compare]
-    public List<SecurityConceptResultInfo> Infos { get; init; } = infos;
+    public List<ISecurityConceptResultInfo> Infos { get; init; } = infos;
 
     [Compare]
     public abstract SecurityImpact Impact { get; }

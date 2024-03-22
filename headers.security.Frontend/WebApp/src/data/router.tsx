@@ -1,6 +1,7 @@
 import { createRootRoute, createRoute, createRouter, redirect } from '@tanstack/react-router';
 import { z } from 'zod';
 import App from '../App.tsx';
+import { TargetKind } from '../contracts/apiTypes.ts';
 import { isUrl } from '../helpers/isUrl.ts';
 import Entrypoint from '../routes/Entrypoint.tsx';
 import ScanResult from '../routes/ScanResult.tsx';
@@ -19,6 +20,7 @@ const indexRoute = createRoute({
 const scanSearchSchema = z.object({
   target: z.string().optional().catch(undefined),
   followRedirects: z.boolean().optional().catch(false),
+  kind: z.nativeEnum(TargetKind).optional().catch(undefined),
 });
 
 export type ScanQuerySchema = z.infer<typeof scanSearchSchema>;

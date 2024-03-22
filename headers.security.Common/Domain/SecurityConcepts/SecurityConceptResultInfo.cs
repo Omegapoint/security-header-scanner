@@ -1,13 +1,15 @@
 namespace headers.security.Common.Domain.SecurityConcepts;
 
-public class SecurityConceptResultInfo
+public class SecurityConceptResultInfo : ISecurityConceptResultInfo
 {
     public string Message { get; init; }
+    public List<List<string>> FormatTokens { get; init; }
 
-    public SecurityConceptResultInfo(string message)
+    public Uri ExternalLink { get; init; }
+
+    public static SecurityConceptResultInfo Create(string message, Uri externalLink = null) => new()
     {
-        Message = message;
-    }
-
-    public static SecurityConceptResultInfo Create(string message) => new(message);
+        Message = message,
+        ExternalLink = externalLink
+    };
 }

@@ -15,12 +15,14 @@ public class CspConfiguration(List<CspPolicy> all, List<CspPolicy> allNonEnforci
     
     public bool HasPolicy => All.Count > 0;
 
-    public HashSet<string> GetNonces()
+    public bool IsEnforcing => HasPolicy && Effective.Enforcing;
+
+    public HashSet<string> ExtractNonces()
     {
         List<CspPolicy> policies = [..All, ..AllNonEnforcing];
         return policies.Aggregate(new HashSet<string>(), (nonces, policy) =>
         {
-            nonces.UnionWith(policy.GetNonces());
+            nonces.UnionWith(policy.ExtractNonces());
             return nonces;
         });
     }

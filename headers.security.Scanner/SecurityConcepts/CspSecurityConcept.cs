@@ -11,38 +11,61 @@ public class CspSecurityConcept : ISecurityConcept
 
     public static ISecurityConcept Create() => new CspSecurityConcept();
 
-    public Task<ISecurityConceptResult> ExecuteAsync(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message) 
-        => Task.FromResult(Execute(rawHeaders, rawHttpEquivMetas, message));
-    
-    public ISecurityConceptResult Execute(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message)
+    public Task<ISecurityConceptResult> ExecuteAsync(
+        CrawlerConfiguration crawlerConf,
+        RawHeaders rawHeaders,
+        RawHeaders rawHttpEquivMetas,
+        HttpResponseMessage message) 
+        => Task.FromResult(Execute(crawlerConf, rawHeaders, rawHttpEquivMetas, message));
+
+    private ISecurityConceptResult Execute(
+        CrawlerConfiguration crawlerConf,
+        RawHeaders rawHeaders,
+        RawHeaders rawHttpEquivMetas,
+        HttpResponseMessage message)
     {
-        var infos = new List<SecurityConceptResultInfo>();
+        var infos = new List<ISecurityConceptResultInfo>();
 
         var configuration = CspParser.ExtractAll(rawHeaders, rawHttpEquivMetas);
 
         if (configuration.All.Count > 1)
         {
-            infos.Add(SecurityConceptResultInfo.Create("Multiple Content Security policies present."));
+            infos.Add(SecurityConceptResultInfo.Create("Multiple policies present."));
         }
 
         if (configuration.All.Count == 0 && configuration.AllNonEnforcing.Count >= 1)
         {
-            infos.Add(SecurityConceptResultInfo.Create("Content Security Policy is not enforcing."));
+            infos.Add(SecurityConceptResultInfo.Create("Policy is not enforcing."));
         }
+        
+        // todo: if we encounter unsafe-eval and/or unsafe-inline in script-src then at least low
+        // todo: we could inform that might be because of framework used
+        
+        // todo: known csp-bypasses lowers score
+        
+        var lowComplexityNonce = configuration.ExtractNonces().FirstOrDefault(n => n.Length < 22);
+        if (lowComplexityNonce != null)
+        {
+            infos.Add(CspNonceSecurityConceptResultInfo.LowComplexity(lowComplexityNonce));
+        }
+        
+        // TODO: data exfil?? img-src, style-src, connect-src, etc. -> info
+        
+        // todo: no form-action specified -> info, link: https://portswigger.net/research/using-form-hijacking-to-bypass-csp
 
         return new CspSecurityConceptResult(configuration, infos);
     }
 }
 
-public class CspSecurityConceptResult(CspConfiguration configuration, List<SecurityConceptResultInfo> infos) : AbstractSecurityConceptResult(infos)
+public class CspSecurityConceptResult(CspConfiguration configuration, List<ISecurityConceptResultInfo> infos) : AbstractSecurityConceptResult(infos)
 {
     public override string HandlerName => CspSecurityConcept.HandlerName;
     public override string HeaderName => HeaderNames.ContentSecurityPolicy;
 
     public override SecurityImpact Impact => GetImpact();
     public override CspConfiguration ProcessedValue => configuration;
-    
-    public bool NonceReuse { get; set; }
+
+    public bool NonceIssue => Infos.Any(i => i is CspNonceSecurityConceptResultInfo);
 
     private SecurityImpact GetImpact()
     {
@@ -50,8 +73,8 @@ public class CspSecurityConceptResult(CspConfiguration configuration, List<Secur
         {
             return SecurityImpact.Medium;
         }
-
-        if (NonceReuse)
+        
+        if (NonceIssue)
         {
             return SecurityImpact.Critical;
         }

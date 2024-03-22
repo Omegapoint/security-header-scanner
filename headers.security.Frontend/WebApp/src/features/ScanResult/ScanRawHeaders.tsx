@@ -1,7 +1,7 @@
 import { List, ListItem, Table, Typography } from '@mui/joy';
 import { ListProps } from '@mui/joy/List/ListProps';
-import { AppCard } from './AppCard.tsx';
-import { AppTableRow } from './AppTableRow.tsx';
+import { AppCard } from '../../components/AppCard.tsx';
+import { AppTableRow } from '../../components/AppTableRow.tsx';
 
 interface ScanRawHeadersProps {
   rawHeaders: Record<string, string[]>;
@@ -61,6 +61,6 @@ export const ScanRawHeaders = ({ rawHeaders }: ScanRawHeadersProps) => (
     title="Raw Headers"
     overflowComponent={<ScanRawHeadersTable rawHeaders={rawHeaders} />}
     overflowProps={{ sx: { padding: 0 } }}
-    hideable
+    expandable
   />
 );

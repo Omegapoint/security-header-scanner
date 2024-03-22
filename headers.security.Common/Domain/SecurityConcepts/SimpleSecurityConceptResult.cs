@@ -1,6 +1,6 @@
 ﻿namespace headers.security.Common.Domain.SecurityConcepts;
 
-public class SimpleSecurityConceptResult(string headerName, List<SecurityConceptResultInfo> infos, SecurityImpact initialSecurityImpact = SecurityImpact.None) : AbstractSecurityConceptResult(infos)
+public class SimpleSecurityConceptResult(string headerName, List<ISecurityConceptResultInfo> infos, SecurityImpact initialSecurityImpact = SecurityImpact.None) : AbstractSecurityConceptResult(infos)
 {
     public override string HandlerName { get; } = headerName;
     
@@ -12,7 +12,7 @@ public class SimpleSecurityConceptResult(string headerName, List<SecurityConcept
     
     public override SecurityImpact Impact => FixedSecurityImpact;
 
-    public string MutableValue { get; set; }
+    public string StringValue { get; set; }
     
-    public override string ProcessedValue => MutableValue;
+    public override string ProcessedValue => StringValue;
 }

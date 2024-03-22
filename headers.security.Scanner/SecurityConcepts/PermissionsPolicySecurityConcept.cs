@@ -17,14 +17,22 @@ public class PermissionsPolicySecurityConcept : ISecurityConcept
 
     public static ISecurityConcept Create() => new PermissionsPolicySecurityConcept();
 
-    public Task<ISecurityConceptResult> ExecuteAsync(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message) 
-        => Task.FromResult(Execute(rawHeaders, rawHttpEquivMetas, message));
-    
-    public ISecurityConceptResult Execute(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message)
+    public Task<ISecurityConceptResult> ExecuteAsync(
+        CrawlerConfiguration crawlerConf,
+        RawHeaders rawHeaders,
+        RawHeaders rawHttpEquivMetas,
+        HttpResponseMessage message) 
+        => Task.FromResult(Execute(crawlerConf, rawHeaders, rawHttpEquivMetas, message));
+
+    private ISecurityConceptResult Execute(
+        CrawlerConfiguration crawlerConf,
+        RawHeaders rawHeaders,
+        RawHeaders rawHttpEquivMetas,
+        HttpResponseMessage message)
     {
-        var infos = new List<SecurityConceptResultInfo>();
+        var infos = new List<ISecurityConceptResultInfo>();
         
-        var result = new SimpleSecurityConceptResult(HeaderName, infos);
+        var result = new SimpleSecurityConceptResult(HeaderName, infos, SecurityImpact.Info);
         
         if (rawHeaders.TryGetValue(DeprecatedHeaderName, out _))
         {
@@ -33,22 +41,18 @@ public class PermissionsPolicySecurityConcept : ISecurityConcept
         
         if (!rawHeaders.TryGetValue(HeaderName, out var policyHeaders))
         {
-            //TODO: how bad is not declaring permissions-policy?
-            result.SetImpact(SecurityImpact.Medium);
-            
             return result;
         }
         
         result.SetImpact(SecurityImpact.None);
-        //TODO: how handle multiple? merge like with CSP?
-        result.MutableValue = string.Join(", ", policyHeaders);
+        result.StringValue = string.Join(", ", policyHeaders);
 
         if (policyHeaders.Count > 1)
         {
-            infos.Add(SecurityConceptResultInfo.Create($"Multiple \"{HeaderName}\" headers present."));
+            infos.Add(SecurityConceptResultInfo.Create("Multiple policies present."));
         }
         
-        //TODO: do some analysis of the declared header
+        //TODO: if we have detailed information about the application being scanned we can do better analysis, future work
 
         return result;
     }

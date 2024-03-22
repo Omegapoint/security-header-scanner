@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using headers.security.Common;
 using headers.security.Common.Domain;
 using headers.security.Common.Extensions;
+using headers.security.Scanner.Extensions;
 
 namespace headers.security.Scanner;
 
@@ -44,6 +45,9 @@ public class Crawler(WorkerConfiguration workerConf, IHttpClientFactory httpClie
         try
         {
             var httpResponse = await client.SendAsync(request, crawlerConf.CancellationToken);
+            
+            // TODO: restrict maximum response size
+            
             response.FetchedAt = DateTime.UtcNow;
 
             var requestDepth = 0;
@@ -57,6 +61,7 @@ public class Crawler(WorkerConfiguration workerConf, IHttpClientFactory httpClie
                     var redirectRequest = new HttpRequestMessage(HttpMethod.Get, currentUri);
 
                     httpResponse = await client.SendAsync(redirectRequest, crawlerConf.CancellationToken);
+                    // TODO: restrict maximum response size
                     response.FetchedAt = DateTime.UtcNow;
 
                     requestDepth += 1;
@@ -64,7 +69,6 @@ public class Crawler(WorkerConfiguration workerConf, IHttpClientFactory httpClie
             }
 
             response.HttpMessage = httpResponse;
-
         }
         catch (ScannerException e)
         {
@@ -87,6 +91,7 @@ public class Crawler(WorkerConfiguration workerConf, IHttpClientFactory httpClie
         }
         
         response.FinalUri = currentUri;
+        
         return response;
     }
 

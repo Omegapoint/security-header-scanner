@@ -11,11 +11,14 @@ public class ScanResult
     public List<ISecurityConceptResult> HandlerResults { get; init; }
 
     public RawHeaders RawHeaders { get; init; }
+    
+    public TargetKind TargetKind { get; init; }
 
-    public ScanResult(IEnumerable<ISecurityConceptResult> handlerResults, RawHeaders rawHeaders)
+    public ScanResult(IEnumerable<ISecurityConceptResult> handlerResults, RawHeaders rawHeaders, TargetKind targetKind)
     {
         HandlerResults = handlerResults.Where(result => result != null).ToList();
         RawHeaders = rawHeaders;
+        TargetKind = targetKind;
     }
 
     public SecurityGrade GetOverallGrade()

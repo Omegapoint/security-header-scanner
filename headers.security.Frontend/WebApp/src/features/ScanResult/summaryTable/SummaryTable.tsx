@@ -1,8 +1,8 @@
 import { Table } from '@mui/joy';
-import { ApiResponse } from '../../contracts/apiResponse.ts';
-import { ServerResult } from '../../contracts/apiTypes.ts';
-import { AppTableRow } from '../AppTableRow.tsx';
-import { FormattedDate } from '../FormattedDate.tsx';
+import { AppTableRow } from '../../../components/AppTableRow.tsx';
+import { FormattedDate } from '../../../components/FormattedDate.tsx';
+import { ApiResponse } from '../../../contracts/apiResponse.ts';
+import { ServerResult } from '../../../contracts/apiTypes.ts';
 import { SummaryTableHeaders } from './SummaryTableHeaders.tsx';
 import { SummaryTableIPsRow } from './SummaryTableIPsRow.tsx';
 import { SummaryTableUrls } from './SummaryTableUrls.tsx';

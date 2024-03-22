@@ -15,6 +15,12 @@ public static class HttpClientHelper
             HeaderNames.UserAgent, 
             $"{AppConstants.UserAgentPrefix} v{ApplicationInformation.CompileDate.SimpleDateString()}"
         );
+        httpClient.DefaultRequestHeaders.Add(
+            HeaderNames.Referer,
+            AppConstants.Referrer.ToString());
+        httpClient.DefaultRequestHeaders.Add(
+            HeaderNames.Accept,
+            "*/*");
         httpClient.Timeout = TimeSpan.FromSeconds(2);
     }
 }

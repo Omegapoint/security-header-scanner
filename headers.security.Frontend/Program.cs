@@ -53,7 +53,7 @@ builder.Services.AddRateLimiter(rOptions => rOptions
 var app = builder.Build();
 
 app.DenySelfRequests();
-// app.UseRateLimiter();
+app.UseRateLimiter();
 
 if (app.Environment.IsDevelopment())
 {

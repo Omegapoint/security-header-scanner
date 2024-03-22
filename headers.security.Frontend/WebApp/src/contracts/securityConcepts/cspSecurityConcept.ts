@@ -1,6 +1,4 @@
-import { ISecurityConceptResult } from '../apiTypes.ts';
-
-export type CspHandlerName = 'Content Security Policy';
+import { ISecurityConceptResult, SecurityConceptHandlerName } from '../apiTypes.ts';
 
 export interface CspPolicy {
   source: 'HttpEquiv' | 'Header' | 'Merged';
@@ -16,6 +14,6 @@ interface CspConfiguration {
 }
 
 export interface CspSecurityConceptResult extends ISecurityConceptResult {
-  handlerName: CspHandlerName;
+  handlerName: SecurityConceptHandlerName.ContentSecurityPolicy;
   processedValue: CspConfiguration;
 }

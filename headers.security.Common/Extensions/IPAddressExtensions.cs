@@ -39,6 +39,11 @@ public static class IPAddressExtensions
         };
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="ipv4Bytes"></param>
+    /// <returns></returns>
     private static bool IsPrivateIPv4(byte[] ipv4Bytes) =>
         ipv4Bytes[0] switch
         {

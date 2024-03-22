@@ -6,69 +6,93 @@ using static headers.security.Common.Constants.ReferrerPolicy;
 
 namespace headers.security.Scanner.SecurityConcepts;
 
+/// <summary>
+/// Specification: https://w3c.github.io/webappsec-referrer-policy/#referrer-policy-header
+/// </summary>
 public class ReferrerPolicySecurityConcept : ISecurityConcept
 {
     public static readonly string HeaderName = SecurityHeaderNames.ReferrerPolicy;
+    
+    // https://w3c.github.io/webappsec-referrer-policy/#referrer-policy-delivery-meta
+    public static readonly string MetaName = "referrer";
 
     public static ISecurityConcept Create() => new ReferrerPolicySecurityConcept();
 
-    public Task<ISecurityConceptResult> ExecuteAsync(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message) 
-        => Task.FromResult(Execute(rawHeaders, rawHttpEquivMetas, message));
-    
-    public ISecurityConceptResult Execute(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message)
+    public Task<ISecurityConceptResult> ExecuteAsync(
+        CrawlerConfiguration crawlerConf,
+        RawHeaders rawHeaders,
+        RawHeaders rawHttpEquivMetas,
+        HttpResponseMessage message) 
+        => Task.FromResult(Execute(crawlerConf, rawHeaders, rawHttpEquivMetas, message));
+
+    private ISecurityConceptResult Execute(
+        CrawlerConfiguration crawlerConf,
+        RawHeaders rawHeaders,
+        RawHeaders rawHttpEquivMetas,
+        HttpResponseMessage message)
     {
-        var infos = new List<SecurityConceptResultInfo>();
+        var infos = new List<ISecurityConceptResultInfo>();
         var result = new SimpleSecurityConceptResult(HeaderName, infos);
+        var values = new List<string>();
         
-        if (!rawHeaders.TryGetValue(HeaderName, out var headers))
+        if (rawHeaders.TryGetValue(HeaderName, out var headers))
+        {
+            values.AddRange(headers);
+        }
+        
+        if (rawHttpEquivMetas.TryGetValue(MetaName, out var httpEquivMetas))
+        {
+            values.AddRange(httpEquivMetas);
+        }
+
+        if (values.Count == 0)
         {
             return result;
         }
         
-        // todo: this could be optimised so it only needs to be processed once for all handlers that need it
-        // todo: but unclear how to build that without things getting messy
-        var cspEffective = CspParser.ExtractAll(rawHeaders, rawHttpEquivMetas).Effective;
+        var csp = CspParser.ExtractAll(rawHeaders, rawHttpEquivMetas);
 
-        if (cspEffective.Directives.TryGetValue(CspDirective.Referrer, out _))
+        // todo: move to CSP instead, check for referrer policy and pop if exists
+        if (csp.HasPolicy && csp.Effective.Directives.TryGetValue(CspDirective.Referrer, out _))
         {
-            // todo: this shouldn't be considering the value of default-src right? double-check
             infos.Add(SecurityConceptResultInfo.Create($"The \"{CspDirective.Referrer}\" directive of the CSP header is obsolete and should be removed."));
         }
         
-        if (headers.Count > 1)
-        {
-            var firstHeader = headers.First();
-            if (headers.All(header => header.Equals(firstHeader, StringComparison.OrdinalIgnoreCase)))
-            {
-                infos.Add(SecurityConceptResultInfo.Create($"Duplicate \"{HeaderName}\" headers present."));
-                
-                result.MutableValue = firstHeader;
-            }
-            else
-            {
-                infos.Add(SecurityConceptResultInfo.Create($"Multiple \"{HeaderName}\" headers present."));
-                
-                //todo: how to proceed?
-            }
-        }
-        else if (headers.Count == 1)
-        {
-            result.MutableValue = headers.Single();
-        }
-        else
-        {
-            // this is the default value which browsers will give when not configured
-            result.MutableValue = StrictOriginWhenCrossOrigin;
-        }
+        ParseValue(values, result);
 
         SetGrade(result);
         
         return result;
     }
 
+    private static void ParseValue(IReadOnlyCollection<string> values, SimpleSecurityConceptResult result)
+    {
+        if (values.Count > 1)
+        {
+            // https://w3c.github.io/webappsec-referrer-policy/#example-3966e12b
+            result.StringValue = values.Last();
+
+            var message = values.All(header => header.Equals(result.StringValue, StringComparison.OrdinalIgnoreCase))
+                ? "Duplicate policies present."
+                : "Multiple policies present, using last.";
+
+            result.Infos.Add(SecurityConceptResultInfo.Create(message));
+        }
+        else if (values.Count == 1)
+        {
+            result.StringValue = values.Single();
+        }
+        else
+        {
+            // this is the default value which browsers will give when not configured according to spec
+            // https://w3c.github.io/webappsec-referrer-policy/#default-referrer-policy
+            result.StringValue = StrictOriginWhenCrossOrigin;
+        }
+    }
+
     private void SetGrade(SimpleSecurityConceptResult result)
     {
-        var lowerCaseConfiguration = result.MutableValue.ToLowerInvariant();
+        var lowerCaseConfiguration = result.StringValue.ToLowerInvariant();
         var grade = lowerCaseConfiguration switch
         {
             NoReferrer or Origin or StrictOrigin 

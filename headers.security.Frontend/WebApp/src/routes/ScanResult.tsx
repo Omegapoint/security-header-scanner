@@ -1,14 +1,17 @@
 import { Stack, Typography } from '@mui/joy';
 import { useStore } from '@tanstack/react-store';
 import { AppCard } from '../components/AppCard.tsx';
-import { ScanHeaders } from '../components/ScanHeaders.tsx';
-import { ScanRawHeaders } from '../components/ScanRawHeaders.tsx';
-import { ScanSummary } from '../components/ScanSummary.tsx';
+import { scanRoute } from '../data/router.tsx';
 import { store } from '../data/store.tsx';
+import { ScanHeaders } from '../features/ScanResult/ScanHeaders.tsx';
+import { ScanRawHeaders } from '../features/ScanResult/ScanRawHeaders.tsx';
+import { ScanSummary } from '../features/ScanResult/ScanSummary.tsx';
 import { ErrorPage } from './ErrorPage.tsx';
 
 const ScanResult = () => {
   const { apiResponse, loading } = useStore(store, (state) => state);
+  const search = scanRoute.useSearch();
+  console.log(JSON.parse(JSON.stringify(search ?? {})));
 
   if (loading) {
     return <></>;
@@ -29,7 +32,7 @@ const ScanResult = () => {
       <ScanSummary data={firstServerResult} response={apiResponse} />
       <ScanHeaders data={firstServerResult} response={apiResponse} />
       <ScanRawHeaders rawHeaders={firstServerResult.result.rawHeaders ?? {}} />
-      <AppCard title="Raw Result" hideable>
+      <AppCard title="Raw Result" expandable>
         <pre>
           <Typography variant="outlined" fontFamily="code">
             {JSON.stringify(apiResponse, null, 2)}

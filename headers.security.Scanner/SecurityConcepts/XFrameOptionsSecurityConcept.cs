@@ -13,29 +13,42 @@ public class XFrameOptionsSecurityConcept : ISecurityConcept
 {
     public static readonly string HeaderName = HeaderNames.XFrameOptions;
 
+    private static readonly List<string> AllValidValues = ["DENY", "ALLOWALL", "SAMEORIGIN"];
+
     public static ISecurityConcept Create() => new XFrameOptionsSecurityConcept();
 
-    public Task<ISecurityConceptResult> ExecuteAsync(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message) 
-        => Task.FromResult(Execute(rawHeaders, rawHttpEquivMetas, message));
-    
-    public ISecurityConceptResult Execute(RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message)
+    public Task<ISecurityConceptResult> ExecuteAsync(
+        CrawlerConfiguration crawlerConf,
+        RawHeaders rawHeaders,
+        RawHeaders rawHttpEquivMetas,
+        HttpResponseMessage message) 
+        => Task.FromResult(Execute(crawlerConf, rawHeaders, rawHttpEquivMetas, message));
+
+    private ISecurityConceptResult Execute(
+        CrawlerConfiguration crawlerConf,
+        RawHeaders rawHeaders,
+        RawHeaders rawHttpEquivMetas,
+        HttpResponseMessage message)
     {
-        var infos = new List<SecurityConceptResultInfo>();
+        var infos = new List<ISecurityConceptResultInfo>();
         var result = new SimpleSecurityConceptResult(HeaderName, infos, SecurityImpact.Low);
+        
+        var csp = CspParser.ExtractAll(rawHeaders, rawHttpEquivMetas);
+
+        if (csp.HasPolicy && csp.Effective.Directives.TryGetValue(CspDirective.FrameAncestors, out _))
+        {
+            infos.Add(SecurityConceptResultInfo.Create("Header is obsoleted by the frame-ancestors directive of the CSP, and should be removed."));
+
+            if (csp.IsEnforcing)
+            {
+                result.SetImpact(SecurityImpact.Info);
+                return result;
+            }
+        }
         
         if (!rawHeaders.TryGetValue(HeaderName, out var headers))
         {
             return result;
-        }
-        
-        // todo: this could be optimised so it only needs to be processed once for all handlers that need it
-        // todo: but unclear how to build that without things getting messy
-        var cspEffective = CspParser.ExtractAll(rawHeaders, rawHttpEquivMetas).Effective;
-
-        if (cspEffective.Directives.TryGetValue(CspDirective.FrameAncestors, out _))
-        {
-            // todo: this shouldn't be considering the value of default-src right? double-check
-            infos.Add(SecurityConceptResultInfo.Create($"The \"{HeaderName}\" header is obsoleted by the frame-ancestors directive of the CSP, and should be removed."));
         }
         
         if (headers.Count > 1)
@@ -43,20 +56,22 @@ public class XFrameOptionsSecurityConcept : ISecurityConcept
             var firstHeader = headers.First();
             if (headers.All(header => header.Equals(firstHeader, StringComparison.OrdinalIgnoreCase)))
             {
-                infos.Add(SecurityConceptResultInfo.Create($"Duplicate \"{HeaderName}\" headers present."));
-                
-                result.MutableValue = firstHeader;
+                infos.Add(SecurityConceptResultInfo.Create("Duplicate identical policies present."));
+                result.StringValue = firstHeader;
+            }
+            else if (headers.Any(h => AllValidValues.Contains(h, StringComparer.OrdinalIgnoreCase)))
+            {
+                infos.Add(SecurityConceptResultInfo.Create("Multiple policies present with conflicting values, browser will treat as \"DENY\"."));
+                result.StringValue = "DENY";
             }
             else
             {
-                infos.Add(SecurityConceptResultInfo.Create($"Multiple \"{HeaderName}\" headers present."));
-                
-                //todo: how to proceed?
+                infos.Add(SecurityConceptResultInfo.Create("Multiple policies present with no valid values, browser will ignore header and allow from anywhere."));
             }
         }
         else
         {
-            result.MutableValue = headers.Single();
+            result.StringValue = headers.Single();
         }
         
         SetGrade(result);
@@ -66,8 +81,8 @@ public class XFrameOptionsSecurityConcept : ISecurityConcept
 
     private void SetGrade(SimpleSecurityConceptResult result)
     {
-        var lowerCaseConfiguration = result.MutableValue.ToLowerInvariant();
-        if (lowerCaseConfiguration is "deny" or "sameorigin")
+        var effectiveValue = result.StringValue.ToLowerInvariant();
+        if (effectiveValue is "deny" or "sameorigin")
         {
             result.SetImpact(SecurityImpact.None);
         }
