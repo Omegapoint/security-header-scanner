@@ -8,7 +8,6 @@ public static class UriExtensions
     private static readonly List<string> InternalHosts = ["localhost"];
     private static readonly List<string> ForbiddenTlds =
         ["corp", "domain", "example", "home", "host", "invalid", "lan", "local", "localdomain"];
-    private static readonly List<string> ForbiddenDoubleDotTlds = ["local", "gov"];
     
     public static bool IsInternal(this Uri uri)
     {
@@ -27,13 +26,6 @@ public static class UriExtensions
         var tokens = host.Split('.');
         switch (tokens.Length)
         {
-            case 3:
-                var doubleDotTld = string.Join('.', tokens.TakeLast(2));
-                if (ForbiddenDoubleDotTlds.Contains(doubleDotTld))
-                {
-                    return true;
-                }
-                goto case 2;
             case 2:
                 var singleDotTld = tokens.Last();
                 if (ForbiddenTlds.Contains(singleDotTld))
