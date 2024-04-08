@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Checkbox, IconButton, Input, Menu, MenuItem, Stack
 import { useNavigate } from '@tanstack/react-router';
 import { useStore } from '@tanstack/react-store';
 import React, { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from 'react';
-import { ErrorOrigin, TargetKind } from '../contracts/apiTypes.ts';
+import { ErrorOrigin, TargetKind, targetKindToString } from '../contracts/apiTypes.ts';
 import { ensureLoaded, store } from '../data/store.tsx';
 import { getUrl } from '../helpers/getUrl.ts';
 import { isUrl } from '../helpers/isUrl.ts';
@@ -102,7 +102,7 @@ export const SiteSelector = () => {
       <Menu open={open} onClose={() => setOpen(false)} anchorEl={anchorRef.current}>
         {options.map((option) => (
           <MenuItem key={option} selected={option == kind} onClick={() => handleSelectKind(option)}>
-            {option == 'Api' ? 'API' : option}
+            {targetKindToString(option)}
           </MenuItem>
         ))}
       </Menu>

@@ -25,6 +25,10 @@ export enum TargetKind {
   'Both' = 'Both',
 }
 
+export const targetKindToString = (kind: TargetKind) => {
+  return kind == 'Api' ? 'API' : kind;
+};
+
 export interface ISecurityConceptResult {
   handlerName: SecurityConceptHandlerName;
   headerName: string;

@@ -1,7 +1,7 @@
 import { TargetKind } from './apiTypes.ts';
 
 export interface ApiRequest {
-  target?: string;
+  target: string;
   followRedirects: boolean;
   kind: TargetKind;
 }
