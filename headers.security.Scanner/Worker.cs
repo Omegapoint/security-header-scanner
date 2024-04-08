@@ -26,27 +26,33 @@ public class Worker(ICrawler crawler)
             {
                 var crawlerResponses = await crawler.Crawl(targetUri, crawlerConf);
 
-                var successful = crawlerResponses.Where(response => !response.IsFailure);
-                var uriResults = await Task.WhenAll(
-                    successful.Select(async response => (
-                        response.IP,
-                        response.FinalUri,
-                        response.FetchedAt,
-                        await SecurityEngine.Parse(response.HttpMessage, crawlerConf)
-                    ))
-                );
-                SecurityEngine.ExamineNonceUsage(uriResults);
-                results.AddRange(ServerResultComparer.MergeEqual(uriResults.ToList(), targetUri));
-                
-                var failures = crawlerResponses.Where(response => response.IsFailure);
-                results.AddRange(failures.Select(response => new ServerResult
+                var successful = crawlerResponses.Where(response => !response.IsFailure).ToList();
+                if (successful.Count != 0)
                 {
-                    RequestTarget = ScanTarget.From(targetUri),
-                    FinalTarget = ScanTarget.From(response.FinalUri),
-                    IPs = [response.IP.ToString()],
-                    Error = response.ScanError,
-                    FetchedAt = response.FetchedAt
-                }));
+                    var uriResults = await Task.WhenAll(
+                        successful.Select(async response => (
+                            response.IP,
+                            response.FinalUri,
+                            response.FetchedAt,
+                            await SecurityEngine.Parse(response.HttpMessage, crawlerConf)
+                        ))
+                    );
+                    SecurityEngine.ExamineNonceUsage(uriResults);
+                    results.AddRange(ServerResultComparer.MergeEqual(uriResults.ToList(), targetUri));
+                }
+                
+                var failures = crawlerResponses.Where(response => response.IsFailure).ToList();
+                if (failures.Count != 0)
+                {
+                    results.AddRange(failures.Select(response => new ServerResult
+                    {
+                        RequestTarget = ScanTarget.From(targetUri),
+                        FinalTarget = ScanTarget.From(response.FinalUri),
+                        IPs = [response.IP.ToString()],
+                        Error = response.ScanError,
+                        FetchedAt = response.FetchedAt
+                    }));
+                }
             }
             catch (ScannerException e)
             {
