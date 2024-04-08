@@ -1,9 +1,19 @@
 import { Outlet } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/router-devtools';
+import React, { Suspense } from 'react';
 import { Footer } from './Footer.tsx';
 import { Header } from './Header.tsx';
 import { Banner } from './components/Banner.tsx';
 import Layout from './components/Layout';
+
+const TanStackRouterDevtools =
+  process.env.NODE_ENV === 'development'
+    ? React.lazy(() =>
+        // Lazy load in development
+        import('@tanstack/router-devtools').then((res) => ({
+          default: res.TanStackRouterDevtools,
+        }))
+      )
+    : () => null;
 
 const App = () => (
   <>
@@ -21,7 +31,9 @@ const App = () => (
         <Footer />
       </Layout.Footer>
     </Layout.Root>
-    <TanStackRouterDevtools />
+    <Suspense>
+      <TanStackRouterDevtools />
+    </Suspense>
   </>
 );
 
