@@ -1,15 +1,16 @@
 using System.Net;
-using System.Net.Http.Headers;
 using headers.security.Common.Domain;
 using headers.security.Common.Domain.SecurityConcepts;
+using headers.security.Scanner.Extensions;
 using headers.security.Scanner.SecurityConcepts;
 using HtmlAgilityPack;
-using Microsoft.Net.Http.Headers;
 
 namespace headers.security.Scanner;
 
 public static class SecurityEngine
 {
+    private const int MaxAllowedContentSize = 1024 * 2000;
+    
     private static readonly List<ISecurityConcept> Handlers = [
         StrictTransportSecurityConcept.Create(),
         XFrameOptionsSecurityConcept.Create(),
@@ -43,15 +44,15 @@ public static class SecurityEngine
 
     private static async Task<RawHeaders> ExtractHttpEquivMetas(HttpResponseMessage message)
     {
-        // if (message.Headers.TryGetValues(HeaderNames.ContentLength, ))
-        // {
-        //     
-        // }
-        
-        var messageContent = message.Content;
+        if (!message.LooksLikeFrontendResponse())
+        {
+            return new();
+        }
+
+        var maybeContent = await message.Content.ReadAtMostAsync(MaxAllowedContentSize);
         
         var doc = new HtmlDocument();
-        doc.Load(await messageContent.ReadAsStreamAsync());
+        doc.LoadHtml(maybeContent);
 
         var metas = (doc.DocumentNode
             ?.SelectNodes("//html/head")
@@ -59,7 +60,6 @@ public static class SecurityEngine
             .Where(node => node.HasAttributes);
 
         var httpEquivMetas = metas
-            // TODO: these .Contains operations may need to ignore case? they may already, test
             .Where(node => node.Attributes.Contains("http-equiv") && node.Attributes.Contains("content"));
 
         return new(httpEquivMetas.GroupBy(

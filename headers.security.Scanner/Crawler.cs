@@ -44,9 +44,10 @@ public class Crawler(WorkerConfiguration workerConf, IHttpClientFactory httpClie
 
         try
         {
-            var httpResponse = await client.SendAsync(request, crawlerConf.CancellationToken);
-            
-            // TODO: restrict maximum response size
+            var httpResponse = await client.SendAsync(
+                request,
+                HttpCompletionOption.ResponseHeadersRead,
+                crawlerConf.CancellationToken);
             
             response.FetchedAt = DateTime.UtcNow;
 
@@ -64,8 +65,11 @@ public class Crawler(WorkerConfiguration workerConf, IHttpClientFactory httpClie
 
                     var redirectRequest = new HttpRequestMessage(HttpMethod.Get, currentUri);
 
-                    httpResponse = await client.SendAsync(redirectRequest, crawlerConf.CancellationToken);
-                    // TODO: restrict maximum response size
+                    httpResponse = await client.SendAsync(
+                        redirectRequest,
+                        HttpCompletionOption.ResponseHeadersRead,
+                        crawlerConf.CancellationToken);
+
                     response.FetchedAt = DateTime.UtcNow;
 
                     requestDepth += 1;
