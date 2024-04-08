@@ -15,7 +15,6 @@ builder.Services.AddSingleton(builder.Configuration
 
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<ICrawler, Crawler>();
-// builder.Services.AddSingleton<ICrawler, CachingCrawler>();
 builder.Services.AddSingleton<Worker>();
 
 builder.Services.AddControllers()
