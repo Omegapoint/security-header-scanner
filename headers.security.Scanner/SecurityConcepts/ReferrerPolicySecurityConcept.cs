@@ -47,6 +47,7 @@ public class ReferrerPolicySecurityConcept : ISecurityConcept
 
         if (values.Count == 0)
         {
+            infos.Add(SecurityConceptResultInfo.Create("No policy present, consider adding one."));
             return result;
         }
         
