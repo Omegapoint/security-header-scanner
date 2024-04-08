@@ -57,7 +57,11 @@ public class Crawler(WorkerConfiguration workerConf, IHttpClientFactory httpClie
                        && httpResponse.IsRedirectStatusCode()
                        && await IsValidRedirect(httpResponse.Headers.Location, crawlerConf.CancellationToken))
                 {
-                    currentUri = httpResponse.Headers.Location;
+                    var nextUri = httpResponse.Headers.Location;
+                    currentUri = nextUri?.IsAbsoluteUri == false
+                        ? nextUri.SetBaseUri(currentUri)
+                        : nextUri;
+
                     var redirectRequest = new HttpRequestMessage(HttpMethod.Get, currentUri);
 
                     httpResponse = await client.SendAsync(redirectRequest, crawlerConf.CancellationToken);

@@ -69,4 +69,14 @@ public static class UriExtensions
                 Host = uri.IdnHost
             }
         };
+
+    public static Uri SetBaseUri(this Uri relativeUri, Uri baseUri)
+    {
+        if (Uri.TryCreate(baseUri, relativeUri, out var absoluteUri))
+        {
+            return absoluteUri;
+        }
+
+        return relativeUri.IsAbsoluteUri ? relativeUri : null;
+    }
 }
