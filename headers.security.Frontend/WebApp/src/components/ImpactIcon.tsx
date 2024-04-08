@@ -1,4 +1,4 @@
-import { CancelRounded, CheckCircleRounded, RemoveCircleRounded } from '@mui/icons-material';
+import { CancelRounded, CheckCircleRounded, InfoRounded, RemoveCircleRounded } from '@mui/icons-material';
 import { Avatar } from '@mui/joy';
 import { SecurityImpact } from '../contracts/securityImpact.ts';
 
@@ -10,6 +10,7 @@ const getIcon = (impact: SecurityImpact) => {
     case SecurityImpact.Low:
       return RemoveCircleRounded;
     case SecurityImpact.Info:
+      return InfoRounded;
     case SecurityImpact.None:
       return CheckCircleRounded;
   }
@@ -24,6 +25,7 @@ const getColour = (impact: SecurityImpact): string => {
     case SecurityImpact.Low:
       return '#DD9933';
     case SecurityImpact.Info:
+      return '#3399DD';
     case SecurityImpact.None:
       return '#339933';
   }
