@@ -7,7 +7,7 @@
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
     <NoDefaultLaunchSettingsFile>True</NoDefaultLaunchSettingsFile>
-    <SpaRoot>WebApp\</SpaRoot>
+    <SpaRoot>Frontend\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
     <SpaProxyServerUrl>https://localhost:5123</SpaProxyServerUrl>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
