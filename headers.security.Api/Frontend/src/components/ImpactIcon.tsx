@@ -4,8 +4,6 @@ import { SecurityImpact } from '../contracts/securityImpact.ts';
 
 const getIcon = (impact: SecurityImpact) => {
   switch (impact) {
-    // case SecurityImpact.Unknown:
-    //   return HelpRounded;
     case SecurityImpact.Medium:
     case SecurityImpact.Low:
       return RemoveCircleRounded;
@@ -19,8 +17,6 @@ const getIcon = (impact: SecurityImpact) => {
 
 const getColour = (impact: SecurityImpact): string => {
   switch (impact) {
-    // case SecurityImpact.Unknown:
-    //   return '#4444CC';
     case SecurityImpact.Medium:
     case SecurityImpact.Low:
       return '#DD9933';
