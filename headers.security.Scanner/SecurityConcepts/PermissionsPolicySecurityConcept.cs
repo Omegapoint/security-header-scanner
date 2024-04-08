@@ -41,6 +41,7 @@ public class PermissionsPolicySecurityConcept : ISecurityConcept
         
         if (!rawHeaders.TryGetValue(HeaderName, out var policyHeaders))
         {
+            infos.Add(SecurityConceptResultInfo.Create("No policy present, consider adding one."));
             return result;
         }
         
