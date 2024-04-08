@@ -14,10 +14,12 @@ public static class CspParser
         var enforcingPolicies = ExtractPolicies(HeaderNames.ContentSecurityPolicy, true);
         var nonEnforcingPolicies = ExtractPolicies(HeaderNames.ContentSecurityPolicyReportOnly, false);
 
+        var allPolicies = enforcingPolicies.Concat(nonEnforcingPolicies);
+
         return new CspConfiguration(
             enforcingPolicies,
             nonEnforcingPolicies,
-            GetEffectivePolicy(enforcingPolicies.ToList())
+            GetEffectivePolicy(allPolicies.ToList())
         );
 
         List<CspPolicy> ExtractPolicies(string headerName, bool enforcing)
@@ -41,18 +43,19 @@ public static class CspParser
         }
     }
 
-    public static CspPolicy GetEffectivePolicy(List<CspPolicy> policies)
+    public static CspPolicy GetEffectivePolicy(List<CspPolicy> allPolicies)
     {
-        if (policies.Count == 0)
+        if (allPolicies.Count == 0)
         {
             return null;
         }
 
-        var enforcing = policies.First().Enforcing;
+        var isEnforcing = allPolicies.Any(p => p.Enforcing);
+        var policies = allPolicies.Where(p => p.Enforcing == isEnforcing).ToList();
         
         var defaultSrcValue = GetMostStrict(DefaultSrc);
 
-        var directives = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
+        var directives = new CspDirectiveCollection();
         
         if (defaultSrcValue != null)
         {
@@ -83,7 +86,7 @@ public static class CspParser
             directives[directiveName] = values;
         }
 
-        return new CspPolicy("Merged", directives, enforcing);
+        return new CspPolicy("Merged", directives, isEnforcing);
 
         HashSet<string> GetMostStrict(string directive, HashSet<string> fallback = null)
         {

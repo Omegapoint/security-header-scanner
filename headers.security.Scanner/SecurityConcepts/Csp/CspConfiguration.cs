@@ -10,10 +10,9 @@ public class CspConfiguration(List<CspPolicy> all, List<CspPolicy> allNonEnforci
     [Compare]
     public List<CspPolicy> AllNonEnforcing { get; } = allNonEnforcing;
     
-    // TODO: should this ever contain a non-enforcing policy? if there are only non-enforcing policies maybe?
     public CspPolicy Effective { get; } = effective;
     
-    public bool HasPolicy => All.Count > 0;
+    public bool HasPolicy => All.Count > 0 || AllNonEnforcing.Count > 0;
 
     public bool IsEnforcing => HasPolicy && Effective.Enforcing;
 
