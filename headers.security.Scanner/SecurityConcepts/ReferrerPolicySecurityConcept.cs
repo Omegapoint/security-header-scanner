@@ -1,7 +1,6 @@
 using headers.security.Common.Constants;
 using headers.security.Common.Domain;
 using headers.security.Common.Domain.SecurityConcepts;
-using headers.security.Scanner.SecurityConcepts.Csp;
 using static headers.security.Common.Constants.ReferrerPolicy;
 
 namespace headers.security.Scanner.SecurityConcepts;
@@ -49,14 +48,6 @@ public class ReferrerPolicySecurityConcept : ISecurityConcept
         {
             infos.Add(SecurityConceptResultInfo.Create("No policy present, consider adding one."));
             return result;
-        }
-        
-        var csp = CspParser.ExtractAll(rawHeaders, rawHttpEquivMetas);
-
-        // todo: move to CSP instead, check for referrer policy and pop if exists
-        if (csp.HasPolicy && csp.Effective.Directives.TryGetValue(CspDirective.Referrer, out _))
-        {
-            infos.Add(SecurityConceptResultInfo.Create($"The \"{CspDirective.Referrer}\" directive of the CSP header is obsolete and should be removed."));
         }
         
         ParseValue(values, result);
