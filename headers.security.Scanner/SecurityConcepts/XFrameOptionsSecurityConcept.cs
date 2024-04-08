@@ -56,7 +56,7 @@ public class XFrameOptionsSecurityConcept : ISecurityConcept
             var firstHeader = headers.First();
             if (headers.All(header => header.Equals(firstHeader, StringComparison.OrdinalIgnoreCase)))
             {
-                infos.Add(SecurityConceptResultInfo.Create("Duplicate identical policies present."));
+                infos.Add(SecurityConceptResultInfo.Create("Duplicate policies present."));
                 result.StringValue = firstHeader;
             }
             else if (headers.Any(h => AllValidValues.Contains(h, StringComparer.OrdinalIgnoreCase)))
