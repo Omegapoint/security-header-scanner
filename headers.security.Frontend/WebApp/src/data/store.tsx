@@ -35,6 +35,7 @@ const queryDiffers = (current: ApiRequest, query: ScanQuerySchema) => {
 };
 
 export const ensureLoaded = async (scanQuery: ScanQuerySchema) => {
+  scanQuery.kind ??= TargetKind.Detect;
   const state = store.state;
   if (!state.apiResponse || queryDiffers(state.apiResponse.request, scanQuery)) {
     store.setState((state) => ({ ...state, ...scanQuery }));
