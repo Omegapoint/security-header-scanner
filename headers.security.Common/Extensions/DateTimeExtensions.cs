@@ -5,8 +5,9 @@ public static class DateTimeExtensions
     /// <summary>
     /// Returns the given DateTime as a string in the format "yyyy.MM.dd"
     /// </summary>
-    public static string SimpleDateString(this DateTime dateTime)
+    public static string VersionDateString(this DateTime dateTime)
     {
-        return dateTime.ToString("yyyy.MM.dd");
+        var secondsSinceMidnight = (int) dateTime.Subtract(dateTime.Date).TotalSeconds;
+        return dateTime.ToString("yyyy.MM.dd-") + secondsSinceMidnight;
     }
 }

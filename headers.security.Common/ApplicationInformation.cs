@@ -21,38 +21,18 @@ public static class ApplicationInformation
     private static Version _executingAssemblyVersion;
 
     /// <summary>
+    /// Gets FileInfo for the currently executing assembly.
+    /// </summary>
+    /// <value>The compile date.</value>
+    public static FileInfo FileInfo => _fileInfo ??= new FileInfo(ExecutingAssembly.Location);
+    
+    private static FileInfo _fileInfo;
+
+    /// <summary>
     /// Gets the compile date of the currently executing assembly.
     /// </summary>
     /// <value>The compile date.</value>
-    public static DateTime CompileDate => _compileDate ??= RetrieveLinkerTimestamp(ExecutingAssembly.Location);
+    public static DateTime CompileDate => _compileDate ??= FileInfo.CreationTimeUtc;
     
     private static DateTime? _compileDate;
-
-    /// <summary>
-    /// Retrieves the linker timestamp.
-    /// </summary>
-    /// <param name="filePath">The file path.</param>
-    /// <returns></returns>
-    /// <remarks>http://www.codinghorror.com/blog/2005/04/determining-build-date-the-hard-way.html</remarks>
-    private static DateTime RetrieveLinkerTimestamp(string filePath)
-    {
-        const int peHeaderOffset = 60;
-        const int linkerTimestampOffset = 8;
-        var b = new byte[2048];
-        FileStream s = null;
-        try
-        {
-            s = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            s.Read(b, 0, 2048);
-        }
-        finally
-        {
-            s?.Close();
-        }
-
-        var seconds = BitConverter.ToInt32(b, BitConverter.ToInt32(b, peHeaderOffset) + linkerTimestampOffset);
-        var dt = DateTime.UnixEpoch.AddSeconds(seconds);
-        
-        return dt.AddHours(TimeZoneInfo.Local.GetUtcOffset(dt).Hours);
-    }
 }

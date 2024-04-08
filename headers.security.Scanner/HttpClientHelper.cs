@@ -10,10 +10,9 @@ public static class HttpClientHelper
     public static void ConfigureClient(HttpClient httpClient)
     {
         httpClient.DefaultRequestHeaders.Clear();
-        // TODO: read version from assembly
         httpClient.DefaultRequestHeaders.Add(
             HeaderNames.UserAgent, 
-            $"{AppConstants.UserAgentPrefix} v{ApplicationInformation.CompileDate.SimpleDateString()}"
+            $"{AppConstants.UserAgentPrefix} v{ApplicationInformation.CompileDate.VersionDateString()}"
         );
         httpClient.DefaultRequestHeaders.Add(
             HeaderNames.Referer,
