@@ -25,8 +25,7 @@ public class ScanResult
     {
         var impacts = HandlerResults
             .Select(result => result.Impact)
-            // todo: grading decision: if no handler results exist (this should in practice never happen), give a grade that isn't perfect?
-            .DefaultIfEmpty(Medium);
+            .DefaultIfEmpty(None);
         
         var counts = impacts
             .ToCounter();
@@ -39,7 +38,7 @@ public class ScanResult
         if (counts[Low] == 1)                       return A;
         if (counts[Low] == 0)                       return APlus;
         
-        // TODO: we should never end up here, add some testing for this
+        // TODO: LOG: that we ended up here
         return Unknown;
     }
 }
