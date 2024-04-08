@@ -1,7 +1,7 @@
 import { Stack, Typography } from '@mui/joy';
 import { useStore } from '@tanstack/react-store';
-import { ApiError } from '../contracts/apiTypes.ts';
-import { store } from '../data/store.tsx';
+import { ApiError } from '../../contracts/apiTypes.ts';
+import { store } from '../../data/store.tsx';
 
 interface ErrorPageProps {
   reason?: ApiError;

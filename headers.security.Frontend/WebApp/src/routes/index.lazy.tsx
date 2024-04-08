@@ -1,7 +1,8 @@
 import { ArrowForward } from '@mui/icons-material';
 import { Stack, Typography } from '@mui/joy';
+import { createLazyFileRoute } from '@tanstack/react-router';
 import { ModeAwareSymbol } from '../components/ModeAwareSymbol.tsx';
-import classes from './Entrypoint.module.css';
+import classes from './index.module.css';
 
 const Entrypoint = () => {
   return (
@@ -22,4 +23,6 @@ const Entrypoint = () => {
   );
 };
 
-export default Entrypoint;
+export const Route = createLazyFileRoute('/')({
+  component: Entrypoint,
+});

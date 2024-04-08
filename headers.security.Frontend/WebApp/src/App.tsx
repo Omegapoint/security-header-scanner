@@ -1,4 +1,5 @@
 import { Outlet } from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import { Footer } from './Footer.tsx';
 import { Header } from './Header.tsx';
 import { Banner } from './components/Banner.tsx';
@@ -20,6 +21,7 @@ const App = () => (
         <Footer />
       </Layout.Footer>
     </Layout.Root>
+    <TanStackRouterDevtools />
   </>
 );
 

@@ -3,9 +3,9 @@ import axios, { AxiosError } from 'axios';
 import { ApiRequest } from '../contracts/apiRequest.ts';
 import { ApiResponse } from '../contracts/apiResponse.ts';
 import { ApiError, ErrorOrigin, TargetKind } from '../contracts/apiTypes.ts';
+import { fallbackMessage } from '../features/ScanResult/ErrorPage.tsx';
 import { getUrl } from '../helpers/getUrl.ts';
-import { fallbackMessage } from '../routes/ErrorPage.tsx';
-import { ScanQuerySchema } from './router.tsx';
+import { ScanQuerySchema } from '../routes/scan.tsx';
 
 export interface RootState {
   target?: string;
@@ -79,8 +79,6 @@ export const scan = async () => {
       message: isTimeout ? 'API did not respond in time.' : fallbackMessage,
       origin: isTimeout ? ErrorOrigin.Client : ErrorOrigin.Other,
     };
-
-    console.log('store', apiError);
 
     store.setState((state) => ({ ...state, apiError }));
   } finally {
