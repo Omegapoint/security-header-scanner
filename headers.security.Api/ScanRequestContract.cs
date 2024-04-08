@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using headers.security.Common.Domain;
 
-namespace headers.security.Frontend;
+namespace headers.security.Api;
 
 [DataContract]
 public class ScanRequestContract : IValidatableObject

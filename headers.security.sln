@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "headers.security.Frontend", "headers.security.Frontend\headers.security.Frontend.csproj", "{FFA817F4-4E19-4276-9FE6-5B5B259EF2AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "headers.security.Api", "headers.security.Api\headers.security.Api.csproj", "{FFA817F4-4E19-4276-9FE6-5B5B259EF2AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "headers.security.Tests", "headers.security.Tests\headers.security.Tests.csproj", "{AE6BAE9E-C6BC-44B3-A8D6-E6205975A4C8}"
 EndProject

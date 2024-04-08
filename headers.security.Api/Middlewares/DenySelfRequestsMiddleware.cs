@@ -2,7 +2,7 @@ using System.Net;
 using headers.security.Common.Constants;
 using Microsoft.Net.Http.Headers;
 
-namespace headers.security.Frontend.Middlewares;
+namespace headers.security.Api.Middlewares;
 
 /// <summary>
 /// In case any other attempts to stop expensive scan loops fail,

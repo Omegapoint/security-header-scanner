@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
-using headers.security.Frontend.Middlewares;
+using headers.security.Api.Middlewares;
 using headers.security.Scanner;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.OpenApi.Models;

@@ -3,7 +3,7 @@ using headers.security.Common.Domain;
 using headers.security.Scanner;
 using Microsoft.AspNetCore.Mvc;
 
-namespace headers.security.Frontend.Controllers;
+namespace headers.security.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

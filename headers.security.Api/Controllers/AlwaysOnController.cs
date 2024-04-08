@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 
-namespace headers.security.Frontend.Controllers;
+namespace headers.security.Api.Controllers;
 
 /// <summary>
 /// When Azure tries to check if site is up it does so using the User-Agent "alwayson"
