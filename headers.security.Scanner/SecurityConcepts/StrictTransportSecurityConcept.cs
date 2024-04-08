@@ -62,8 +62,7 @@ public class StrictTransportSecurityConcept : ISecurityConcept
         var includeSubdomains = tokens.Contains(IncludeSubdomainsToken);
         var preload = tokens.Contains(PreloadToken);
 
-        // TODO: verify preload status?
-        // TODO: add info regarding preload
+        // TODO: FUTURE: verify preload status? add info regarding preload
         
         return new StrictTransportSecurityConceptResult(infos, maxAge, includeSubdomains, preload);
     }
@@ -82,9 +81,6 @@ public class StrictTransportSecurityConcept : ISecurityConcept
     }
 }
 
-/// <summary>
-/// TODO: document why 1 year
-/// </summary>
 public class StrictTransportSecurityConceptResult(
     List<ISecurityConceptResultInfo> infos,
     int? maxAge,
@@ -119,7 +115,6 @@ public class StrictTransportSecurityConceptResult(
     {
         if (MaxAge is null)
         {
-            // TODO: difficult to nail down how bad it is to not have an HSTS
             return SecurityImpact.Medium;
         }
         
@@ -132,9 +127,6 @@ public class StrictTransportSecurityConceptResult(
             return SecurityImpact.Low;
         }
         
-        // TODO: does includeSubdomains impact result?
-        
-        // TODO: decide how this is handled
         return SecurityImpact.Medium;
     }
 }

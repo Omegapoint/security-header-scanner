@@ -29,7 +29,7 @@ public class ScanController(ILogger<ScanController> logger, Worker worker) : Con
         }
         catch (ScannerException e)
         {
-            // TODO: these are errors that the UI knows about, but maybe log something here for monitoring?
+            // TODO: LOG: these are errors that the UI knows about, but maybe log something here for monitoring?
             return BadRequest(new ScanError
             {
                 Message = e.Message,
@@ -38,7 +38,7 @@ public class ScanController(ILogger<ScanController> logger, Worker worker) : Con
         }
         catch (Exception e)
         {
-            // TODO: should add app insights for tracking when this happens
+            // TODO: LOG: should add app insights for tracking when this happens
             logger.LogTrace(e, "Unrecoverable error");
 
             return StatusCode(StatusCodes.Status500InternalServerError, new ScanError
