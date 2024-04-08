@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/joy';
+import { Typography } from '@mui/joy';
 import { UriData } from '../contracts/apiTypes.ts';
 
 interface UriDataComponentProps {
@@ -10,11 +10,11 @@ export const UriDataComponent = ({ data }: UriDataComponentProps) => {
   if (!data.isDefaultPort) asciiUri += ':' + data.port;
   if (data.path.length > 1) asciiUri += data.path;
   return (
-    <Stack direction="row" title={asciiUri}>
+    <Typography title={asciiUri} sx={{ overflow: 'hidden' }}>
       <Typography color="neutral">{data.scheme}://</Typography>
       <Typography>{data.utfDomain}</Typography>
       {!data.isDefaultPort && <Typography color="neutral">:{data.port}</Typography>}
-      {data.path.length > 1 && <Typography>{data.path}</Typography>}
-    </Stack>
+      {data.path.length > 1 && <Typography sx={{ textOverflow: 'ellipsis' }}>{data.path}</Typography>}
+    </Typography>
   );
 };

@@ -156,18 +156,17 @@ const ScanHeadersTable = ({ handlerResults }: { handlerResults: ISecurityConcept
     <Table
       sx={(theme) => ({
         '& th[scope="col"]': theme.variants.solid.primary,
-        tableLayout: 'auto',
+        '& thead th:nth-of-type(1)': { width: '17em' },
+        '& thead th:nth-of-type(2)': { width: '3em' },
+        '& thead th:last-child': { width: '3em' },
         '--TableCell-paddingX': '1.2em',
       })}
     >
       <thead>
         <tr>
-          <th scope="col" colSpan={2}>
-            Header name
-          </th>
-          <th scope="col" style={{ width: '100%' }}>
-            Message
-          </th>
+          <th scope="col">Header name</th>
+          <th scope="col"></th>
+          <th scope="col">Message</th>
           <th scope="col"></th>
         </tr>
       </thead>

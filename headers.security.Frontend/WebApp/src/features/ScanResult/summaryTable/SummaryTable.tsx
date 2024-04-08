@@ -15,7 +15,7 @@ interface SummaryTableProps {
 
 export const SummaryTable = ({ data, response }: SummaryTableProps) => {
   return (
-    <Table sx={{ tableLayout: 'auto' }}>
+    <Table sx={{ '& tr th:nth-of-type(1)': { width: '7em' } }}>
       <tbody>
         <AppTableRow rowLabel="URL">
           <SummaryTableUrls data={data} />

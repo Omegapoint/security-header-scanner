@@ -66,7 +66,7 @@ export const AppTableRow = ({
   return (
     <>
       <tr onClick={toggleOpen} style={rowStyle}>
-        <th scope="row" style={{ background: 'unset', maxWidth: '18vw', ...tdStyle }}>
+        <th scope="row" style={{ background: 'unset', ...tdStyle }}>
           <Stack height="100%">
             <Stack height="2em" direction="row" alignItems="center">
               <Typography noWrap title={rowLabel} endDecorator={labelDecorator}>
