@@ -7,15 +7,12 @@ import mkcert from 'vite-plugin-mkcert';
 export default defineConfig({
   plugins: [react(), mkcert(), TanStackRouterVite()],
   server: {
-    https: true,
     port: 5123,
-    strictPort: true,
     proxy: {
       '/api': {
         target: 'https://localhost:5000',
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace(/^\/api/, '/api'),
       },
     },
   },
