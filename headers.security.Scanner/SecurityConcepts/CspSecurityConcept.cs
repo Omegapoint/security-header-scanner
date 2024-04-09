@@ -71,7 +71,7 @@ public class CspSecurityConcept : ISecurityConcept
             }
         }
         
-        var lowComplexityNonce = configuration.ExtractNonces().FirstOrDefault(n => n.Length < 22);
+        var lowComplexityNonce = configuration.ExtractNonces().FirstOrDefault(n => n.Length < 16);
         if (lowComplexityNonce != null)
         {
             infos.Add(CspNonceSecurityConceptResultInfo.LowComplexity(lowComplexityNonce));

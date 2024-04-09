@@ -40,7 +40,7 @@ public class CspPolicy
 
     public HashSet<string> ExtractNonces() => Directives.Values
         .SelectMany(values => values.Where(v => v.StartsWith(CspParser.NoncePrefix)))
-        .Select(nonce => nonce[7..^1])
+        .Select(nonce => nonce[CspParser.NoncePrefix.Length..^1])
         .ToHashSet();
 
     public bool IsUnsafe => GetUnsafeTokens().Any();
@@ -57,8 +57,7 @@ public class CspPolicy
         return tokens;
     }
 
-    public IEnumerable<string> GetBypassTokens() =>
-        GetScriptTokens().Where(KnownCspBypassUris.Matches);
+    public IEnumerable<string> GetBypassTokens() => GetScriptTokens().Where(KnownCspBypassUris.Matches);
 
     private HashSet<string> GetScriptTokens() =>
     [
