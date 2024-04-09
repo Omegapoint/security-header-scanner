@@ -2,9 +2,9 @@ import { Store } from '@tanstack/react-store';
 import axios, { AxiosError } from 'axios';
 import { ApiRequest } from '../contracts/apiRequest.ts';
 import { ApiResponse } from '../contracts/apiResponse.ts';
-import { ApiError, ErrorOrigin, TargetKind } from '../contracts/apiTypes.ts';
-import { fallbackMessage } from '../features/ScanResult/ErrorPage.tsx';
+import { ApiError, TargetKind } from '../contracts/apiTypes.ts';
 import { getUrl } from '../helpers/getUrl.ts';
+import { parseError } from '../helpers/parseError.tsx';
 import { ScanQuerySchema } from '../routes/scan.tsx';
 
 export interface RootState {
@@ -78,13 +78,7 @@ export const scan = async () => {
       store.setState((state) => ({ ...state, apiError: response.data as unknown as ApiError }));
     }
   } catch (err: unknown) {
-    const axiosError = err as AxiosError<ApiError>;
-
-    const isTimeout = axiosError.code == 'ECONNABORTED';
-    const apiError: ApiError = axiosError.response?.data ?? {
-      message: isTimeout ? 'API did not respond in time.' : fallbackMessage,
-      origin: isTimeout ? ErrorOrigin.Client : ErrorOrigin.Other,
-    };
+    const apiError = parseError(err as AxiosError<ApiError>);
 
     store.setState((state) => ({ ...state, apiError }));
   } finally {
