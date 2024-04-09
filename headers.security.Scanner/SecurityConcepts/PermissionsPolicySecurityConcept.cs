@@ -36,7 +36,7 @@ public class PermissionsPolicySecurityConcept : ISecurityConcept
         
         if (rawHeaders.TryGetValue(DeprecatedHeaderName, out _))
         {
-            infos.Add(SecurityConceptResultInfo.Create($"The \"{DeprecatedHeaderName}\" header name is deprecated and should not be used."));
+            infos.Add(SecurityConceptResultInfo.Create($"The {DeprecatedHeaderName} header name is deprecated and should not be used."));
         }
         
         if (!rawHeaders.TryGetValue(HeaderName, out var policyHeaders))

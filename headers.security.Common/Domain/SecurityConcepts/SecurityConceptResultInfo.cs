@@ -7,9 +7,16 @@ public class SecurityConceptResultInfo : ISecurityConceptResultInfo
 
     public Uri ExternalLink { get; init; }
 
-    public static SecurityConceptResultInfo Create(string message, Uri externalLink = null) => new()
+    public static SecurityConceptResultInfo Create(FormattableString message) => new()
     {
-        Message = message,
-        ExternalLink = externalLink
+        Message = message.Format,
+        FormatTokens = message.GetArguments()
+            .Select(argument => new List<string> { argument?.ToString() ?? "" })
+            .ToList()
+    };
+
+    public static SecurityConceptResultInfo Create(StringDifferentiator message) => new()
+    {
+        Message = message.Value
     };
 }

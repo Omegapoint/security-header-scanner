@@ -72,7 +72,7 @@ const ScanHeadersInfos = ({ handlerResult }: { handlerResult: ISecurityConceptRe
   }
 
   const constructMessage = ({ message, formatTokens }: SecurityConceptResultInfo) => {
-    const parts = zip(message.split(/{}/g), formatTokens ?? []);
+    const parts = zip(message.split(/{\d+}/g), formatTokens ?? []);
     return parts.map(([messagePart, tokens], idx) => (
       <span key={idx}>
         <Typography>{messagePart}</Typography>

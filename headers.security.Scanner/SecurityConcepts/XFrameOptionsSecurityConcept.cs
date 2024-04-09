@@ -11,9 +11,10 @@ namespace headers.security.Scanner.SecurityConcepts;
 /// </summary>
 public class XFrameOptionsSecurityConcept : ISecurityConcept
 {
+    private const string Deny = "DENY";
     public static readonly string HeaderName = HeaderNames.XFrameOptions;
 
-    private static readonly List<string> AllValidValues = ["DENY", "ALLOWALL", "SAMEORIGIN"];
+    private static readonly List<string> AllValidValues = [Deny, "ALLOWALL", "SAMEORIGIN"];
 
     public static ISecurityConcept Create() => new XFrameOptionsSecurityConcept();
 
@@ -61,8 +62,8 @@ public class XFrameOptionsSecurityConcept : ISecurityConcept
             }
             else if (headers.Any(h => AllValidValues.Contains(h, StringComparer.OrdinalIgnoreCase)))
             {
-                infos.Add(SecurityConceptResultInfo.Create("Multiple policies present with conflicting values, browser will treat as \"DENY\"."));
-                result.StringValue = "DENY";
+                infos.Add(SecurityConceptResultInfo.Create($"Multiple policies present with conflicting values, browser will treat as {Deny}."));
+                result.StringValue = Deny;
             }
             else
             {

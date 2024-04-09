@@ -56,7 +56,7 @@ public class CspSecurityConcept : ISecurityConcept
             if (unsafeTokens.Count != 0)
             {
                 infos.Add(new SecurityConceptResultInfo {
-                    Message = "Policy allows unsafe practices ({}) in scripts. This may be necessary in order to use some JavaScript frameworks, but substantially reduces the policies effectiveness at stopping cross-site scripting.",
+                    Message = "Policy allows unsafe practices ({0}) in scripts. This may be necessary in order to use some JavaScript frameworks, but substantially reduces the policies effectiveness at stopping cross-site scripting.",
                     FormatTokens = [unsafeTokens]
                 });
             }
@@ -65,7 +65,7 @@ public class CspSecurityConcept : ISecurityConcept
             if (bypassTokens.Count != 0)
             {
                 infos.Add(new SecurityConceptResultInfo {
-                    Message = "Policy allows known CSP bypass targets ({}) in scripts.",
+                    Message = "Policy allows known CSP bypass targets ({0}) in scripts.",
                     FormatTokens = [bypassTokens]
                 });
             }
