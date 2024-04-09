@@ -64,6 +64,7 @@ else
     app.UseHsts();
 }
 
+app.UseFileServer();
 app.UseRouting();
 
 app.MapControllers().RequireRateLimiting("fixed");
