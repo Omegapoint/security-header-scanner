@@ -1,8 +1,7 @@
-import { Stack, Typography } from '@mui/joy';
+import { Stack } from '@mui/joy';
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { useStore } from '@tanstack/react-store';
 import { z } from 'zod';
-import { AppCard } from '../components/AppCard.tsx';
 import { TargetKind } from '../contracts/apiTypes.ts';
 import { ensureLoaded, store } from '../data/store.tsx';
 import { ErrorPage } from '../features/ScanResult/ErrorPage.tsx';
@@ -41,13 +40,6 @@ const ScanResult = () => {
       <ScanSummary data={firstServerResult} response={apiResponse} />
       <ScanHeaders data={firstServerResult} response={apiResponse} />
       <ScanRawHeaders rawHeaders={firstServerResult.result.rawHeaders ?? {}} />
-      <AppCard title="Raw Result" expandable>
-        <pre>
-          <Typography variant="outlined" fontFamily="code">
-            {JSON.stringify(apiResponse, null, 2)}
-          </Typography>
-        </pre>
-      </AppCard>
     </Stack>
   );
 };
