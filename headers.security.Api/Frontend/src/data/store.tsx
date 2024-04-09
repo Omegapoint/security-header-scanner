@@ -24,7 +24,9 @@ const queryDiffers = (current: ApiRequest, query: ScanQuerySchema) => {
     return true;
   }
 
-  if (current.kind != query.kind) {
+  const queryKind = query.kind ?? TargetKind.Detect;
+  const currentKind = current.kind ?? TargetKind.Detect;
+  if (currentKind != queryKind) {
     return true;
   }
 
@@ -35,9 +37,11 @@ const queryDiffers = (current: ApiRequest, query: ScanQuerySchema) => {
 };
 
 export const ensureLoaded = async (scanQuery: ScanQuerySchema) => {
-  scanQuery.kind ??= TargetKind.Detect;
-  const state = store.state;
-  if (!state.apiResponse || queryDiffers(state.apiResponse.request, scanQuery)) {
+  const { apiResponse } = store.state;
+  if (!apiResponse || queryDiffers(apiResponse.request, scanQuery)) {
+    if (!scanQuery.kind) {
+      scanQuery.kind = undefined;
+    }
     store.setState((state) => ({ ...state, ...scanQuery }));
     await scan();
 
@@ -56,7 +60,7 @@ export const scan = async () => {
 
   const payload: ApiRequest = {
     target: href,
-    kind: kind ?? TargetKind.Detect,
+    kind: kind,
     followRedirects,
   };
 
