@@ -49,8 +49,13 @@ export const ensureLoaded = async (scanQuery: ScanQuerySchema) => {
 export const scan = async () => {
   const { target, kind, followRedirects } = store.state;
 
+  const href = getUrl(target)?.href;
+  if (!href) {
+    return;
+  }
+
   const payload: ApiRequest = {
-    target: getUrl(target)?.href,
+    target: href,
     kind: kind ?? TargetKind.Detect,
     followRedirects,
   };
