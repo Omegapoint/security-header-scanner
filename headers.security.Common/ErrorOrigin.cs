@@ -4,6 +4,7 @@ public enum ErrorOrigin
 {
     Other,
     
+    Client,
     Target,
     SystemLimitation
 }

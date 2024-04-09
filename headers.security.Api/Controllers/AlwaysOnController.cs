@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Net.Http.Headers;
 
 namespace headers.security.Api.Controllers;
@@ -8,6 +9,7 @@ namespace headers.security.Api.Controllers;
 /// When Azure tries to check if site is up it does so using the User-Agent "alwayson"
 /// </summary>
 [ApiController]
+[DisableRateLimiting]
 public class AlwaysOnController : Controller
 {
     private const string AlwaysOnUserAgent = "alwayson";

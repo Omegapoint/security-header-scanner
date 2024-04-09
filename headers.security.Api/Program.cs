@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
-using System.Threading.RateLimiting;
 using headers.security.Api.Middlewares;
 using headers.security.Scanner;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,19 +37,11 @@ builder.Services.AddHsts(options =>
     options.MaxAge = TimeSpan.FromDays(365);
 });
 
-builder.Services.AddRateLimiter(rOptions => rOptions
-    .AddFixedWindowLimiter(policyName: "fixed", options =>
-    {
-        options.PermitLimit = 4;
-        options.Window = TimeSpan.FromSeconds(12);
-        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-        options.QueueLimit = 2;
-    }));
+builder.Services.AddRateLimiter(RateLimiterFactory.ConfigureOptions);
 
 var app = builder.Build();
 
 app.DenySelfRequests();
-app.UseRateLimiter();
 
 if (app.Environment.IsDevelopment())
 {
@@ -66,7 +56,12 @@ else
 app.UseFileServer();
 app.UseRouting();
 
-app.MapControllers().RequireRateLimiting("fixed");
+if (app.Environment.IsProduction())
+{
+    app.UseRateLimiter();
+}
+
+app.MapControllers().RequireRateLimiting(RateLimiterFactory.PolicyName);
 app.UseSpa(_ => { });
 
 app.Run();
