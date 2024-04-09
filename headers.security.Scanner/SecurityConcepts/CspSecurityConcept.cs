@@ -1,4 +1,3 @@
-using headers.security.Common.Constants;
 using headers.security.Common.Domain;
 using headers.security.Common.Domain.SecurityConcepts;
 using headers.security.Scanner.SecurityConcepts.Csp;
