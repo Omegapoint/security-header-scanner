@@ -3,6 +3,7 @@ using headers.security.Common.Domain;
 using headers.security.Common.Domain.SecurityConcepts;
 using headers.security.Scanner.SecurityConcepts.Csp;
 using Microsoft.Net.Http.Headers;
+using static headers.security.Common.Constants.CspDirective;
 
 namespace headers.security.Scanner.SecurityConcepts;
 
@@ -47,9 +48,20 @@ public class CspSecurityConcept : ISecurityConcept
         {
             var effective = configuration.Effective;
 
-            if (effective.Directives.TryGetValue(CspDirective.Referrer, out _))
+            if (effective.Directives.TryGetValue(Referrer, out _))
             {
-                infos.Add(SecurityConceptResultInfo.Create($"The \"{CspDirective.Referrer}\" directive of the CSP header is obsolete and should be removed."));
+                infos.Add(SecurityConceptResultInfo.Create(
+                    $"The {Referrer} directive of the CSP header is obsolete and should be removed."));
+            }
+
+            if (effective.Directives.TryGetValue(FormAction, out _))
+            {
+                infos.Add(new SecurityConceptResultInfo
+                {
+                    Message = "The {0} directive is not specified. This directive is not covered by the {1} directive, not including it in your policy may enable sensitive data from forms to leak.",
+                    FormatTokens = [[FormAction], [DefaultSrc]],
+                    ExternalLink = new("https://portswigger.net/research/using-form-hijacking-to-bypass-csp")
+                });
             }
             
             var unsafeTokens = effective.GetUnsafeTokens().ToList();
@@ -78,8 +90,6 @@ public class CspSecurityConcept : ISecurityConcept
         }
         
         // TODO: FUTURE: data exfil: img-src, style-src, connect-src, big cloud providers with wildcards, etc. -> info
-        
-        // TODO: no form-action specified -> info, link: https://portswigger.net/research/using-form-hijacking-to-bypass-csp
 
         return new CspSecurityConceptResult(configuration, infos);
     }

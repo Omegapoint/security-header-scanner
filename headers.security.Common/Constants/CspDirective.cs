@@ -8,6 +8,7 @@ public static class CspDirective
     // Not covered by default-src
     public const string FrameAncestors = "frame-ancestors";
     public const string Referrer = "referrer";
+    public const string FormAction = "form-action";
     
     // Covered by default-src
     public const string ChildSrc = "child-src";
