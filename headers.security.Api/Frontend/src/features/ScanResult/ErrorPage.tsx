@@ -7,8 +7,7 @@ interface ErrorPageProps {
   reason?: ApiError;
 }
 
-export const fallbackMessage =
-  "Unrecoverable error. Don't worry, the admins now know about it, and will develop a fix.";
+export const fallbackMessage = "Unrecoverable error.";
 
 export const ErrorPage = ({ reason }: ErrorPageProps) => {
   const { apiError } = useStore(store, (state) => state);
