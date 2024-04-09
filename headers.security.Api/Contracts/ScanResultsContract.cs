@@ -1,7 +1,7 @@
 using System.Runtime.Serialization;
 using headers.security.Common.Domain;
 
-namespace headers.security.Api;
+namespace headers.security.Api.Contracts;
 
 [DataContract]
 public class ScanResultsContract
