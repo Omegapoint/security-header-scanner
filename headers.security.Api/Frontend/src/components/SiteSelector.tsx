@@ -1,6 +1,6 @@
 import { ArrowDropDown, Public } from '@mui/icons-material';
 import { Button, ButtonGroup, Checkbox, IconButton, Input, Menu, MenuItem, Stack } from '@mui/joy';
-import { useNavigate } from '@tanstack/react-router';
+import { useNavigate, useRouterState } from '@tanstack/react-router';
 import { useStore } from '@tanstack/react-store';
 import React, { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { ErrorOrigin, TargetKind, targetKindToString } from '../contracts/apiTypes.ts';
@@ -17,6 +17,8 @@ export const SiteSelector = () => {
   const anchorRef = useRef(null);
 
   const navigate = useNavigate();
+  const location = useRouterState({ select: (s) => s.location });
+
   const { target, kind, followRedirects, loading, apiError, apiResponse } = useStore(store, (state) => state);
   const targetWithProto = useMemo(() => {
     const uri = getUrl(target);
@@ -59,7 +61,7 @@ export const SiteSelector = () => {
     if (newIsValid) {
       const search = { target, kind, followRedirects };
       const alreadyLoaded = await ensureLoaded(search);
-      if (!alreadyLoaded) {
+      if (!alreadyLoaded || location.pathname != '/scan') {
         await navigate({ to: '/scan', search });
       }
     }
