@@ -21,4 +21,7 @@ export default defineConfig({
       '@mui/material': '@mui/joy',
     },
   },
+  build: {
+    target: 'es2015',
+  },
 });
