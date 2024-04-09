@@ -13,7 +13,6 @@ builder.Services.AddSingleton(builder.Configuration
     .Get<WorkerConfiguration>()
 );
 
-builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<ICrawler, Crawler>();
 builder.Services.AddSingleton<Worker>();
 
