@@ -67,5 +67,6 @@ app.UseFileServer();
 app.UseRouting();
 
 app.MapControllers().RequireRateLimiting("fixed");
+app.UseSpa(_ => { });
 
 app.Run();
