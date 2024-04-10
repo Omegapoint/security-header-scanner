@@ -53,7 +53,7 @@ public class CspSecurityConcept : ISecurityConcept
                     $"The {Referrer} directive of the CSP header is obsolete and should be removed."));
             }
 
-            if (effective.Directives.TryGetValue(FormAction, out _))
+            if (!effective.Directives.TryGetValue(FormAction, out _))
             {
                 infos.Add(new SecurityConceptResultInfo
                 {
