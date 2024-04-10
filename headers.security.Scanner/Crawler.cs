@@ -48,6 +48,8 @@ public class Crawler(WorkerConfiguration workerConf, IHttpClientFactory httpClie
                 request,
                 HttpCompletionOption.ResponseHeadersRead,
                 crawlerConf.CancellationToken);
+
+            httpResponse.EnsureNotResponseFromSelf();
             
             response.FetchedAt = DateTime.UtcNow;
 
@@ -68,6 +70,8 @@ public class Crawler(WorkerConfiguration workerConf, IHttpClientFactory httpClie
                         redirectRequest,
                         HttpCompletionOption.ResponseHeadersRead,
                         crawlerConf.CancellationToken);
+                    
+                    httpResponse.EnsureNotResponseFromSelf();
 
                     response.FetchedAt = DateTime.UtcNow;
 

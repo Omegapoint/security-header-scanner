@@ -13,7 +13,7 @@ public class Worker(ICrawler crawler)
     {
         if (uris.Length > 256)
         {
-            throw new GenericScannerException("Can only scan a maximum of 256 URIs at one time", ErrorOrigin.SystemLimitation);
+            throw new GenericScannerException("Can only scan a maximum of 256 URIs at one time.", ErrorOrigin.SystemLimitation);
         }
 
         var asciiUris = uris.Select(uri => uri.IdnNormalized()).ToList();
