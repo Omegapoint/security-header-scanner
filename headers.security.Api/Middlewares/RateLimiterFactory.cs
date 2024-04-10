@@ -8,10 +8,10 @@ public static class RateLimiterFactory
 {
     public const string PolicyName = "fixed";
 
-    public static void ConfigureOptions(RateLimiterOptions rateLimiterOptions)
+    public static void ConfigureOptions(RateLimiterOptions options)
     {
-        rateLimiterOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
-        rateLimiterOptions.OnRejected = async (context, cancellationToken) =>
+        options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+        options.OnRejected = async (context, cancellationToken) =>
         {
             await context.HttpContext.Response.WriteAsJsonAsync(new ScanError
             {
@@ -19,7 +19,7 @@ public static class RateLimiterFactory
                 Origin = ErrorOrigin.Client
             }, cancellationToken);
         };
-        rateLimiterOptions.AddFixedWindowLimiter(PolicyName, limiter =>
+        options.AddFixedWindowLimiter(PolicyName, limiter =>
         {
             limiter.PermitLimit = 4;
             limiter.Window = TimeSpan.FromSeconds(12);
