@@ -54,14 +54,13 @@ public class Crawler(WorkerConfiguration workerConf, IHttpClientFactory httpClie
             var requestDepth = 0;
             if (crawlerConf.FollowRedirects)
             {
-                while (requestDepth < workerConf.MaxHttpRequestDepth
-                       && httpResponse.IsRedirectStatusCode()
-                       && await IsValidRedirect(httpResponse.Headers.Location, crawlerConf.CancellationToken))
+                while (requestDepth < workerConf.MaxHttpRequestDepth && httpResponse.IsRedirectStatusCode())
                 {
-                    var nextUri = httpResponse.Headers.Location;
-                    currentUri = nextUri?.IsAbsoluteUri == false
-                        ? nextUri.SetBaseUri(currentUri)
-                        : nextUri;
+                    currentUri = httpResponse.GetAbsoluteRedirectUri(currentUri);
+                    if (currentUri == null || !await IsValidRedirect(currentUri, crawlerConf.CancellationToken))
+                    {
+                        break;
+                    }
 
                     var redirectRequest = new HttpRequestMessage(HttpMethod.Get, currentUri);
 

@@ -1,4 +1,5 @@
 ﻿using headers.security.Common.Domain;
+using headers.security.Common.Extensions;
 using Microsoft.Net.Http.Headers;
 
 namespace headers.security.Scanner.Extensions;
@@ -8,6 +9,17 @@ public static class HttpResponseMessageExtensions
     public static bool IsRedirectStatusCode(this HttpResponseMessage message)
     {
         return (int) message.StatusCode is >= 300 and < 400;
+    }
+    
+    public static Uri GetAbsoluteRedirectUri(this HttpResponseMessage message, Uri baseUri)
+    {
+        var nextUri = message.Headers.Location;
+        if (nextUri?.IsAbsoluteUri == false)
+        {
+            nextUri = nextUri.SetBaseUri(baseUri);
+        }
+
+        return nextUri;
     }
     
     private static readonly List<string> FrontendDetectionContentTypes = ["text/html"];
