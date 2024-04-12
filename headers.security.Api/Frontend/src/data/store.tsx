@@ -36,12 +36,19 @@ const queryDiffers = (current: ApiRequest, query: ScanQuerySchema) => {
   return currentUrl?.href != queryUrl?.href;
 };
 
+const simplifyTarget = (scanQuery: ScanQuerySchema) => {
+  if (scanQuery.target?.startsWith('https://') == true) {
+    scanQuery.target = scanQuery.target.substring(8);
+  }
+};
+
 export const ensureLoaded = async (scanQuery: ScanQuerySchema) => {
   const { apiResponse } = store.state;
   if (!apiResponse || queryDiffers(apiResponse.request, scanQuery)) {
     if (!scanQuery.kind) {
       scanQuery.kind = undefined;
     }
+    simplifyTarget(scanQuery);
     store.setState((state) => ({ ...state, ...scanQuery }));
     await scan();
 
