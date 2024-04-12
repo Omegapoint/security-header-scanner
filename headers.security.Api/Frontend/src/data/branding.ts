@@ -82,6 +82,23 @@ export const omegapointTheme: CssVarsThemeOptions = {
       },
     },
   },
+  components: {
+    JoyIconButton: {
+      styleOverrides: {
+        root: ({ ownerState, theme }) => ({
+          ...(ownerState.size === 'xs' && {
+            '--Icon-fontSize': '1rem',
+            '--Button-gap': '0.25rem',
+            height: '1.25rem',
+            width: '1.25rem',
+            fontSize: theme.vars.fontSize.xs,
+            paddingBlock: '2px',
+            paddingInline: '0.5rem',
+          }),
+        }),
+      },
+    },
+  },
 };
 
 type FontSizeOverrides = { [k in keyof DefaultFontSize]: true } & { [k in keyof TypographySystem]: true };
@@ -90,4 +107,10 @@ type ColorPaletteOverrides = { [k in DefaultColorPalette]: true };
 declare module '@mui/material/SvgIcon' {
   interface SvgIconPropsSizeOverrides extends FontSizeOverrides {}
   interface SvgIconPropsColorOverrides extends ColorPaletteOverrides {}
+}
+
+declare module '@mui/joy/IconButton' {
+  interface IconButtonPropsSizeOverrides {
+    xs: true;
+  }
 }
