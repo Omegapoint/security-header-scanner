@@ -78,7 +78,7 @@ const ScanHeadersInfos = ({ handlerResult }: { handlerResult: ISecurityConceptRe
         <Typography>{messagePart}</Typography>
         {tokens?.map((token, idx) => (
           <span key={idx}>
-            <Typography variant="outlined" fontFamily="code">
+            <Typography variant="outlined" fontFamily="code" whiteSpace="nowrap">
               {token}
             </Typography>
             {idx != tokens?.length - 1 ? ', ' : ''}
@@ -98,7 +98,16 @@ const ScanHeadersInfos = ({ handlerResult }: { handlerResult: ISecurityConceptRe
     <List sx={{ padding: 0, margin: '-4px 0' }}>
       {handlerResult.infos.map((i, idx) => (
         <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }} key={idx}>
-          <Typography fontSize="sm">{constructMessage(i)}</Typography>
+          <Typography
+            fontSize="sm"
+            sx={(theme) => ({
+              [theme.breakpoints.only('xs')]: {
+                '--Typography-fontSize': '9pt',
+              },
+            })}
+          >
+            {constructMessage(i)}
+          </Typography>
           {getDecorator(i)}
         </ListItem>
       ))}
@@ -156,17 +165,18 @@ const ScanHeadersTable = ({ handlerResults }: { handlerResults: ISecurityConcept
     <Table
       sx={(theme) => ({
         '& th[scope="col"]': theme.variants.solid.primary,
-        '& thead th:nth-of-type(1)': { width: '17em' },
-        '& thead th:nth-of-type(2)': { width: '3em' },
-        '& thead th:last-child': { width: '3em' },
-        '--TableCell-paddingX': '1.2em',
+        '& thead th:nth-of-type(1)': { width: '30%' },
+        '& thead th:nth-of-type(2)': { width: '1.5em' },
+        '& thead th:last-child': { width: '2.25em' },
+        [theme.breakpoints.up('xs')]: { '--TableCell-paddingX': '1.2em' },
+        [theme.breakpoints.only('xs')]: { '--TableCell-paddingX': '0.5em' },
       })}
     >
       <thead>
         <tr>
           <th scope="col">Header name</th>
           <th scope="col"></th>
-          <th scope="col">Message</th>
+          <th scope="col">Message(s)</th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -181,11 +191,7 @@ const ScanHeadersTable = ({ handlerResults }: { handlerResults: ISecurityConcept
             labelDecorator={getDecorator(h)}
             thinCols={[1]}
           >
-            <Stack height="100%" alignItems="center">
-              <Stack height="2em" direction="row" alignItems="center">
-                <ImpactIcon impact={h.impact} />
-              </Stack>
-            </Stack>
+            <ImpactIcon impact={h.impact} />
             <ScanHeadersInfos handlerResult={h} />
           </AppTableRow>
         ))}

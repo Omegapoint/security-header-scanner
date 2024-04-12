@@ -44,31 +44,18 @@ export interface ScanResult {
 }
 
 export interface UriData {
+  scheme: string;
   utfDomain: string;
   asciiDomain: string;
-  path: string;
   port: number;
-  scheme: string;
+  path: string;
   isDefaultPort: boolean;
 }
 
-export const getUriData = (url: URL | null): UriData | null => {
-  if (url === null) {
-    return null;
-  }
-
-  const path = url.href.substring(url.origin.length);
-  const port = Number(url.port);
-  const scheme = url.protocol.substring(0, url.protocol.length - 1);
-  const isDefaultPort = (scheme === 'http' && port == 80) || (scheme === 'https' && port == 443);
-  return {
-    utfDomain: url.host,
-    asciiDomain: url.host,
-    path,
-    port,
-    scheme,
-    isDefaultPort,
-  };
+export const getUriDataLength = (data: UriData) => {
+  const schemeLength = data.scheme.length + 3;
+  const portLength = data.isDefaultPort ? 0 : 1 + data.port.toString().length;
+  return schemeLength + data.utfDomain.length + portLength + data.path.length;
 };
 
 export interface ServerResult {

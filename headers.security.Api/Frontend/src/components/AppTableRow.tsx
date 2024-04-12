@@ -63,16 +63,26 @@ export const AppTableRow = ({
 
     return style;
   };
+
   return (
     <>
       <tr onClick={toggleOpen} style={rowStyle}>
         <th scope="row" style={{ background: 'unset', ...tdStyle }}>
-          <Stack height="100%">
-            <Stack height="2em" direction="row" alignItems="center">
-              <Typography noWrap title={rowLabel} endDecorator={labelDecorator}>
-                {rowLabel}
-              </Typography>
-            </Stack>
+          <Stack minHeight="2em" direction="row" alignItems="center">
+            <Typography
+              title={rowLabel}
+              sx={(theme) => ({
+                [theme.breakpoints.only('xs')]: {
+                  '--Typography-fontSize': '9pt',
+                },
+                overflowWrap: 'break-word',
+                textWrap: 'wrap',
+                '& *': { marginInlineStart: 0 },
+              })}
+            >
+              {rowLabel}
+            </Typography>
+            {labelDecorator}
           </Stack>
         </th>
         {childrenArr.map((child, idx) => (
@@ -81,8 +91,8 @@ export const AppTableRow = ({
           </td>
         ))}
         {hasExpansion && (
-          <td style={{ verticalAlign: 'top', textAlign: 'right', padding: '0.3em 0.3em 0.3em 0', ...tdStyle }}>
-            <IconButton onClick={toggleOpen} size="sm" variant="outlined">
+          <td style={{ verticalAlign: 'bottom', textAlign: 'right', padding: '0 0.3em 0.45em 0', ...tdStyle }}>
+            <IconButton onClick={toggleOpen} size="xs" variant="outlined">
               <Icon />
             </IconButton>
           </td>

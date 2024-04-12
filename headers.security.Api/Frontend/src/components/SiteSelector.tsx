@@ -1,8 +1,8 @@
 import { ArrowDropDown, Public } from '@mui/icons-material';
-import { Button, ButtonGroup, Checkbox, IconButton, Input, Menu, MenuItem, Stack } from '@mui/joy';
+import { Button, ButtonGroup, Checkbox, Dropdown, Input, Menu, MenuButton, MenuItem, Stack } from '@mui/joy';
 import { useNavigate, useRouterState } from '@tanstack/react-router';
 import { useStore } from '@tanstack/react-store';
-import React, { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react';
 import { ErrorOrigin, TargetKind, targetKindToString } from '../contracts/apiTypes.ts';
 import { ensureLoaded, store } from '../data/store.tsx';
 import { getUrl } from '../helpers/getUrl.ts';
@@ -11,10 +11,6 @@ import { isUrl } from '../helpers/isUrl.ts';
 export const SiteSelector = () => {
   const [isValid, setIsValid] = useState(true);
   const [targetInputFocused, setTargetInputFocused] = useState(false);
-
-  const [open, setOpen] = useState(false);
-  const actionRef = useRef<() => void | null>(null);
-  const anchorRef = useRef(null);
 
   const navigate = useNavigate();
   const location = useRouterState({ select: (s) => s.location });
@@ -36,9 +32,11 @@ export const SiteSelector = () => {
 
   const options: TargetKind[] = [TargetKind.Api, TargetKind.Frontend, TargetKind.Both];
 
-  const handleSelectKind = (kind: TargetKind) => {
-    store.setState((state) => ({ ...state, kind }));
-    setOpen(false);
+  const handleSelectKind = (selectedKind?: TargetKind) => {
+    if (kind == selectedKind) {
+      selectedKind = undefined;
+    }
+    store.setState((state) => ({ ...state, kind: selectedKind }));
   };
 
   const targetFieldValue = targetInputFocused ? target : targetWithProto;
@@ -81,38 +79,42 @@ export const SiteSelector = () => {
 
   const endDecorator = (
     <React.Fragment>
-      <ButtonGroup variant="solid" color="primary">
-        <Button type="submit" loading={loading} sx={{ borderRadius: 0 }}>
-          {getButtonTitle()}
-        </Button>
-        <IconButton
-          size="sm"
-          sx={{ left: '0.8rem' }}
-          aria-controls={open ? 'split-button-menu' : undefined}
-          aria-expanded={open ? 'true' : undefined}
-          aria-haspopup="menu"
-          title="Select scan type"
-          onMouseDown={() => {
-            // @ts-expect-error - ref
-            actionRef.current = () => setOpen(!open);
-          }}
-          onClick={() => actionRef.current?.()}
-        >
-          <ArrowDropDown ref={anchorRef} />
-        </IconButton>
-      </ButtonGroup>
-      <Menu open={open} onClose={() => setOpen(false)} anchorEl={anchorRef.current}>
-        {options.map((option) => (
-          <MenuItem key={option} selected={option == kind} onClick={() => handleSelectKind(option)}>
-            {targetKindToString(option)}
-          </MenuItem>
-        ))}
-      </Menu>
+      <Dropdown>
+        <ButtonGroup variant="solid" color="primary">
+          <Button type="submit" loading={loading} sx={{ borderRadius: 0 }}>
+            {getButtonTitle()}
+          </Button>
+          <MenuButton
+            color="primary"
+            size="sm"
+            sx={{ left: '0.8rem', paddingInline: '0.1rem' }}
+            title="Select scan type"
+          >
+            <ArrowDropDown />
+          </MenuButton>
+        </ButtonGroup>
+        <Menu variant="soft" color="primary">
+          {options.map((option) => (
+            <MenuItem key={option} selected={option == kind} onClick={() => handleSelectKind(option)}>
+              {targetKindToString(option)}
+            </MenuItem>
+          ))}
+        </Menu>
+      </Dropdown>
     </React.Fragment>
   );
   return (
     <form onSubmit={scanSite}>
-      <Stack direction="column" alignItems="flex-end" alignContent="center" spacing={1} width="50vw">
+      <Stack
+        direction="column"
+        alignItems="flex-end"
+        alignContent="center"
+        spacing={1}
+        minWidth="50vw"
+        sx={(theme) => ({
+          [theme.breakpoints.down('md')]: { minWidth: '85vw' },
+        })}
+      >
         <Input
           sx={{
             boxShadow: 'md',
@@ -122,14 +124,20 @@ export const SiteSelector = () => {
           onBlur={() => setTargetInputFocused(false)}
           variant="soft"
           autoFocus={true}
-          startDecorator={<Public />}
+          startDecorator={
+            <Public
+              sx={(theme) => ({
+                [theme.breakpoints.only('xs')]: { display: 'none' },
+              })}
+            />
+          }
           endDecorator={endDecorator}
           placeholder="Enter URL to scan"
           value={targetFieldValue || ''}
           onChange={updateTarget}
           required
           error={!isValid}
-          fullWidth={true}
+          fullWidth
         />
         <Checkbox size="sm" label="Follow redirects" checked={followRedirects} onChange={updateFollowRedirects} />
       </Stack>

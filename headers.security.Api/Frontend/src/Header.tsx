@@ -11,7 +11,14 @@ export const Header = () => (
       <RouterLink to="/" title="Home" color="neutral" underline="none">
         <Stack direction="row" alignItems="center" spacing={2}>
           <ModeAwareLogo className={classes.logo} />
-          <Typography color="primary" level="h4">
+          <Typography
+            color="primary"
+            level="h4"
+            noWrap
+            sx={(theme) => ({
+              [theme.breakpoints.only('xs')]: { display: 'none' },
+            })}
+          >
             Security Header Scanner
           </Typography>
         </Stack>

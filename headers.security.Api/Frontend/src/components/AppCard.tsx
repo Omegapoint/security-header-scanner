@@ -27,7 +27,7 @@ export const AppCard = ({ children, overflowComponent, overflowProps, title, exp
   const fullTitle = open ? title : `Show ${title}`;
 
   return (
-    <Stack spacing={1} sx={{ width: '80%', maxWidth: '50em' }}>
+    <Stack spacing={1} sx={{ width: '100%', maxWidth: '50em' }}>
       <Typography {...titleProps}>{fullTitle}</Typography>
       {open && (
         <Card sx={{ boxShadow: 'md', paddingBottom: '0.3em' }}>

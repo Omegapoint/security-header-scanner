@@ -8,11 +8,12 @@ const Root = (props: BoxProps) => (
         bgcolor: 'background.appBody',
         display: 'grid',
         gridTemplateColumns: {
-          xs: '5vw 1fr 5vw',
+          xs: '0 1fr 0',
+          md: '5em 1fr 5em',
         },
         gridTemplateRows: '64px 200px 1fr 48px',
         minHeight: '100vh',
-        maxWidth: '100vw',
+        width: '100vw',
       },
       ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
     ]}
@@ -96,7 +97,7 @@ const Main = (props: BoxProps) => (
     component="main"
     className="Main"
     {...props}
-    sx={[{ p: 2, maxWidth: '90vw', gridColumn: 2 }, ...(Array.isArray(props.sx) ? props.sx : [props.sx])]}
+    sx={[{ p: 2, gridColumn: 2 }, ...(Array.isArray(props.sx) ? props.sx : [props.sx])]}
   />
 );
 

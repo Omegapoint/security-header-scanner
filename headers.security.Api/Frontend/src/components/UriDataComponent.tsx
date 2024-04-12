@@ -6,15 +6,19 @@ interface UriDataComponentProps {
 }
 
 export const UriDataComponent = ({ data }: UriDataComponentProps) => {
-  let asciiUri = data.scheme + '://' + data.asciiDomain;
-  if (!data.isDefaultPort) asciiUri += ':' + data.port;
+  const scheme = `${data.scheme}://`;
+  const port = `:${data.port}`;
+
+  let asciiUri = `${scheme}${data.asciiDomain}`;
+  if (!data.isDefaultPort) asciiUri += port;
   if (data.path.length > 1) asciiUri += data.path;
+
   return (
-    <Typography title={asciiUri} sx={{ overflow: 'hidden' }}>
-      <Typography color="neutral">{data.scheme}://</Typography>
+    <Typography title={asciiUri} noWrap maxWidth="100%">
+      <Typography color="neutral">{scheme}</Typography>
       <Typography>{data.utfDomain}</Typography>
-      {!data.isDefaultPort && <Typography color="neutral">:{data.port}</Typography>}
-      {data.path.length > 1 && <Typography sx={{ textOverflow: 'ellipsis' }}>{data.path}</Typography>}
+      {!data.isDefaultPort && <Typography color="neutral">{port}</Typography>}
+      {data.path.length > 1 && <Typography>{data.path}</Typography>}
     </Typography>
   );
 };

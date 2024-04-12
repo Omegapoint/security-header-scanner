@@ -18,7 +18,7 @@ export const LinkDecorator = ({ url }: LinkDecoratorProps) => {
       href={url.href}
       target="_blank"
       color="neutral"
-      sx={{ '--IconButton-size': '20px' }}
+      sx={{ '--IconButton-size': '1rem' }}
       onClick={clickHandler}
     >
       <OpenInNew />

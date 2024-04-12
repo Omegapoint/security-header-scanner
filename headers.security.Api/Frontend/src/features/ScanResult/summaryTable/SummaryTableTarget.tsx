@@ -44,11 +44,11 @@ export const SummaryTableTarget = (props: { result: ScanResult }) => {
 
   const detected = (
     <>
-      <Typography color="neutral">
+      <Typography color="neutral" noWrap>
         {' '}
-        (detected from response,{' '}
+        (detected,{' '}
         <Link color="neutral" underline="always" onClick={rescan}>
-          scan as {targetKindToString(oppositeKind)} instead
+          scan as {targetKindToString(oppositeKind)}
         </Link>
         )
       </Typography>
@@ -57,7 +57,7 @@ export const SummaryTableTarget = (props: { result: ScanResult }) => {
 
   return (
     <Typography>
-      {targetKindToString(resultKind)}
+      <Typography>{targetKindToString(resultKind)}</Typography>
       {detectKind && detected}
     </Typography>
   );
