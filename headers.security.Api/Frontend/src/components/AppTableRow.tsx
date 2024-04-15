@@ -42,7 +42,7 @@ export const AppTableRow = ({
 
   const totalCols = 1 + childrenLength + (hasExpansion ? 1 : 0);
 
-  const getColSpan = (idx: number) => (!hasExpansion ? (childrenLength - 1 == idx ? 2 : 1) : 1);
+  const getColSpan = (idx: number) => (idx == childrenLength - 1 && !hasExpansion ? 2 : 1);
 
   const expansionColSpan = fullWidthExpansion
     ? {

@@ -14,8 +14,17 @@ interface SummaryTableProps {
 }
 
 export const SummaryTable = ({ data, response }: SummaryTableProps) => {
+  const thCellStyle = { height: 0, padding: 0, border: 0 };
+
   return (
-    <Table sx={{ '& tr th:nth-of-type(1)': { width: '8em' } }}>
+    <Table>
+      <thead>
+        <tr>
+          <th style={{ ...thCellStyle, width: '8em' }} />
+          <th style={thCellStyle} />
+          <th style={{ ...thCellStyle, width: '2em' }} />
+        </tr>
+      </thead>
       <tbody>
         <AppTableRow rowLabel="URL">
           <SummaryTableUrls data={data} />

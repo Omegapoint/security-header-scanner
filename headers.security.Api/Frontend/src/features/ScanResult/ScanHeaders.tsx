@@ -100,9 +100,11 @@ const ScanHeadersInfos = ({ handlerResult }: { handlerResult: ISecurityConceptRe
         <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }} key={idx}>
           <Typography
             fontSize="sm"
+            lineHeight="1.7"
             sx={(theme) => ({
               [theme.breakpoints.only('xs')]: {
                 '--Typography-fontSize': '9pt',
+                lineHeight: '1.55',
               },
             })}
           >
