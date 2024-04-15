@@ -20,6 +20,6 @@ public static class HttpClientHelper
         httpClient.DefaultRequestHeaders.Add(
             HeaderNames.Accept,
             "*/*");
-        httpClient.Timeout = TimeSpan.FromSeconds(2);
+        httpClient.Timeout = TimeSpan.FromSeconds(25);
     }
 }
