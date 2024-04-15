@@ -13,7 +13,7 @@ const Root = (props: BoxProps) => (
         },
         gridTemplateRows: '64px 200px 1fr 48px',
         minHeight: '100vh',
-        width: '100vw',
+        width: '100%',
       },
       ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
     ]}
