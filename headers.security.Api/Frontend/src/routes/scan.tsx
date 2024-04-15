@@ -1,4 +1,4 @@
-import { Stack } from '@mui/joy';
+import { Box, LinearProgress, Stack } from '@mui/joy';
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { useStore } from '@tanstack/react-store';
 import { z } from 'zod';
@@ -22,7 +22,7 @@ const ScanResult = () => {
   const { apiResponse, loading } = useStore(store, (state) => state);
 
   if (loading) {
-    return <></>;
+    return <LoadingPage />;
   }
 
   if (apiResponse == undefined || apiResponse.results.length < 1) {
@@ -44,6 +44,14 @@ const ScanResult = () => {
   );
 };
 
+const LoadingPage = () => (
+  <Stack alignItems="center" justifyContent="center" width="100%" height="100%">
+    <Box width="50%">
+      <LinearProgress thickness={8} />
+    </Box>
+  </Stack>
+);
+
 export const Route = createFileRoute('/scan')({
   validateSearch: scanSearchSchema.parse,
   component: ScanResult,
@@ -56,4 +64,7 @@ export const Route = createFileRoute('/scan')({
   },
   loaderDeps: ({ search }) => ({ search }),
   loader: async ({ deps: { search } }) => await ensureLoaded(search),
+  pendingMs: 0.1,
+  pendingMinMs: 0,
+  pendingComponent: LoadingPage,
 });
