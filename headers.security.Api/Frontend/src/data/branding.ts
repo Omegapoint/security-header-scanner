@@ -75,6 +75,7 @@ export const omegapointTheme: CssVarsThemeOptions = {
       palette: {
         background: {
           surface: '#F5F4F1',
+          body: '#FFF',
         },
         warning: omegaSunGradient,
         danger: tangoGradient,
