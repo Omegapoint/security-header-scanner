@@ -26,7 +26,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@tanstack/router-devtools": "^1.26.16",
+    "@tanstack/router-devtools": "^1.27.0",
     "@tanstack/router-vite-plugin": "^1.26.16",
     "@types/lodash": "^4.17.0",
     "@types/node": "^20.12.6",
