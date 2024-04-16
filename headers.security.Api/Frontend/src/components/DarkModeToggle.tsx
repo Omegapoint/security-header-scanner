@@ -7,18 +7,22 @@ export const DarkModeToggle = () => {
   const { mode, systemMode, setMode } = useColorScheme();
   const { palette } = useTheme();
 
-  const isDarkMode = (mode == 'system' ? systemMode : mode) == 'dark';
+  const currentMode = (mode == 'system' ? systemMode : mode) ?? 'light';
+  const isDarkMode = currentMode == 'dark';
   const nextMode = isDarkMode ? 'light' : 'dark';
 
-  const bgColour = palette.background.body;
+  const backgroundColor = palette.background.body;
 
-  useEffect(() => {
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', bgColour);
-  }, [bgColour]);
+  useEffect(
+    () => document.querySelector('meta[name="theme-color"]')?.setAttribute('content', backgroundColor),
+    [backgroundColor]
+  );
+
+  const NextModeIcon = isDarkMode ? LightMode : DarkModeOutlined;
 
   return (
     <IconButton variant="outlined" color="neutral" onClick={() => setMode(nextMode)}>
-      {isDarkMode ? <LightMode /> : <DarkModeOutlined />}
+      <NextModeIcon />
     </IconButton>
   );
 };
