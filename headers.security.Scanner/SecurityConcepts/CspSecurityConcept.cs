@@ -112,7 +112,7 @@ public class CspSecurityConceptResult(CspConfiguration configuration, List<ISecu
             return SecurityImpact.Critical;
         }
         
-        if (!configuration.HasPolicy)
+        if (!configuration.HasPolicy || configuration.Effective.HasBypass)
         {
             return SecurityImpact.Medium;
         }

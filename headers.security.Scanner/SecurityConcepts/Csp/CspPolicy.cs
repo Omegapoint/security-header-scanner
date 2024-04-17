@@ -56,6 +56,8 @@ public class CspPolicy
 
         return tokens;
     }
+    
+    public bool HasBypass => GetBypassTokens().Any();
 
     public IEnumerable<string> GetBypassTokens() => GetScriptTokens().Where(KnownCspBypassUris.Matches);
 
