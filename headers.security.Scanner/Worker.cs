@@ -4,7 +4,7 @@ using headers.security.Common.Extensions;
 
 namespace headers.security.Scanner;
 
-public class Worker(ICrawler crawler)
+public class Worker(Crawler crawler)
 {
     public Task<List<ServerResult>> PerformScan(CrawlerConfiguration crawlerConf, List<Uri> uris)
         => PerformScan(crawlerConf, uris.ToArray());

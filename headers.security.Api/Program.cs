@@ -11,7 +11,7 @@ builder.Services.AddSingleton(builder.Configuration
     .Get<WorkerConfiguration>()
 );
 
-builder.Services.AddSingleton<ICrawler, Crawler>();
+builder.Services.AddSingleton<Crawler>();
 builder.Services.AddSingleton<Worker>();
 
 builder.Services.AddControllers()

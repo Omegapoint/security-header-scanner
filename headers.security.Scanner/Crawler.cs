@@ -7,7 +7,7 @@ using headers.security.Scanner.Extensions;
 
 namespace headers.security.Scanner;
 
-public class Crawler(WorkerConfiguration workerConf, IHttpClientFactory httpClientFactory) : ICrawler
+public class Crawler(WorkerConfiguration workerConf, IHttpClientFactory httpClientFactory)
 {
     public async Task<List<CrawlerResponse>> Crawl(Uri uri, CrawlerConfiguration crawlerConf)
     {
@@ -32,7 +32,7 @@ public class Crawler(WorkerConfiguration workerConf, IHttpClientFactory httpClie
 
     private async Task<CrawlerResponse> GetResponse(Uri uri, IPAddress ipAddress, CrawlerConfiguration crawlerConf)
     {
-        var client = httpClientFactory.CreateClient("Scanner");
+        using var client = httpClientFactory.CreateClient("Scanner");
 
         var response = new CrawlerResponse
         {
