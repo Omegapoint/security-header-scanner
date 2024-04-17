@@ -12,7 +12,7 @@ public class CspNonceSecurityConceptResultInfo : ISecurityConceptResultInfo
             
         return new()
         {
-            Message = $"The following {noncePart} to be re-used: {{0}}. A nonce that is re-used can be predicted by an attacker and renders the CSP useless.",
+            Message = $"The following {noncePart} to be re-used: {{0}}. A nonce that is re-used can be predicted by an attacker and renders the CSP ineffective at stopping attacks.",
             FormatTokens = [nonces.ToList()]
         };
     }
