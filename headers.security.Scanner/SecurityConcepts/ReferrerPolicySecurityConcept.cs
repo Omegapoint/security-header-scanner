@@ -52,7 +52,7 @@ public class ReferrerPolicySecurityConcept : ISecurityConcept
         
         ParseValue(values, result);
 
-        SetGrade(result);
+        SetImpact(result);
         
         return result;
     }
@@ -82,7 +82,7 @@ public class ReferrerPolicySecurityConcept : ISecurityConcept
         }
     }
 
-    private void SetGrade(SimpleSecurityConceptResult result)
+    private void SetImpact(SimpleSecurityConceptResult result)
     {
         var lowerCaseConfiguration = result.StringValue.ToLowerInvariant();
         var grade = lowerCaseConfiguration switch
