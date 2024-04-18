@@ -1,5 +1,4 @@
-﻿using headers.security.Common;
-using headers.security.Common.Constants;
+﻿using headers.security.Common.Constants;
 using headers.security.Common.Domain;
 using headers.security.Common.Extensions;
 using Microsoft.Net.Http.Headers;
@@ -24,15 +23,10 @@ public static class HttpResponseMessageExtensions
         return nextUri;
     }
     
-    public static void EnsureNotResponseFromSelf(this HttpResponseMessage message)
-    {
-        if (message.Headers.TryGetValues(AppConstants.XAppIdentifierHeader, out var appIdentifier) 
-            && appIdentifier.Any(id => id.Equals(AppConstants.UserAgentPrefix)))
-        {
-            throw new GenericScannerException(ErrorMessages.SelfScan, ErrorOrigin.SystemLimitation);
-        }
-    }
-    
+    public static bool IsResponseFromSelf(this HttpResponseMessage message) =>
+        message.Headers.TryGetValues(AppConstants.XAppIdentifierHeader, out var appIdentifier) 
+        && appIdentifier.Any(id => id.Equals(AppConstants.UserAgentPrefix));
+
     private static readonly List<string> FrontendDetectionContentTypes = ["text/html"];
     
     public static bool LooksLikeFrontendResponse(this HttpResponseMessage message)

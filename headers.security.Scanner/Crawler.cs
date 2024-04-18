@@ -48,8 +48,6 @@ public class Crawler(WorkerConfiguration workerConf, IHttpClientFactory httpClie
                 request,
                 HttpCompletionOption.ResponseHeadersRead,
                 crawlerConf.CancellationToken);
-
-            httpResponse.EnsureNotResponseFromSelf();
             
             response.FetchedAt = DateTime.UtcNow;
 
@@ -70,12 +68,16 @@ public class Crawler(WorkerConfiguration workerConf, IHttpClientFactory httpClie
                         redirectRequest,
                         HttpCompletionOption.ResponseHeadersRead,
                         crawlerConf.CancellationToken);
-                    
-                    httpResponse.EnsureNotResponseFromSelf();
 
                     response.FetchedAt = DateTime.UtcNow;
 
                     requestDepth += 1;
+
+                    // We allow exactly one redirect when target is ourselves, to cover redirect from http to https
+                    if (httpResponse.IsResponseFromSelf())
+                    {
+                        break;
+                    }
                 }
             }
 
