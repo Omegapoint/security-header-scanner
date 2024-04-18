@@ -43,7 +43,6 @@ var app = builder.Build();
 
 app.UseAppIdentification();
 app.UseSecurityHeaders();
-app.DenySelfRequests();
 
 if (app.Environment.IsDevelopment())
 {
@@ -54,6 +53,8 @@ else
 {
     app.UseHsts();
 }
+
+app.DenySelfRequests();
 
 app.UseFileServer();
 app.UseRouting();
