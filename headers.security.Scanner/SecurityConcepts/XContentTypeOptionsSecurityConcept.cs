@@ -10,8 +10,8 @@ namespace headers.security.Scanner.SecurityConcepts;
 public class XContentTypeOptionsSecurityConcept : ISecurityConcept
 {
     public static readonly string HeaderName = HeaderNames.XContentTypeOptions;
-    
-    private const string NoSniff = "nosniff";
+
+    public const string NoSniff = "nosniff";
 
     public static ISecurityConcept Create() => new XContentTypeOptionsSecurityConcept();
 

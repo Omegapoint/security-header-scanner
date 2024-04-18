@@ -42,6 +42,7 @@ builder.Services.AddRateLimiter(RateLimiterFactory.ConfigureOptions);
 var app = builder.Build();
 
 app.UseAppIdentification();
+app.UseSecurityHeaders();
 app.DenySelfRequests();
 
 if (app.Environment.IsDevelopment())

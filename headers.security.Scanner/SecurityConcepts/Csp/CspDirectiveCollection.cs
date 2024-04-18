@@ -28,4 +28,6 @@ public class CspDirectiveCollection()
     private static string GetFallbackKey(string key) => FallsBackToDefaultSrc(key)
         ? DefaultSrc
         : null;
+    
+    public override string ToString() => string.Join("; ", this.Select(kvp => $"{kvp.Key} {string.Join(' ', kvp.Value)}"));
 }
