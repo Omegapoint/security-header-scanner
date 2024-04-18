@@ -54,13 +54,22 @@ public static class SecurityEngine
         var doc = new HtmlDocument();
         doc.LoadHtml(maybeContent);
 
-        var metas = (doc.DocumentNode
-            ?.SelectNodes("//html/head")
-            ?.SelectMany(head => head.SelectNodes("//meta")) ?? [])
-            .Where(node => node.HasAttributes);
+        var heads = doc.DocumentNode.SelectNodes("//html/head");
 
-        var httpEquivMetas = metas
-            .Where(node => node.Attributes.Contains("http-equiv") && node.Attributes.Contains("content"));
+        var httpEquivMetas = new List<HtmlNode>();
+
+        foreach (var head in heads)
+        {
+            var htmlNodes = head.SelectNodes("//meta");
+            if (htmlNodes == null)
+            {
+                continue;
+            }
+            
+            httpEquivMetas.AddRange(htmlNodes
+                .Where(node => node.HasAttributes)
+                .Where(node => node.Attributes.Contains("http-equiv") && node.Attributes.Contains("content")));
+        }
 
         return new(httpEquivMetas.GroupBy(
             httpEquivMeta => httpEquivMeta.Attributes["http-equiv"].Value,
