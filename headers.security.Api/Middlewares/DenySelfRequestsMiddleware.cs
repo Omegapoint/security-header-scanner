@@ -17,7 +17,8 @@ public class DenySelfRequestsMiddleware(RequestDelegate next)
         if (context.Request.Headers.TryGetValue(HeaderNames.UserAgent, out var userAgentValues) 
             && userAgentValues.Any(v => v.StartsWith(AppConstants.UserAgentPrefix)))
         {
-            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            context.Response.StatusCode = (int) HttpStatusCode.Forbidden;
+            context.Response.Headers[HeaderNames.CacheControl] = "no-store";
             await context.Response.WriteAsJsonAsync(new ScanError
             {
                 Message = ErrorMessages.SelfScan,
