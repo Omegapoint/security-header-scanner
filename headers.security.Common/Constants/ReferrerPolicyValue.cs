@@ -1,6 +1,6 @@
 namespace headers.security.Common.Constants;
 
-public static class ReferrerPolicy
+public static class ReferrerPolicyValue
 {
                                                                                          // same-origin     	same-origin, down	cross-origin    	cross-origin, down
     public const string NoReferrer                  = "no-referrer";                     // NONE            	NONE	            NONE	            NONE

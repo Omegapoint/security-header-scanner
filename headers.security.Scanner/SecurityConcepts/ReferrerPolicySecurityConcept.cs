@@ -1,7 +1,7 @@
 using headers.security.Common.Constants;
 using headers.security.Common.Domain;
 using headers.security.Common.Domain.SecurityConcepts;
-using static headers.security.Common.Constants.ReferrerPolicy;
+using static headers.security.Common.Constants.ReferrerPolicyValue;
 
 namespace headers.security.Scanner.SecurityConcepts;
 
