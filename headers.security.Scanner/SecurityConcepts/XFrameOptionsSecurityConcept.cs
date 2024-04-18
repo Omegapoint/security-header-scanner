@@ -35,6 +35,11 @@ public class XFrameOptionsSecurityConcept : ISecurityConcept
         var result = new SimpleSecurityConceptResult(HeaderName, infos, SecurityImpact.Low);
         
         var csp = CspParser.ExtractAll(rawHeaders, rawHttpEquivMetas);
+        
+        if (!rawHeaders.TryGetValue(HeaderName, out var headers))
+        {
+            return null;
+        }
 
         if (csp.HasPolicy && csp.Effective.Directives.TryGetValue(CspDirective.FrameAncestors, out _))
         {
@@ -45,11 +50,6 @@ public class XFrameOptionsSecurityConcept : ISecurityConcept
                 result.SetImpact(SecurityImpact.Info);
                 return result;
             }
-        }
-        
-        if (!rawHeaders.TryGetValue(HeaderName, out var headers))
-        {
-            return result;
         }
         
         if (headers.Count > 1)
