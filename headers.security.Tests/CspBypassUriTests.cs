@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using headers.security.Common.Constants;
-using headers.security.Scanner.SecurityConcepts.Csp;
 
 namespace headers.security.Tests;
 
