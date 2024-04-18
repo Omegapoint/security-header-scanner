@@ -6,7 +6,7 @@ public class UseAppIdentificationMiddleware(RequestDelegate next)
 {
     public async Task Invoke(HttpContext context)
     {
-        context.Response.Headers[AppConstants.XAppIdentifierHeader] = AppConstants.UserAgentPrefix;
+        context.Response.Headers[AppConstants.XAppIdentifierHeader] = AppConstants.AppIdentifier;
         
         await next.Invoke(context);
     }

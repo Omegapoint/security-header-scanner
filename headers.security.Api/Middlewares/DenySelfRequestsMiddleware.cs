@@ -14,8 +14,8 @@ public class DenySelfRequestsMiddleware(RequestDelegate next)
 {
     public async Task Invoke(HttpContext context)
     {
-        if (context.Request.Headers.TryGetValue(HeaderNames.UserAgent, out var userAgentValues) 
-            && userAgentValues.Any(v => v.StartsWith(AppConstants.UserAgentPrefix)))
+        if (context.Request.Headers.TryGetValue(AppConstants.XAppIdentifierHeader, out var identifierValues) 
+            && identifierValues.Any(v => v.Equals(AppConstants.AppIdentifier)))
         {
             context.Response.StatusCode = (int) HttpStatusCode.Forbidden;
             context.Response.Headers[HeaderNames.CacheControl] = "no-store";

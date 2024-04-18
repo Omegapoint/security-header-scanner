@@ -12,8 +12,11 @@ public static class HttpClientHelper
         httpClient.DefaultRequestHeaders.Clear();
         httpClient.DefaultRequestHeaders.Add(
             HeaderNames.UserAgent, 
-            $"{AppConstants.UserAgentPrefix} v{ApplicationInformation.CompileDate.VersionDateString()}"
+            $"{AppConstants.AppIdentifier}/{ApplicationInformation.CompileDate.VersionDateString()}"
         );
+        httpClient.DefaultRequestHeaders.Add(
+            AppConstants.XAppIdentifierHeader,
+            AppConstants.AppIdentifier);
         httpClient.DefaultRequestHeaders.Add(
             HeaderNames.Referer,
             AppConstants.Referrer.ToString());
