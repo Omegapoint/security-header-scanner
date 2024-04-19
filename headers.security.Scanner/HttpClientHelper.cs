@@ -25,4 +25,13 @@ public static class HttpClientHelper
             "*/*");
         httpClient.Timeout = TimeSpan.FromSeconds(25);
     }
+
+    public static HttpClientHandler ConfigureHandler(IServiceProvider _)
+    {
+        return new HttpClientHandler
+        {
+            AllowAutoRedirect = false,
+            ServerCertificateCustomValidationCallback = (_, _, _, _) => true
+        };
+    }
 }
