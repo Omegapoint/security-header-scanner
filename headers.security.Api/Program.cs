@@ -28,7 +28,8 @@ builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo
 builder.Services.AddHttpClient("Scanner", HttpClientHelper.ConfigureClient)
     .ConfigurePrimaryHttpMessageHandler(_ => new HttpClientHandler
     {
-        AllowAutoRedirect = false
+        AllowAutoRedirect = false,
+        ServerCertificateCustomValidationCallback = (_, _, _, _) => true
     });
 
 builder.Services.AddHsts(options =>
