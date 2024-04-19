@@ -80,9 +80,9 @@ export const SiteSelector = () => {
   const endDecorator = (
     <React.Fragment>
       <Dropdown>
-        <ButtonGroup variant="solid" color="primary">
-          <Button type="submit" loading={loading} sx={{ borderRadius: 0 }}>
-            {getButtonTitle()}
+      <ButtonGroup variant="solid" color="primary">
+        <Button type="submit" loading={loading} sx={{ borderRadius: 0, zIndex: 'unset !important' }}>
+          {getButtonTitle()}
         </Button>
         <MenuButton
           color="primary"
