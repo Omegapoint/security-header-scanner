@@ -83,12 +83,12 @@ export const SiteSelector = () => {
         <ButtonGroup variant="solid" color="primary">
           <Button type="submit" loading={loading} sx={{ borderRadius: 0 }}>
             {getButtonTitle()}
-          </Button>
-          <MenuButton
-            color="primary"
-            size="sm"
-            sx={{ left: '0.8rem', paddingInline: '0.1rem' }}
-            title="Select scan type"
+        </Button>
+        <MenuButton
+          color="primary"
+          size="sm"
+          sx={{ left: '0.75rem', paddingInline: '0.1rem' }}
+          title="Select scan type"
           >
             <ArrowDropDown />
           </MenuButton>
