@@ -5,5 +5,5 @@ namespace headers.security.Scanner.SecurityConcepts;
 
 public interface ISecurityConcept
 {
-    Task<ISecurityConceptResult> ExecuteAsync(CrawlerConfiguration crawlerConf, RawHeaders rawHeaders, RawHeaders rawHttpEquivMetas, HttpResponseMessage message);
+    Task<ISecurityConceptResult> ExecuteAsync(ScanData scanData);
 }

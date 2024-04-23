@@ -16,19 +16,13 @@ public class ReferrerPolicySecurityConcept : ISecurityConcept
     // https://w3c.github.io/webappsec-referrer-policy/#referrer-policy-delivery-meta
     public static readonly string MetaName = "referrer";
 
-    public Task<ISecurityConceptResult> ExecuteAsync(
-        CrawlerConfiguration crawlerConf,
-        RawHeaders rawHeaders,
-        RawHeaders rawHttpEquivMetas,
-        HttpResponseMessage message) 
-        => Task.FromResult(Execute(crawlerConf, rawHeaders, rawHttpEquivMetas, message));
+    public Task<ISecurityConceptResult> ExecuteAsync(ScanData scanData) => Task.FromResult(Execute(scanData));
 
-    private ISecurityConceptResult Execute(
-        CrawlerConfiguration crawlerConf,
-        RawHeaders rawHeaders,
-        RawHeaders rawHttpEquivMetas,
-        HttpResponseMessage message)
+    private ISecurityConceptResult Execute(ScanData scanData)
     {
+        var rawHeaders = scanData.RawHeaders;
+        var rawHttpEquivMetas = scanData.RawHttpEquivMetas;
+        
         var infos = new List<ISecurityConceptResultInfo>();
         var result = new SimpleSecurityConceptResult(HeaderName, infos);
         var values = new List<string>();

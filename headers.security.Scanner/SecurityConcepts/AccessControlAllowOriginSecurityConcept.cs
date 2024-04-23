@@ -13,19 +13,12 @@ public class AccessControlAllowOriginSecurityConcept : ISecurityConcept
     private const string Warning = "The policy allows cross-origin requests without restrictions, this is generally only advisable for content distribution networks.";
     private static readonly string WarningReferrer = $"The policy includes the value of the {HeaderNames.Referer} header in the request, effectively allowing cross-origin requests without restrictions.";
 
-    public Task<ISecurityConceptResult> ExecuteAsync(
-        CrawlerConfiguration crawlerConf,
-        RawHeaders rawHeaders,
-        RawHeaders rawHttpEquivMetas,
-        HttpResponseMessage message) 
-        => Task.FromResult(Execute(crawlerConf, rawHeaders, rawHttpEquivMetas, message));
+    public Task<ISecurityConceptResult> ExecuteAsync(ScanData scanData) => Task.FromResult(Execute(scanData));
 
-    private ISecurityConceptResult Execute(
-        CrawlerConfiguration crawlerConf,
-        RawHeaders rawHeaders,
-        RawHeaders rawHttpEquivMetas,
-        HttpResponseMessage message)
+    private ISecurityConceptResult Execute(ScanData scanData)
     {
+        var rawHeaders = scanData.RawHeaders;
+        
         var infos = new List<ISecurityConceptResultInfo>();
         var result = new SimpleSecurityConceptResult(HeaderName, infos);
         

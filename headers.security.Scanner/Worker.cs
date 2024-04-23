@@ -34,7 +34,7 @@ public class Worker(Crawler crawler, SecurityEngine securityEngine)
                             response.IP,
                             response.FinalUri,
                             response.FetchedAt,
-                            await securityEngine.Parse(response.HttpMessage, crawlerConf)
+                            await securityEngine.Parse(response.FinalUri, response.HttpMessage, crawlerConf)
                         ))
                     );
                     securityEngine.ExamineNonceUsage(uriResults);

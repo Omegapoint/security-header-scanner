@@ -9,20 +9,13 @@ public class CacheControlSecurityConcept : ISecurityConcept
 {
     public static readonly string HeaderName = HeaderNames.CacheControl;
 
-    public Task<ISecurityConceptResult> ExecuteAsync(
-        CrawlerConfiguration crawlerConf,
-        RawHeaders rawHeaders,
-        RawHeaders rawHttpEquivMetas,
-        HttpResponseMessage message) 
-        => Task.FromResult(Execute(crawlerConf, rawHeaders, rawHttpEquivMetas, message));
+    public Task<ISecurityConceptResult> ExecuteAsync(ScanData scanData) => Task.FromResult(Execute(scanData));
 
-    private ISecurityConceptResult Execute(
-        CrawlerConfiguration crawlerConf,
-        RawHeaders rawHeaders,
-        RawHeaders rawHttpEquivMetas,
-        HttpResponseMessage message)
+    private ISecurityConceptResult Execute(ScanData scanData)
     {
-        if (crawlerConf.GetTargetKind(message) == TargetKind.Frontend)
+        var rawHeaders = scanData.RawHeaders;
+        
+        if (scanData.TargetType == TargetKind.Frontend)
         {
             // cache-control configuration is not relevant from a security header perspective for pure frontends
             return null;

@@ -11,19 +11,13 @@ public class CspSecurityConcept : ISecurityConcept
 {
     public const string HandlerName = "Content Security Policy";
 
-    public Task<ISecurityConceptResult> ExecuteAsync(
-        CrawlerConfiguration crawlerConf,
-        RawHeaders rawHeaders,
-        RawHeaders rawHttpEquivMetas,
-        HttpResponseMessage message) 
-        => Task.FromResult(Execute(crawlerConf, rawHeaders, rawHttpEquivMetas, message));
+    public Task<ISecurityConceptResult> ExecuteAsync(ScanData scanData) => Task.FromResult(Execute(scanData));
 
-    private ISecurityConceptResult Execute(
-        CrawlerConfiguration crawlerConf,
-        RawHeaders rawHeaders,
-        RawHeaders rawHttpEquivMetas,
-        HttpResponseMessage message)
+    private ISecurityConceptResult Execute(ScanData scanData)
     {
+        var rawHeaders = scanData.RawHeaders;
+        var rawHttpEquivMetas = scanData.RawHttpEquivMetas;
+        
         var infos = new List<ISecurityConceptResultInfo>();
 
         var configuration = CspParser.ExtractAll(rawHeaders, rawHttpEquivMetas);

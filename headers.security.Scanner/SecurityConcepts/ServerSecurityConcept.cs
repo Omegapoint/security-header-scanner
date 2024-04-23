@@ -15,19 +15,12 @@ public partial class ServerSecurityConcept : ISecurityConcept
         "this allows automation of CVE susceptibility scanning and should be disabled. " +
         "Consider removing the header altogether.";
 
-    public Task<ISecurityConceptResult> ExecuteAsync(
-        CrawlerConfiguration crawlerConf,
-        RawHeaders rawHeaders,
-        RawHeaders rawHttpEquivMetas,
-        HttpResponseMessage message) 
-        => Task.FromResult(Execute(crawlerConf, rawHeaders, rawHttpEquivMetas, message));
+    public Task<ISecurityConceptResult> ExecuteAsync(ScanData scanData) => Task.FromResult(Execute(scanData));
 
-    private ISecurityConceptResult Execute(
-        CrawlerConfiguration crawlerConf,
-        RawHeaders rawHeaders,
-        RawHeaders rawHttpEquivMetas,
-        HttpResponseMessage message)
+    private ISecurityConceptResult Execute(ScanData scanData)
     {
+        var rawHeaders = scanData.RawHeaders;
+        
         var infos = new List<ISecurityConceptResultInfo>();
         var result = new SimpleSecurityConceptResult(HeaderName, infos);
         

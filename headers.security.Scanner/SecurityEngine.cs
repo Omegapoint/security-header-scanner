@@ -11,17 +11,17 @@ public class SecurityEngine(List<ISecurityConcept> handlers)
 {
     private const int MaxAllowedContentSize = 1024 * 2000;
 
-    public async Task<ScanResult> Parse(HttpResponseMessage message,
+    public async Task<ScanResult> Parse(Uri target, HttpResponseMessage message,
         CrawlerConfiguration crawlerConfiguration)
     {
         var rawHeaders = ExtractHeaders(message);
-        var rawHttpEquivMetas = await ExtractHttpEquivMetas(message);
+        var scanData = new ScanData(message, target, crawlerConfiguration, rawHeaders, await ExtractHttpEquivMetas(message));
         
         var handlerResults = (await Task.WhenAll(
-            Handlers.Select(handler => handler.ExecuteAsync(crawlerConf, rawHeaders, rawHttpEquivMetas, message))
+            handlers.Select(handler => handler.ExecuteAsync(scanData))
         )).Where(r => r != null);
 
-        return new ScanResult(handlerResults.OrderBy(r => r.HandlerName), rawHeaders, crawlerConf.GetTargetKind(message));
+        return new ScanResult(handlerResults.OrderBy(r => r.HandlerName), rawHeaders, scanData.TargetType);
     }
 
     private RawHeaders ExtractHeaders(HttpResponseMessage message)
