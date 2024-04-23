@@ -1,5 +1,8 @@
 using System.CommandLine;
+using System.Diagnostics.CodeAnalysis;
 using headers.security.Scanner;
+using headers.security.Scanner.Helpers;
+using headers.security.Scanner.SecurityConcepts;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace headers.security.CommandLine;
@@ -99,8 +102,16 @@ public static class Program
         };
 
         var crawler = new Crawler(conf, httpClientFactory);
-        
-        var worker = new Worker(crawler);
+
+        var securityConceptTypes = SecurityConceptResolver.GetSecurityConcepts();
+
+        var handlers = securityConceptTypes
+            .Select(Activator.CreateInstance)
+            .Cast<ISecurityConcept>()
+            .ToList();
+
+        var securityEngine = new SecurityEngine(handlers);
+        var worker = new Worker(crawler, securityEngine);
         
         var configuration = new CrawlerConfiguration
         {

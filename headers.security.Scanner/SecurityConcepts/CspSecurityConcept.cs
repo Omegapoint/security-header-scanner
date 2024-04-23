@@ -6,11 +6,10 @@ using static headers.security.Common.Constants.CspDirective;
 
 namespace headers.security.Scanner.SecurityConcepts;
 
+// ReSharper disable once UnusedType.Global
 public class CspSecurityConcept : ISecurityConcept
 {
     public const string HandlerName = "Content Security Policy";
-
-    public static ISecurityConcept Create() => new CspSecurityConcept();
 
     public Task<ISecurityConceptResult> ExecuteAsync(
         CrawlerConfiguration crawlerConf,

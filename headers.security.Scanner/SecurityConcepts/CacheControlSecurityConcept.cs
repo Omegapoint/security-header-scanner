@@ -4,11 +4,10 @@ using Microsoft.Net.Http.Headers;
 
 namespace headers.security.Scanner.SecurityConcepts;
 
+// ReSharper disable once UnusedType.Global
 public class CacheControlSecurityConcept : ISecurityConcept
 {
     public static readonly string HeaderName = HeaderNames.CacheControl;
-
-    public static ISecurityConcept Create() => new CacheControlSecurityConcept();
 
     public Task<ISecurityConceptResult> ExecuteAsync(
         CrawlerConfiguration crawlerConf,

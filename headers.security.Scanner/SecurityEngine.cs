@@ -7,27 +7,12 @@ using HtmlAgilityPack;
 
 namespace headers.security.Scanner;
 
-public static class SecurityEngine
+public class SecurityEngine(List<ISecurityConcept> handlers)
 {
     private const int MaxAllowedContentSize = 1024 * 2000;
-    
-    private static readonly List<ISecurityConcept> Handlers = [
-        StrictTransportSecurityConcept.Create(),
-        XFrameOptionsSecurityConcept.Create(),
-        XContentTypeOptionsSecurityConcept.Create(),
-        CspSecurityConcept.Create(),
-        PermissionsPolicySecurityConcept.Create(),
-        ReferrerPolicySecurityConcept.Create(),
-        CacheControlSecurityConcept.Create(), 
-        
-        // TODO: add content-type handler -> must be set -> complain if not, in combination with nosniff?
-        
-        // Non grade-influencing
-        ServerSecurityConcept.Create(),
-        AccessControlAllowOriginSecurityConcept.Create(), 
-    ];
-    
-    public static async Task<ScanResult> Parse(HttpResponseMessage message, CrawlerConfiguration crawlerConf)
+
+    public async Task<ScanResult> Parse(HttpResponseMessage message,
+        CrawlerConfiguration crawlerConfiguration)
     {
         var rawHeaders = ExtractHeaders(message);
         var rawHttpEquivMetas = await ExtractHttpEquivMetas(message);
@@ -39,10 +24,10 @@ public static class SecurityEngine
         return new ScanResult(handlerResults.OrderBy(r => r.HandlerName), rawHeaders, crawlerConf.GetTargetKind(message));
     }
 
-    private static RawHeaders ExtractHeaders(HttpResponseMessage message)
+    private RawHeaders ExtractHeaders(HttpResponseMessage message)
         => new(message.Headers, message.Content.Headers);
 
-    private static async Task<RawHeaders> ExtractHttpEquivMetas(HttpResponseMessage message)
+    private async Task<RawHeaders> ExtractHttpEquivMetas(HttpResponseMessage message)
     {
         if (!message.LooksLikeFrontendResponse())
         {
@@ -78,7 +63,7 @@ public static class SecurityEngine
         ));
     }
 
-    public static void ExamineNonceUsage((IPAddress IP, Uri FinalUri, DateTime FetchedAt, ScanResult ScanResult)[] uriResults)
+    public void ExamineNonceUsage((IPAddress IP, Uri FinalUri, DateTime FetchedAt, ScanResult ScanResult)[] uriResults)
     { 
         var cspResults = uriResults
             .Select(kvp => (
@@ -100,7 +85,7 @@ public static class SecurityEngine
         }
     }
 
-    private static Dictionary<Guid, HashSet<string>> FindReusedNonces((Guid CSPID, CspSecurityConceptResult CSP)[] cspResults)
+    private Dictionary<Guid, HashSet<string>> FindReusedNonces((Guid CSPID, CspSecurityConceptResult CSP)[] cspResults)
     {
         var reused = new Dictionary<Guid, HashSet<string>>();
         

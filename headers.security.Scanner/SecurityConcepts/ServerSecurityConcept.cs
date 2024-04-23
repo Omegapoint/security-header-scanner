@@ -5,11 +5,10 @@ using System.Text.RegularExpressions;
 
 namespace headers.security.Scanner.SecurityConcepts;
 
+// ReSharper disable once UnusedType.Global
 public partial class ServerSecurityConcept : ISecurityConcept
 {
     public static readonly string HeaderName = HeaderNames.Server;
-
-    public static ISecurityConcept Create() => new ServerSecurityConcept();
 
     private const string MessageVersion = 
         "The Server header reveals server software vendor and detailed version information, " +

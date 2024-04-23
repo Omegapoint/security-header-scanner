@@ -5,11 +5,10 @@ using Microsoft.Net.Http.Headers;
 
 namespace headers.security.Scanner.SecurityConcepts;
 
+// ReSharper disable once UnusedType.Global
 public class AccessControlAllowOriginSecurityConcept : ISecurityConcept
 {
     public static readonly string HeaderName = HeaderNames.AccessControlAllowOrigin;
-
-    public static ISecurityConcept Create() => new AccessControlAllowOriginSecurityConcept();
 
     private const string Warning = "The policy allows cross-origin requests without restrictions, this is generally only advisable for content distribution networks.";
     private static readonly string WarningReferrer = $"The policy includes the value of the {HeaderNames.Referer} header in the request, effectively allowing cross-origin requests without restrictions.";

@@ -8,14 +8,13 @@ namespace headers.security.Scanner.SecurityConcepts;
 /// Implementation of evaluator for Permissions-Policy header
 /// RFC: https://w3c.github.io/webappsec-permissions-policy/#permissions-policy-http-header-field
 /// </summary>
+// ReSharper disable once UnusedType.Global
 public class PermissionsPolicySecurityConcept : ISecurityConcept
 {
     // Old name, warn if encountered
     public const string DeprecatedHeaderName = "Feature-Policy";
     
     public const string HeaderName = SecurityHeaderNames.PermissionsPolicy;
-
-    public static ISecurityConcept Create() => new PermissionsPolicySecurityConcept();
 
     public Task<ISecurityConceptResult> ExecuteAsync(
         CrawlerConfiguration crawlerConf,

@@ -9,14 +9,13 @@ namespace headers.security.Scanner.SecurityConcepts;
 /// <summary>
 /// RFC: https://html.spec.whatwg.org/multipage/document-lifecycle.html#the-x-frame-options-header
 /// </summary>
+// ReSharper disable once UnusedType.Global
 public class XFrameOptionsSecurityConcept : ISecurityConcept
 {
     private const string Deny = "DENY";
     public static readonly string HeaderName = HeaderNames.XFrameOptions;
 
     private static readonly List<string> AllValidValues = [Deny, "ALLOWALL", "SAMEORIGIN"];
-
-    public static ISecurityConcept Create() => new XFrameOptionsSecurityConcept();
 
     public Task<ISecurityConceptResult> ExecuteAsync(
         CrawlerConfiguration crawlerConf,

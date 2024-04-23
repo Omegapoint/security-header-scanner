@@ -8,6 +8,7 @@ namespace headers.security.Scanner.SecurityConcepts;
 /// Implementation of scanner for the HTTP Strict Transport Security concept
 /// RFC: https://datatracker.ietf.org/doc/html/rfc6797
 /// </summary>
+// ReSharper disable once UnusedType.Global
 public class StrictTransportSecurityConcept : ISecurityConcept
 {
     public const string HandlerName = "HTTP Strict Transport Security";
@@ -18,8 +19,6 @@ public class StrictTransportSecurityConcept : ISecurityConcept
     private const string MaxAgeToken = "max-age";
     
     private const int ShortPolicyCutoff = 15768000; // 6 months
-
-    public static ISecurityConcept Create() => new StrictTransportSecurityConcept();
 
     public Task<ISecurityConceptResult> ExecuteAsync(
         CrawlerConfiguration crawlerConf,

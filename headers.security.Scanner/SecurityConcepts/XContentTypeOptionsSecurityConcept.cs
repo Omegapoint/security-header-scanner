@@ -7,13 +7,12 @@ namespace headers.security.Scanner.SecurityConcepts;
 /// <summary>
 /// RFC: https://fetch.spec.whatwg.org/#x-content-type-options-header
 /// </summary>
+// ReSharper disable once UnusedType.Global
 public class XContentTypeOptionsSecurityConcept : ISecurityConcept
 {
     public static readonly string HeaderName = HeaderNames.XContentTypeOptions;
 
     public const string NoSniff = "nosniff";
-
-    public static ISecurityConcept Create() => new XContentTypeOptionsSecurityConcept();
 
     public Task<ISecurityConceptResult> ExecuteAsync(
         CrawlerConfiguration crawlerConf,

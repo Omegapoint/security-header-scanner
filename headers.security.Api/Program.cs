@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using headers.security.Api.Middlewares;
+using headers.security.Api.Extensions;
 using headers.security.Scanner;
 using Microsoft.OpenApi.Models;
 
@@ -13,6 +14,7 @@ builder.Services.AddSingleton(builder.Configuration
 
 builder.Services.AddSingleton<Crawler>();
 builder.Services.AddSingleton<Worker>();
+builder.Services.AddSecurityEngine();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>

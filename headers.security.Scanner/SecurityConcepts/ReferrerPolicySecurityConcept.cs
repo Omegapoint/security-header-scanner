@@ -8,14 +8,13 @@ namespace headers.security.Scanner.SecurityConcepts;
 /// <summary>
 /// Specification: https://w3c.github.io/webappsec-referrer-policy/#referrer-policy-header
 /// </summary>
+// ReSharper disable once UnusedType.Global
 public class ReferrerPolicySecurityConcept : ISecurityConcept
 {
     public static readonly string HeaderName = SecurityHeaderNames.ReferrerPolicy;
     
     // https://w3c.github.io/webappsec-referrer-policy/#referrer-policy-delivery-meta
     public static readonly string MetaName = "referrer";
-
-    public static ISecurityConcept Create() => new ReferrerPolicySecurityConcept();
 
     public Task<ISecurityConceptResult> ExecuteAsync(
         CrawlerConfiguration crawlerConf,

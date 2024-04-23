@@ -4,7 +4,7 @@ using headers.security.Common.Extensions;
 
 namespace headers.security.Scanner;
 
-public class Worker(Crawler crawler)
+public class Worker(Crawler crawler, SecurityEngine securityEngine)
 {
     public Task<List<ServerResult>> PerformScan(CrawlerConfiguration crawlerConf, List<Uri> uris)
         => PerformScan(crawlerConf, uris.ToArray());
@@ -34,10 +34,10 @@ public class Worker(Crawler crawler)
                             response.IP,
                             response.FinalUri,
                             response.FetchedAt,
-                            await SecurityEngine.Parse(response.HttpMessage, crawlerConf)
+                            await securityEngine.Parse(response.HttpMessage, crawlerConf)
                         ))
                     );
-                    SecurityEngine.ExamineNonceUsage(uriResults);
+                    securityEngine.ExamineNonceUsage(uriResults);
                     results.AddRange(ServerResultComparer.MergeEqual(uriResults.ToList(), targetUri));
                 }
                 
