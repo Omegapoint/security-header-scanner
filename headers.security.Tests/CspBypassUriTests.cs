@@ -1,9 +1,7 @@
-using System.Diagnostics.CodeAnalysis;
 using headers.security.Common.Constants;
 
 namespace headers.security.Tests;
 
-[SuppressMessage("ReSharper", "InvokeAsExtensionMethod")]
 public class CspBypassUriTests
 {
     public static IEnumerable<object[]> AllKnownBypassUris() => KnownCspBypassUris.All

@@ -3,9 +3,6 @@ using System.Net.Sockets;
 
 namespace headers.security.Common.Extensions;
 
-/// <summary>
-/// Extension methods on <see cref="System.Net.IPAddress"/>.
-/// </summary>
 // ReSharper disable once InconsistentNaming
 public static class IPAddressExtensions
 {
@@ -13,8 +10,6 @@ public static class IPAddressExtensions
     /// Returns true if the IP address is in a private range.
     /// </summary>
     /// <param name="ip">The IP address.</param>
-    /// <returns>True if the IP address was in a private range.</returns>
-    /// <example><code>bool isPrivate = IPAddress.Parse("127.0.0.1").IsPrivate();</code></example>
     public static bool IsPrivate(this IPAddress ip)
     {
         if (ip.IsIPv4MappedToIPv6)
@@ -34,17 +29,15 @@ public static class IPAddressExtensions
             AddressFamily.InterNetwork => IsPrivateIPv4(ip.GetAddressBytes()),
             // IPv6
             AddressFamily.InterNetworkV6 => ip.IsIPv6LinkLocal || ip.IsIPv6UniqueLocal || ip.IsIPv6SiteLocal,
-            _ => throw new NotSupportedException(
-                $"IP address family {ip.AddressFamily} is not supported.")
+            _ => throw new NotSupportedException($"IP address family {ip.AddressFamily} is not supported.")
         };
     }
 
     /// <summary>
-    /// 
+    /// Returns true if the IPv4 represented as a byte array is in any block reserved private.
     /// </summary>
-    /// <param name="ipv4Bytes"></param>
-    /// <returns></returns>
-    private static bool IsPrivateIPv4(byte[] ipv4Bytes) =>
+    /// <param name="ipv4Bytes">The IP address represented as a byte array.</param>
+    private static bool IsPrivateIPv4(IReadOnlyList<byte> ipv4Bytes) =>
         ipv4Bytes[0] switch
         {
             // Class A private range 10/8

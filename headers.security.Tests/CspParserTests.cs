@@ -1,9 +1,7 @@
-using System.Diagnostics.CodeAnalysis;
 using headers.security.Scanner.SecurityConcepts.Csp;
 
 namespace headers.security.Tests;
 
-[SuppressMessage("ReSharper", "InvokeAsExtensionMethod")]
 public class CspParserTests
 {
     [Theory]

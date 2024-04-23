@@ -1,10 +1,8 @@
-using System.Diagnostics.CodeAnalysis;
 using headers.security.Common.Domain;
 using headers.security.Common.Domain.SecurityConcepts;
 
 namespace headers.security.Tests;
 
-[SuppressMessage("ReSharper", "InvokeAsExtensionMethod")]
 public class ScanResultTests
 {
     public static IEnumerable<object[]> AllScanResults =>

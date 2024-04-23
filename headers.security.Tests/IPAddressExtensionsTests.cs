@@ -1,10 +1,10 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using headers.security.Common.Extensions;
 
+// ReSharper disable StringLiteralTypo
+
 namespace headers.security.Tests;
 
-[SuppressMessage("ReSharper", "InvokeAsExtensionMethod")]
 // ReSharper disable once InconsistentNaming
 public class IPAddressExtensionsTests
 {
@@ -16,7 +16,7 @@ public class IPAddressExtensionsTests
     public void IsPrivate_ReturnsFalse_PublicIPv4(string ip)
     {
         var ipAddress = IPAddress.Parse(ip);
-        IPAddressExtensions.IsPrivate(ipAddress).Should().BeFalse();
+        ipAddress.IsPrivate().Should().BeFalse();
     }
 
     [Theory]
@@ -27,7 +27,7 @@ public class IPAddressExtensionsTests
     public void IsPrivate_ReturnsFalse_PublicIPv4MappedToIPv6(string ip)
     {
         var ipAddress = IPAddress.Parse(ip);
-        IPAddressExtensions.IsPrivate(ipAddress).Should().BeFalse();
+        ipAddress.IsPrivate().Should().BeFalse();
     }
 
     [Theory]
@@ -36,7 +36,7 @@ public class IPAddressExtensionsTests
     public void IsPrivate_ReturnsFalse_PublicIPv6(string ip)
     {
         var ipAddress = IPAddress.Parse(ip);
-        IPAddressExtensions.IsPrivate(ipAddress).Should().BeFalse();
+        ipAddress.IsPrivate().Should().BeFalse();
     }
 
     [Theory]
@@ -62,7 +62,7 @@ public class IPAddressExtensionsTests
     public void IsPrivate_ReturnsTrue_PrivateIPv4(string ip)
     {
         var ipAddress = IPAddress.Parse(ip);
-        IPAddressExtensions.IsPrivate(ipAddress).Should().BeTrue();
+        ipAddress.IsPrivate().Should().BeTrue();
     }
 
     [Theory]
@@ -85,7 +85,7 @@ public class IPAddressExtensionsTests
     public void IsPrivate_ReturnsTrue_PrivateIPv4MappedToIPv6(string ip)
     {
         var ipAddress = IPAddress.Parse(ip);
-        IPAddressExtensions.IsPrivate(ipAddress).Should().BeTrue();
+        ipAddress.IsPrivate().Should().BeTrue();
     }
 
     [Theory]
@@ -99,6 +99,6 @@ public class IPAddressExtensionsTests
     public void IsPrivate_ReturnsTrue_PrivateIPv6(string ip)
     {
         var ipAddress = IPAddress.Parse(ip);
-        IPAddressExtensions.IsPrivate(ipAddress).Should().BeTrue();
+        ipAddress.IsPrivate().Should().BeTrue();
     }
 }
