@@ -1,5 +1,4 @@
 using headers.security.Common.Constants;
-using headers.security.Common.Domain;
 using headers.security.Common.Domain.SecurityConcepts;
 using Microsoft.Net.Http.Headers;
 

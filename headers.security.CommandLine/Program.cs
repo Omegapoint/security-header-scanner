@@ -1,5 +1,4 @@
 using System.CommandLine;
-using System.Diagnostics.CodeAnalysis;
 using headers.security.Scanner;
 using headers.security.Scanner.Helpers;
 using headers.security.Scanner.SecurityConcepts;

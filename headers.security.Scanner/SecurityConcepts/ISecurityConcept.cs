@@ -1,4 +1,3 @@
-using headers.security.Common.Domain;
 using headers.security.Common.Domain.SecurityConcepts;
 
 namespace headers.security.Scanner.SecurityConcepts;
