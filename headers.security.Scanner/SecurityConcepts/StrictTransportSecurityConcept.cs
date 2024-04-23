@@ -1,5 +1,6 @@
 using headers.security.Common.Domain;
 using headers.security.Common.Domain.SecurityConcepts;
+using headers.security.Scanner.Hsts;
 using Microsoft.Net.Http.Headers;
 
 namespace headers.security.Scanner.SecurityConcepts;
@@ -9,7 +10,7 @@ namespace headers.security.Scanner.SecurityConcepts;
 /// RFC: https://datatracker.ietf.org/doc/html/rfc6797
 /// </summary>
 // ReSharper disable once UnusedType.Global
-public class StrictTransportSecurityConcept : ISecurityConcept
+public class StrictTransportSecurityConcept(HstsPreloadService hstsPreloadService) : ISecurityConcept
 {
     public const string HandlerName = "HTTP Strict Transport Security";
     
@@ -54,7 +55,14 @@ public class StrictTransportSecurityConcept : ISecurityConcept
         var includeSubdomains = tokens.Contains(IncludeSubdomainsToken);
         var preload = tokens.Contains(PreloadToken);
 
-        // TODO: FUTURE: verify preload status? add info regarding preload
+        if (preload && !hstsPreloadService.IsPreloaded(scanData.Target))
+        {
+            infos.Add(new SecurityConceptResultInfo
+            {
+                Message = "The HSTS policy indicates that the domain should be preloaded, but it was not found in the preload list. Follow the link for more information on how to correctly configure HSTS preloading.",
+                ExternalLink = new("https://hstspreload.org/"),
+            });
+        }
         
         return new StrictTransportSecurityConceptResult(infos, maxAge, includeSubdomains, preload);
     }

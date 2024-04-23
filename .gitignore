@@ -665,3 +665,4 @@ dist
 
 # Project specific ignores
 **/appsettings.*.json
+headers.security.Api/hstspreload-state.json

@@ -28,4 +28,10 @@
       <ProjectReference Include="..\headers.security.Scanner\headers.security.Scanner.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="hstspreload_example_data.2024-04-17.txt.base64">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
