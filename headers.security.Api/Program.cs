@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using headers.security.Api;
+using headers.security.Api.Caching;
 using headers.security.Api.Middlewares;
 using headers.security.Api.Services;
 using headers.security.Api.Extensions;
@@ -17,11 +17,13 @@ builder.Services.AddSingleton(builder.Configuration
 
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<Crawler>();
-builder.Services.AddSingleton<IHstsPreloadRepository, CachingHstsPreloadRepository>();
+builder.Services.AddSingleton<CachingHstsPreloadRepository>();
+builder.Services.AddSingleton<IHstsPreloadRepository>(s => s.GetService<CachingHstsPreloadRepository>());
+builder.Services.AddSingleton<ICachedContentRepository>(s => s.GetService<CachingHstsPreloadRepository>());
 builder.Services.AddSingleton<HstsPreloadClient>();
 builder.Services.AddSingleton<HstsPreloadService>();
 builder.Services.AddSingleton<Worker>();
-builder.Services.AddHostedService<HstsPreloadUpdaterBackgroundService>();
+builder.Services.AddHostedService<CachedContentBackgroundUpdateService>();
 builder.Services.AddSecurityEngine();
 
 builder.Services.AddControllers()

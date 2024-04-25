@@ -2,18 +2,20 @@ using headers.security.Scanner.Hsts;
 using headers.security.Scanner.Hsts.Contracts;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace headers.security.Api;
+namespace headers.security.Api.Caching;
 
 // ReSharper disable once ClassNeverInstantiated.Global
-public class CachingHstsPreloadRepository(HstsPreloadClient client, IMemoryCache cache) : IHstsPreloadRepository
+public class CachingHstsPreloadRepository(HstsPreloadClient client, IMemoryCache cache) : IHstsPreloadRepository, ICachedContentRepository
 {
+    public string CacheKey => "HSTSPreloadTree";
+    public string ExpiryCacheKey => CacheKey + "/ExpiryTime";
+    public string StateFilename => "hstspreload.json";
+    public Type Type => typeof(PreloadPolicyNode);
+    
     private static readonly MemoryCacheEntryOptions CacheEntryOptions = new()
     {
         Priority = CacheItemPriority.NeverRemove
     };
-
-    public const string CacheKey = "HSTSPreloadTree";
-    public const string ExpiryCacheKey = "HSTSPreloadTree/ExpiryTime";
     
     public PreloadPolicy GetPreloadEntry(Uri target) => GetTree()?.GetOrDefault(target?.Host);
 
@@ -24,11 +26,11 @@ public class CachingHstsPreloadRepository(HstsPreloadClient client, IMemoryCache
         return tree;
     }
 
-    public async Task<PreloadPolicyNode> UpdatePreloadCache()
+    public async Task<object> UpdateCache()
     {
-        var expirationDate = cache.Get<DateTime?>(ExpiryCacheKey);
+        var expirationDate = cache.Get<DateTime?>(ExpiryCacheKey) ?? DateTime.UtcNow;
 
-        if (expirationDate != null && expirationDate - DateTime.UtcNow > TimeSpan.FromHours(1))
+        if (expirationDate - DateTime.UtcNow > TimeSpan.FromHours(1))
         {
             return GetTree();
         }
@@ -43,9 +45,9 @@ public class CachingHstsPreloadRepository(HstsPreloadClient client, IMemoryCache
         return tree;
     }
 
-    public void RestoreState(PreloadPolicyNode tree)
+    public void RestoreState(object state)
     {
-        cache.Set(CacheKey, tree, CacheEntryOptions);
+        cache.Set(CacheKey, state, CacheEntryOptions);
         cache.Set(ExpiryCacheKey, DateTime.UtcNow.AddMinutes(61), CacheEntryOptions);
     }
 }

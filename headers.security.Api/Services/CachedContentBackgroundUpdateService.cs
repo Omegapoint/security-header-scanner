@@ -1,0 +1,123 @@
+using System.Text.Json;
+using headers.security.Api.Caching;
+using Microsoft.Extensions.Caching.Memory;
+
+namespace headers.security.Api.Services;
+
+public class CachedContentBackgroundUpdateService(
+    ILogger<CachedContentBackgroundUpdateService> logger,
+    IServiceProvider services,
+    IHostEnvironment environment,
+    IMemoryCache cache)
+    : BackgroundService
+{
+    private const string StateDirectory = "Caching/State";
+
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
+    {
+        logger.LogInformation("{Service} is running", nameof(CachedContentBackgroundUpdateService));
+        
+        if (environment.IsDevelopment()) 
+            await RestoreStates(cancellationToken);
+        
+        await MaintainStates(cancellationToken);
+    }
+
+    public override async Task StopAsync(CancellationToken cancellationToken)
+    {
+        logger.LogInformation("{Service} is stopping", nameof(CachedContentBackgroundUpdateService));
+        await base.StopAsync(cancellationToken);
+    }
+
+    private async Task RestoreStates(CancellationToken cancellationToken)
+    {
+        if (!Directory.Exists(StateDirectory))
+        {
+            Directory.CreateDirectory(StateDirectory);
+        }
+        
+        using var scope = services.CreateScope();
+        var tasks = scope.ServiceProvider.GetServices<ICachedContentRepository>()
+            .Select(repo => RestoreState(repo, cancellationToken));
+
+        await Task.WhenAll(tasks);
+    }
+
+    private async Task RestoreState(ICachedContentRepository repository, CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Restoring {TypeName} state from file", repository.Type.Name);
+
+        if (!cache.TryGetValue(repository.CacheKey, out _) && File.Exists(StateDirectory + "/" + repository.StateFilename))
+        {
+            await using var stream = File.OpenRead(StateDirectory + "/" + repository.StateFilename);
+            var tree = await JsonSerializer.DeserializeAsync(stream, repository.Type, cancellationToken: cancellationToken);
+            
+            repository.RestoreState(tree);
+        }
+    }
+
+    private async Task MaintainStates(CancellationToken cancellationToken)
+    {
+        using var scope = services.CreateScope();
+        var tasks = scope.ServiceProvider.GetServices<ICachedContentRepository>()
+            .Select(repo => MaintainState(repo, cancellationToken));
+
+        await Task.WhenAll(tasks);
+    }
+
+    private async Task MaintainState(ICachedContentRepository repository, CancellationToken cancellationToken)
+    {
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            var delay = GetNextRun(repository);
+            
+            logger.LogInformation("Time to next {TypeName} update: {Delay}", repository.Type.Name, delay);
+            await Task.Delay(delay, cancellationToken);
+            
+            try
+            {
+                var tree = await repository.UpdateCache();
+                if (environment.IsDevelopment() && tree != null)
+                {
+                    await PersistState(repository, tree, cancellationToken);
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Failed to update preload cache on schedule");
+            }
+        }
+    }
+
+    private async Task PersistState(ICachedContentRepository repository, object state, CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Saving {TypeName} state to file", repository.Type.Name);
+        
+        await using var file = File.OpenWrite(StateDirectory + "/" + repository.StateFilename);
+        await JsonSerializer.SerializeAsync(file, state, repository.Type, cancellationToken: cancellationToken);
+    }
+
+    private TimeSpan GetNextRun(ICachedContentRepository repository)
+    {
+        var expirationDate = cache.Get<DateTime?>(repository.ExpiryCacheKey) ?? DateTime.UtcNow;
+        
+        var timeUntil = expirationDate - DateTime.UtcNow;
+        if (timeUntil < TimeSpan.FromMinutes(5))
+        {
+            return TimeSpan.FromSeconds(GetRandom(30));
+        }
+
+        var minutesLeft = timeUntil.TotalMinutes;
+        if (minutesLeft > 60)
+        {
+            return timeUntil - TimeSpan.FromMinutes(GetRandom());
+        }
+
+        var minutes = TimeSpan.FromMinutes(GetRandom(minutesLeft));
+        var seconds = TimeSpan.FromSeconds(GetRandom());
+
+        return minutes.Add(seconds);
+    }
+
+    private static int GetRandom(double maxValue = 60) => Random.Shared.Next(1, Math.Max(1, (int) maxValue));
+}
