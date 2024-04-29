@@ -11,11 +11,6 @@ public class HstsPreloadActualDataFixture
 
     public HstsPreloadActualDataFixture()
     {
-        // if (HstsPreloadActualDataTests.SkipReason != null)
-        // {
-        //     return;
-        // }
-        
         var services = new ServiceCollection();
         services.AddHttpClient();
         
