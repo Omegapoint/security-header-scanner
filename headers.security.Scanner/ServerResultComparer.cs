@@ -1,4 +1,3 @@
-using System.Net;
 using headers.security.Common;
 using headers.security.Common.Domain;
 using headers.security.Scanner.SecurityConcepts.Csp;
@@ -22,7 +21,7 @@ public static class ServerResultComparer
         CspParser.NoncePrefix
     ),];
 
-    public static List<ServerResult> MergeEqual(List<(IPAddress IP, Uri FinalUri, DateTime FetchedAt, ScanResult Result)> uriResults, Uri targetUri)
+    public static List<ServerResult> MergeEqual(List<(IPWithCloud IP, Uri FinalUri, DateTime FetchedAt, ScanResult Result)> uriResults, Uri targetUri)
     {
         var processed = new List<ScanResult>();
         var results = new List<ServerResult>();
@@ -37,7 +36,7 @@ public static class ServerResultComparer
             }
 
             processed.Add(result);
-            HashSet<string> resultIPs = [ip.ToString()];
+            HashSet<IPWithCloud> resultIPs = [ip];
                 
             foreach (var (otherIp, otherFinalUri, _, otherResult) in uriResults)
             {
@@ -47,7 +46,7 @@ public static class ServerResultComparer
                 }
 
                 processed.Add(otherResult);
-                resultIPs.Add(otherIp.ToString());
+                resultIPs.Add(otherIp);
             }
 
             results.Add(new ServerResult

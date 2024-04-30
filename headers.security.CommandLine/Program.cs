@@ -1,6 +1,7 @@
 using System.CommandLine;
 using headers.security.CachedContent.Extensions;
 using headers.security.Scanner;
+using headers.security.Scanner.CloudLookup;
 using headers.security.Scanner.Helpers;
 using headers.security.Scanner.SecurityConcepts;
 using Microsoft.Extensions.DependencyInjection;
@@ -96,13 +97,14 @@ public static class Program
         var serviceProvider = services.BuildServiceProvider();
 
         var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
+        var cloudLookupService = serviceProvider.GetService<CloudLookupService>();
 
         var conf = new WorkerConfiguration
         {
             IPv6Enabled = false
         };
 
-        var crawler = new Crawler(conf, httpClientFactory);
+        var crawler = new Crawler(conf, cloudLookupService, httpClientFactory);
 
         var securityConceptTypes = SecurityConceptResolver.GetSecurityConcepts();
 

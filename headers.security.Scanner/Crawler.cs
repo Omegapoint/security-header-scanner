@@ -3,11 +3,12 @@ using System.Net.Sockets;
 using headers.security.Common;
 using headers.security.Common.Domain;
 using headers.security.Common.Extensions;
+using headers.security.Scanner.CloudLookup;
 using headers.security.Scanner.Extensions;
 
 namespace headers.security.Scanner;
 
-public class Crawler(WorkerConfiguration workerConf, IHttpClientFactory httpClientFactory)
+public class Crawler(WorkerConfiguration workerConf, CloudLookupService cloudLookupService, IHttpClientFactory httpClientFactory)
 {
     public async Task<List<CrawlerResponse>> Crawl(Uri uri, CrawlerConfiguration crawlerConf)
     {
@@ -36,7 +37,8 @@ public class Crawler(WorkerConfiguration workerConf, IHttpClientFactory httpClie
 
         var response = new CrawlerResponse
         {
-            IP = ipAddress
+            IP = ipAddress,
+            Cloud = cloudLookupService?.GetCloud(ipAddress)
         };
         
         var currentUri = uri;

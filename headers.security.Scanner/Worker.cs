@@ -31,7 +31,7 @@ public class Worker(Crawler crawler, SecurityEngine securityEngine)
                 {
                     var uriResults = await Task.WhenAll(
                         successful.Select(async response => (
-                            response.IP,
+                            IPWithCloud.Create(response.IP, response.Cloud),
                             response.FinalUri,
                             response.FetchedAt,
                             await securityEngine.Parse(response.FinalUri, response.HttpMessage, crawlerConf)
@@ -48,7 +48,7 @@ public class Worker(Crawler crawler, SecurityEngine securityEngine)
                     {
                         RequestTarget = ScanTarget.From(targetUri),
                         FinalTarget = ScanTarget.From(response.FinalUri),
-                        IPs = [response.IP.ToString()],
+                        IPs = [IPWithCloud.Create(response.IP, response.Cloud)],
                         Error = response.ScanError,
                         FetchedAt = response.FetchedAt
                     }));

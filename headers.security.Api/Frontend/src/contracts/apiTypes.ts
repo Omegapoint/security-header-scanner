@@ -58,10 +58,15 @@ export const getUriDataLength = (data: UriData) => {
   return schemeLength + data.utfDomain.length + portLength + data.path.length;
 };
 
+export interface IPWithCloud {
+  ip: string;
+  cloud: string;
+}
+
 export interface ServerResult {
   requestTarget: UriData;
   finalTarget: UriData;
-  ips: string[];
+  ips: IPWithCloud[];
   result: ScanResult;
   grade: SecurityGrade;
   error: ApiError;

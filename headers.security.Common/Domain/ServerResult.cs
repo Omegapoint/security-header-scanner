@@ -10,7 +10,7 @@ public class ServerResult
     
     [JsonPropertyName("ips")]
     // ReSharper disable once InconsistentNaming
-    public List<string> IPs { get; set; }
+    public List<IPWithCloud> IPs { get; set; }
 
     public ScanResult Result { get; set; }
     

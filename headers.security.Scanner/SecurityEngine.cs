@@ -1,4 +1,3 @@
-using System.Net;
 using headers.security.Common.Domain;
 using headers.security.Common.Domain.SecurityConcepts;
 using headers.security.Scanner.Extensions;
@@ -63,7 +62,7 @@ public class SecurityEngine(List<ISecurityConcept> handlers)
         ));
     }
 
-    public void ExamineNonceUsage((IPAddress IP, Uri FinalUri, DateTime FetchedAt, ScanResult ScanResult)[] uriResults)
+    public void ExamineNonceUsage((IPWithCloud IP, Uri FinalUri, DateTime FetchedAt, ScanResult ScanResult)[] uriResults)
     { 
         var cspResults = uriResults
             .Select(kvp => (
