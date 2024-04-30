@@ -665,4 +665,4 @@ dist
 
 # Project specific ignores
 **/appsettings.*.json
-headers.security.Api/Caching/State/
+headers.security.Api/.cachedContentState/

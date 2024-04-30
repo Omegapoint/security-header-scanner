@@ -1,4 +1,5 @@
 using System.CommandLine;
+using headers.security.CachedContent.Extensions;
 using headers.security.Scanner;
 using headers.security.Scanner.Helpers;
 using headers.security.Scanner.SecurityConcepts;
@@ -90,6 +91,7 @@ public static class Program
         
         var services = new ServiceCollection();
         services.AddHttpClient("Scanner", HttpClientHelper.ConfigureClient);
+        services.AddCachedContent(useBackgroundService: false);
         
         var serviceProvider = services.BuildServiceProvider();
 

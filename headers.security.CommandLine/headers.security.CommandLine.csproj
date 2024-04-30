@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\headers.security.CachedContent\headers.security.CachedContent.csproj" />
     <ProjectReference Include="..\headers.security.Scanner\headers.security.Scanner.csproj" />
   </ItemGroup>
 

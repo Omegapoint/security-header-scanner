@@ -1,9 +1,12 @@
 using System.Text.Json;
-using headers.security.Api.Caching;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
-namespace headers.security.Api.Services;
+namespace headers.security.CachedContent.Services;
 
+// TODO: Future, add an enum RunMode here and make sure CLI is initialized correctly before running scan
 public class CachedContentBackgroundUpdateService(
     ILogger<CachedContentBackgroundUpdateService> logger,
     IServiceProvider services,
@@ -11,7 +14,7 @@ public class CachedContentBackgroundUpdateService(
     IMemoryCache cache)
     : BackgroundService
 {
-    private const string StateDirectory = "Caching/State";
+    private const string StateDirectory = ".cachedContentState";
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
@@ -31,11 +34,6 @@ public class CachedContentBackgroundUpdateService(
 
     private async Task RestoreStates(CancellationToken cancellationToken)
     {
-        if (!Directory.Exists(StateDirectory))
-        {
-            Directory.CreateDirectory(StateDirectory);
-        }
-        
         using var scope = services.CreateScope();
         var tasks = scope.ServiceProvider.GetServices<ICachedContentRepository>()
             .Select(repo => RestoreState(repo, cancellationToken));
@@ -47,12 +45,21 @@ public class CachedContentBackgroundUpdateService(
     {
         logger.LogInformation("Restoring {TypeName} state from file", repository.Type.Name);
 
-        if (!cache.TryGetValue(repository.CacheKey, out _) && File.Exists(StateDirectory + "/" + repository.StateFilename))
+        if (!cache.TryGetValue(repository.CacheKey, out _) && File.Exists($"{StateDirectory}/{repository.StateFilename}.json"))
         {
-            await using var stream = File.OpenRead(StateDirectory + "/" + repository.StateFilename);
-            var tree = await JsonSerializer.DeserializeAsync(stream, repository.Type, cancellationToken: cancellationToken);
-            
-            repository.RestoreState(tree);
+            try
+            {
+                await using var stream = File.OpenRead($"{StateDirectory}/{repository.StateFilename}.json");
+                var state = await JsonSerializer.DeserializeAsync(stream, repository.Type,
+                    cancellationToken: cancellationToken);
+
+                repository.RestoreState(state);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 
@@ -74,26 +81,24 @@ public class CachedContentBackgroundUpdateService(
             logger.LogInformation("Time to next {TypeName} update: {Delay}", repository.Type.Name, delay);
             await Task.Delay(delay, cancellationToken);
             
-            try
+            var state = await repository.UpdateCache();
+            if (environment.IsDevelopment() && state != null)
             {
-                var tree = await repository.UpdateCache();
-                if (environment.IsDevelopment() && tree != null)
-                {
-                    await PersistState(repository, tree, cancellationToken);
-                }
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, "Failed to update preload cache on schedule");
+                await PersistState(repository, state, cancellationToken);
             }
         }
     }
 
     private async Task PersistState(ICachedContentRepository repository, object state, CancellationToken cancellationToken)
     {
+        if (!Directory.Exists(StateDirectory))
+        {
+            Directory.CreateDirectory(StateDirectory);
+        }
+        
         logger.LogInformation("Saving {TypeName} state to file", repository.Type.Name);
         
-        await using var file = File.OpenWrite(StateDirectory + "/" + repository.StateFilename);
+        await using var file = File.OpenWrite($"{StateDirectory}/{repository.StateFilename}.json");
         await JsonSerializer.SerializeAsync(file, state, repository.Type, cancellationToken: cancellationToken);
     }
 
@@ -104,7 +109,7 @@ public class CachedContentBackgroundUpdateService(
         var timeUntil = expirationDate - DateTime.UtcNow;
         if (timeUntil < TimeSpan.FromMinutes(5))
         {
-            return TimeSpan.FromSeconds(GetRandom(30));
+            return TimeSpan.FromSeconds(GetRandom(3));
         }
 
         var minutesLeft = timeUntil.TotalMinutes;

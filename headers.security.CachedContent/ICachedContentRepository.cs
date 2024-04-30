@@ -1,4 +1,4 @@
-namespace headers.security.Api.Caching;
+namespace headers.security.CachedContent;
 
 public interface ICachedContentRepository
 {

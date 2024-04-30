@@ -1,13 +1,14 @@
 using System.Text.Json.Serialization;
-using headers.security.Api.Caching;
 using headers.security.Api.Middlewares;
-using headers.security.Api.Services;
 using headers.security.Api.Extensions;
+using headers.security.CachedContent.Extensions;
 using headers.security.Scanner;
-using headers.security.Scanner.Hsts;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHttpClient("Scanner", HttpClientHelper.ConfigureClient)
+    .ConfigurePrimaryHttpMessageHandler(HttpClientHelper.ConfigureHandler);
 
 // Add services to the container.
 builder.Services.AddSingleton(builder.Configuration
@@ -16,15 +17,11 @@ builder.Services.AddSingleton(builder.Configuration
 );
 
 builder.Services.AddMemoryCache();
-builder.Services.AddSingleton<Crawler>();
-builder.Services.AddSingleton<CachingHstsPreloadRepository>();
-builder.Services.AddSingleton<IHstsPreloadRepository>(s => s.GetService<CachingHstsPreloadRepository>());
-builder.Services.AddSingleton<ICachedContentRepository>(s => s.GetService<CachingHstsPreloadRepository>());
-builder.Services.AddSingleton<HstsPreloadClient>();
-builder.Services.AddSingleton<HstsPreloadService>();
-builder.Services.AddSingleton<Worker>();
-builder.Services.AddHostedService<CachedContentBackgroundUpdateService>();
+builder.Services.AddCachedContent();
 builder.Services.AddSecurityEngine();
+
+builder.Services.AddSingleton<Crawler>();
+builder.Services.AddSingleton<Worker>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -36,10 +33,6 @@ builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo
     Title = "headers.security API - V1",
     Version = "v1"
 }));
-
-builder.Services.AddHttpClient("Scanner", HttpClientHelper.ConfigureClient)
-    .ConfigurePrimaryHttpMessageHandler(HttpClientHelper.ConfigureHandler);
-builder.Services.AddHttpClient("Integration");
 
 builder.Services.AddHsts(options =>
 {

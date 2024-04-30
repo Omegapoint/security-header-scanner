@@ -2,14 +2,13 @@ using headers.security.Scanner.Hsts;
 using headers.security.Scanner.Hsts.Contracts;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace headers.security.Api.Caching;
+namespace headers.security.CachedContent;
 
-// ReSharper disable once ClassNeverInstantiated.Global
 public class CachingHstsPreloadRepository(HstsPreloadClient client, IMemoryCache cache) : IHstsPreloadRepository, ICachedContentRepository
 {
     public string CacheKey => "HSTSPreloadTree";
     public string ExpiryCacheKey => CacheKey + "/ExpiryTime";
-    public string StateFilename => "hstspreload.json";
+    public string StateFilename => "hstspreload";
     public Type Type => typeof(PreloadPolicyNode);
     
     private static readonly MemoryCacheEntryOptions CacheEntryOptions = new()
