@@ -18,7 +18,7 @@ export const UriDataComponent = ({ data }: UriDataComponentProps) => {
       <Typography color="neutral">{scheme}</Typography>
       <Typography>{data.utfDomain}</Typography>
       {!data.isDefaultPort && <Typography color="neutral">{port}</Typography>}
-      {data.path.length > 1 && <Typography>{data.path}</Typography>}
+      {data.path.length > 1 && <Typography color="neutral">{data.path}</Typography>}
     </Typography>
   );
 };
