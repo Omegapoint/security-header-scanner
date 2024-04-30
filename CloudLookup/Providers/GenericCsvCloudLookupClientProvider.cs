@@ -2,17 +2,14 @@ using System.Net;
 
 namespace CloudLookup.Providers;
 
-public class GenericCsvCloudLookupClientProvider(IHttpClientFactory httpClientFactory, string target, bool header, int? column = null)
+public class GenericCsvCloudLookupClientProvider(IHttpClientFactory httpClientFactory, bool header, int? column = null, params string[] targets)
     : CloudLookupClientProviderBase(httpClientFactory)
 {
-    private readonly Uri _target = new(target);
-
     public override async Task<IEnumerable<IPNetwork>> GetNetworks()
     {
-        var content = await FetchContent(_target);
+        var content = await Task.WhenAll(targets.Select(FetchContent));
 
-        var tokens = content
-            .Split('\n')
+        var tokens = content.SelectMany(data => data.Split('\n'))
             .Skip(header ? 1 : 0)
             .SelectMany(line =>
             {

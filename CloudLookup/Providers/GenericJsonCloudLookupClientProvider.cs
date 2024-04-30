@@ -3,16 +3,14 @@ using System.Text.RegularExpressions;
 
 namespace CloudLookup.Providers;
 
-public partial class GenericJsonCloudLookupClientProvider(IHttpClientFactory httpClientFactory, string target)
+public partial class GenericJsonCloudLookupClientProvider(IHttpClientFactory httpClientFactory, params string[] targets)
     : CloudLookupClientProviderBase(httpClientFactory)
 {
-    private readonly Uri _target = new(target);
-
     public override async Task<IEnumerable<IPNetwork>> GetNetworks()
     {
-        var content = await FetchContent(_target);
+        var pages = await Task.WhenAll(targets.Select(FetchContent));
 
-        var tokens = ExtractTokens(content);
+        var tokens = pages.SelectMany(ExtractTokens);
 
         return ExtractNetworks(tokens);
     }

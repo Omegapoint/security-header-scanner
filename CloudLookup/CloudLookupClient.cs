@@ -1,5 +1,6 @@
 using System.Net;
 using CloudLookup.Providers;
+using static CloudLookup.Constants;
 
 namespace CloudLookup;
 
@@ -13,19 +14,19 @@ public class CloudLookupClient(IHttpClientFactory httpClientFactory)
         },
         {
             Cloud.AWS,
-            new GenericJsonCloudLookupClientProvider(httpClientFactory, Constants.AWSEndpoint)
+            new GenericJsonCloudLookupClientProvider(httpClientFactory, AWSEndpoint)
         },
         {
             Cloud.GCP,
-            new GenericJsonCloudLookupClientProvider(httpClientFactory, Constants.GCPEndpoint)
+            new GenericJsonCloudLookupClientProvider(httpClientFactory, GCPEndpoint)
         },
         {
             Cloud.Oracle,
-            new GenericJsonCloudLookupClientProvider(httpClientFactory, Constants.OracleEndpoint)
+            new GenericJsonCloudLookupClientProvider(httpClientFactory, OracleEndpoint)
         },
         {
             Cloud.DigitalOcean,
-            new GenericCsvCloudLookupClientProvider(httpClientFactory, Constants.DigitalOceanEndpoint, header: false, column: 0)
+            new GenericCsvCloudLookupClientProvider(httpClientFactory, header: false, column: 0, DigitalOceanEndpoint)
         },
     };
 

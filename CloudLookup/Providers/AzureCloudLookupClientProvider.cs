@@ -12,7 +12,7 @@ public partial class AzureCloudLookupClientProvider(IHttpClientFactory httpClien
     {
         var downloadPageHtml = await FetchContent(_downloadPage);
 
-        var urlMatch = UrlRe().Match(downloadPageHtml);
+        var urlMatch = DataUrlRe().Match(downloadPageHtml);
 
         if (!urlMatch.Success || !Uri.TryCreate(urlMatch.Groups["URI"].Value, UriKind.Absolute, out var contentUri))
         {
@@ -30,5 +30,5 @@ public partial class AzureCloudLookupClientProvider(IHttpClientFactory httpClien
         @"href=""(?<URI>https?://download\.microsoft\.com/[\w\d/\-_]+\.json)""",
         RegexOptions.NonBacktracking | RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase
     )]
-    private static partial Regex UrlRe();
+    private static partial Regex DataUrlRe();
 }
