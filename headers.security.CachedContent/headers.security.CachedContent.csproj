@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\CloudLookup\CloudLookup.csproj" />
       <ProjectReference Include="..\headers.security.Scanner\headers.security.Scanner.csproj" />
     </ItemGroup>
 

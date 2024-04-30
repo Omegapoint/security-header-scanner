@@ -17,11 +17,21 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<HstsPreloadService>();
     }
     
+    private static void AddCloudLookupFeature(this IServiceCollection services)
+    {
+        services.AddCloudLookupClient();
+        services.AddSingleton<CachingCloudLookupRepository>();
+        services.AddSingleton<ICloudLookupRepository>(s => s.GetService<CachingCloudLookupRepository>());
+        services.AddSingleton<ICachedContentRepository>(s => s.GetService<CachingCloudLookupRepository>());
+        services.AddSingleton<CloudLookupService>();
+    }
+    
     public static void AddCachedContent(this IServiceCollection services, bool useBackgroundService = true)
     {
         services.AddHttpClient("Integration");
         
         services.AddHstsPreloadFeature();
+        services.AddCloudLookupFeature();
         
         if (useBackgroundService)
         {
