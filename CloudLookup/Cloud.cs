@@ -10,4 +10,5 @@ public enum Cloud
     GCP,
     Oracle,
     DigitalOcean,
+    Cloudflare,
 }

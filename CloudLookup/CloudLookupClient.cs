@@ -25,6 +25,10 @@ public class CloudLookupClient(IHttpClientFactory httpClientFactory)
             new GenericJsonCloudLookupClientProvider(httpClientFactory, OracleEndpoint)
         },
         {
+            Cloud.Cloudflare,
+            new GenericTextCloudLookupClientProvider(httpClientFactory, CloudflareIPv4Endpoint, CloudflareIPv6Endpoint)
+        },
+        {
             Cloud.DigitalOcean,
             new GenericCsvCloudLookupClientProvider(httpClientFactory, header: false, column: 0, DigitalOceanEndpoint)
         },
