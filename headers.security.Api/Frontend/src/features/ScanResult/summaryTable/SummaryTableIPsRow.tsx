@@ -6,7 +6,7 @@ import { IPWithCloud } from '../../../contracts/apiTypes.ts';
 const SummaryTableIP = ({ ip: { ip, cloud } }: { ip: IPWithCloud }) => (
   <ListItem variant="outlined" sx={{ maxWidth: '100%' }}>
     <CloudIcon cloud={cloud} />
-    <Typography fontFamily="code" marginRight="0.3em" lineHeight="1.8" title={ip} noWrap>
+    <Typography fontFamily="code" marginLeft="0.3em" marginRight="0.3em" lineHeight="1.8" title={ip} noWrap>
       {ip}
     </Typography>
   </ListItem>

@@ -18,7 +18,7 @@ export enum Cloud {
   Cloudflare = 'Cloudflare',
 }
 
-const cloudIcon = (cloudString: string): IconType | null => {
+const getIcon = (cloudString: string): IconType | null => {
   if (!(cloudString in Cloud)) {
     return null;
   }
@@ -44,11 +44,11 @@ const cloudIcon = (cloudString: string): IconType | null => {
 };
 
 export const CloudIcon = ({ cloud }: { cloud: string }) => {
-  const Icon = cloudIcon(cloud);
+  const Icon = getIcon(cloud);
 
   if (Icon == null) {
     return;
   }
 
-  return <Icon title={cloud} className={styles.cloudIcon} />;
+  return <Icon title={cloud} size={20} className={styles.cloudIcon} />;
 };
