@@ -92,20 +92,3 @@ public static class IPNetworkEnumerableExtensions
         throw new ArgumentException("MinimalCidrs should always return before loop completion");
     }
 }
-
-public class IPNetworkComparer : IComparer<IPNetwork>
-{
-    public int Compare(IPNetwork x, IPNetwork y)
-    {
-        foreach (var (xByte, yByte) in x.BaseAddress.GetAddressBytes().Zip(y.BaseAddress.GetAddressBytes()))
-        {
-            var result = xByte.CompareTo(yByte);
-            if (result != 0)
-            {
-                return result;
-            }
-        }
-        
-        return x.PrefixLength.CompareTo(y.PrefixLength);
-    }
-}
