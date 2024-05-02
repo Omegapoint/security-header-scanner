@@ -1,4 +1,4 @@
-﻿namespace headers.security.Common;
+namespace headers.security.Common;
 
 /// <summary>
 /// A dictionary which always returns a value.
