@@ -11,16 +11,39 @@ from web servers for security misconfigurations.
 
 ## 🧰 Getting Started
 
-### 📜 Prerequisites
+### 🐳 Docker
+
+If you just want to run the scanner locally using Docker
+there is a `docker-compose.yml` in the project root.
+
+#### 📜 Prerequisites
+
+- Docker
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- (optional) GNU make
+
+#### Starting the API
+
+Run `docker-compose up` to start the application,
+by default it'll be accessible at `http://localhost:8080`.
+
+After pulling new changes (or making changes yourself) you need
+to remove the local image before starting. This can be achieved
+by running `docker rmi --force headers.security.api`.
+
+Alternatively, if you have GNU make installed, simply run `make`
+(or `make update` if you need to rebuild the image after making 
+changes to the code).
+
+### 🏃 Local development
+
+Both the API and frontend project need to be started separately.
+
+#### 📜 Prerequisites
 
 - [.NET 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 - [Node JS v20+](https://nodejs.org/en/download)
 - [mkcert](https://github.com/FiloSottile/mkcert) (to automate setting up valid HTTPS certificates for Vite dev server)
-
-
-### 🏃 Running locally
-
-Both the API and frontend project need to be started separately.
 
 #### Starting the API
 1. Go to the `API` directory

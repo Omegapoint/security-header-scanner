@@ -1,0 +1,12 @@
+services:
+  headers.security.api:
+    image: headers.security.api
+    build:
+      context: .
+      dockerfile: headers.security.Api/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DOTNET_ENVIRONMENT=Development
+    volumes:
+      - ./headers.security.Api/.cachedContentState:/app/.cachedContentState
