@@ -25,7 +25,7 @@ public static class HttpResponseMessageExtensions
     
     public static bool IsResponseFromSelf(this HttpResponseMessage message) =>
         message.Headers.TryGetValues(AppConstants.XAppIdentifierHeader, out var appIdentifier) 
-        && appIdentifier.Any(id => id.Equals(AppConstants.AppIdentifier));
+        && appIdentifier.Any(id => id.StartsWith(AppConstants.AppIdentifier));
 
     private static readonly List<string> FrontendDetectionContentTypes = ["text/html"];
     
