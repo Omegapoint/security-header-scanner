@@ -1,0 +1,33 @@
+name: Build and deploy Azure Container App
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@v4
+
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v2
+      with:
+       client-id: ${{ secrets.AZURE_CLIENT_ID }}
+       tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+       subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Build and push image
+      id: build-image
+      run: |
+       az acr build --image ${{ vars.REGISTRY_LOGIN_SERVER }}/securityheaders:${{ github.sha }} --registry ${{ vars.REGISTRY_LOGIN_SERVER }} --file "headers.security.Api/Dockerfile" .
+
+    - name: 'Switch to new image'
+      run: |
+       az containerapp update -n ${{ vars.CONTAINER_APP_NAME }} -g ${{ vars.RESOURCE_GROUP }} --image ${{ vars.REGISTRY_LOGIN_SERVER }}/securityheaders:${{ github.sha }}
