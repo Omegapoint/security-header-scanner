@@ -3,6 +3,7 @@ using headers.security.Api.Middlewares;
 using headers.security.Api.Extensions;
 using headers.security.CachedContent.Extensions;
 using headers.security.Scanner;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +35,16 @@ builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo
     Version = "v1"
 }));
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor | 
+        ForwardedHeaders.XForwardedHost | 
+        ForwardedHeaders.XForwardedProto;
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+});
+
 builder.Services.AddHsts(options =>
 {
     options.IncludeSubDomains = true;
@@ -43,6 +54,8 @@ builder.Services.AddHsts(options =>
 builder.Services.AddRateLimiter(RateLimiterFactory.ConfigureOptions);
 
 var app = builder.Build();
+
+app.UseForwardedHeaders();
 
 app.UseAppIdentification();
 app.UseSecurityHeaders();
