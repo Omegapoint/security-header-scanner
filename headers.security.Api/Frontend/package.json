@@ -18,7 +18,7 @@
     "@icons-pack/react-simple-icons": "^9.4.1",
     "@mui/icons-material": "^5.15.16",
     "@mui/joy": "^5.0.0-beta.36",
-    "@tanstack/react-router": "^1.31.8",
+    "@tanstack/react-router": "^1.31.20",
     "@tanstack/react-store": "^0.3.1",
     "axios": "^1.6.8",
     "lodash": "^4.17.21",
@@ -27,9 +27,9 @@
     "zod": "^3.23.6"
   },
   "devDependencies": {
-    "@tanstack/router-devtools": "^1.31.8",
-    "@tanstack/router-vite-plugin": "^1.30.0",
-    "@types/lodash": "^4.17.0",
+    "@tanstack/router-devtools": "^1.31.20",
+    "@tanstack/router-vite-plugin": "^1.31.18",
+    "@types/lodash": "^4.17.1",
     "@types/node": "^20.12.8",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.0",
