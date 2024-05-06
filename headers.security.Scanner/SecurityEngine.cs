@@ -40,6 +40,11 @@ public class SecurityEngine(List<ISecurityConcept> handlers)
 
         var heads = doc.DocumentNode.SelectNodes("//html/head");
 
+        if (heads == null)
+        {
+            return new();
+        }
+
         var httpEquivMetas = new List<HtmlNode>();
 
         foreach (var head in heads)
