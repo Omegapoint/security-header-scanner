@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
+using System.Text.Json.Serialization;
 using headers.security.Scanner.Hsts.Contracts;
 
 namespace headers.security.Scanner.Hsts;
@@ -9,7 +10,13 @@ public class PreloadPolicyNode()
     public PreloadPolicy Policy { get; set; }
 
     public IDictionary<string, PreloadPolicyNode> Nodes { get; } = new Dictionary<string, PreloadPolicyNode>();
-    
+
+    [JsonConstructor]
+    public PreloadPolicyNode(PreloadPolicy policy, IDictionary<string, PreloadPolicyNode> nodes)
+        : this(policy, nodes.ToFrozenDictionary())
+    {
+    }
+
     private PreloadPolicyNode(PreloadPolicy policy, FrozenDictionary<string, PreloadPolicyNode> nodes) : this()
     {
         Policy = policy;
