@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
 using headers.security.Api.Middlewares;
-using headers.security.Api.Extensions;
 using headers.security.CachedContent.Extensions;
 using headers.security.Scanner;
+using headers.security.Scanner.Extensions;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.OpenApi.Models;
 

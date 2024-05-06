@@ -2,8 +2,7 @@ using System.CommandLine;
 using headers.security.CachedContent.Extensions;
 using headers.security.Scanner;
 using headers.security.Scanner.CloudLookup;
-using headers.security.Scanner.Helpers;
-using headers.security.Scanner.SecurityConcepts;
+using headers.security.Scanner.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace headers.security.CommandLine;
@@ -91,13 +90,17 @@ public static class Program
         }
         
         var services = new ServiceCollection();
+        services.AddMemoryCache();
         services.AddHttpClient("Scanner", HttpClientHelper.ConfigureClient);
+        
         services.AddCachedContent(useBackgroundService: false);
+        services.AddSecurityEngine();
         
         var serviceProvider = services.BuildServiceProvider();
 
         var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
         var cloudLookupService = serviceProvider.GetService<CloudLookupService>();
+        var securityEngine = serviceProvider.GetService<SecurityEngine>();
 
         var conf = new WorkerConfiguration
         {
@@ -105,15 +108,6 @@ public static class Program
         };
 
         var crawler = new Crawler(conf, cloudLookupService, httpClientFactory);
-
-        var securityConceptTypes = SecurityConceptResolver.GetSecurityConcepts();
-
-        var handlers = securityConceptTypes
-            .Select(Activator.CreateInstance)
-            .Cast<ISecurityConcept>()
-            .ToList();
-
-        var securityEngine = new SecurityEngine(handlers);
         var worker = new Worker(crawler, securityEngine);
         
         var configuration = new CrawlerConfiguration

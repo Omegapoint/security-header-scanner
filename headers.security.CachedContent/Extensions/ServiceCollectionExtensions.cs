@@ -14,7 +14,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<CachingHstsPreloadRepository>();
         services.AddSingleton<IHstsPreloadRepository>(s => s.GetService<CachingHstsPreloadRepository>());
         services.AddSingleton<ICachedContentRepository>(s => s.GetService<CachingHstsPreloadRepository>());
-        services.AddSingleton<HstsPreloadService>();
+        services.AddSingleton<IHstsPreloadService, HstsPreloadService>();
     }
     
     private static void AddCloudLookupFeature(this IServiceCollection services)

@@ -1,6 +1,6 @@
 namespace headers.security.Scanner.Hsts;
 
-public class HstsPreloadService(IHstsPreloadRepository repository)
+public class HstsPreloadService(IHstsPreloadRepository repository) : IHstsPreloadService
 {
     public bool IsPreloaded(Uri target)
     {

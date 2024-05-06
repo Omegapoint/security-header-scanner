@@ -10,7 +10,7 @@ namespace headers.security.Scanner.SecurityConcepts;
 /// RFC: https://datatracker.ietf.org/doc/html/rfc6797
 /// </summary>
 // ReSharper disable once UnusedType.Global
-public class StrictTransportSecurityConcept(HstsPreloadService hstsPreloadService) : ISecurityConcept
+public class StrictTransportSecurityConcept(IHstsPreloadService hstsPreloadService) : ISecurityConcept
 {
     public const string HandlerName = "HTTP Strict Transport Security";
     
