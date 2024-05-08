@@ -4,5 +4,5 @@ namespace headers.security.Scanner.Hsts;
 
 public interface IHstsPreloadRepository
 {
-    PreloadPolicy GetPreloadEntry(Uri target);
+    PreloadMatch GetPreloadEntry(Uri target);
 }

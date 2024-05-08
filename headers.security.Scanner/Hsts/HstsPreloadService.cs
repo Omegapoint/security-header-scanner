@@ -6,7 +6,9 @@ public class HstsPreloadService(IHstsPreloadRepository repository) : IHstsPreloa
     {
         var entry = repository.GetPreloadEntry(target);
 
-        // TODO: Not sure this is correct, maybe mode == force-https?
-        return entry != null;
+        // Service not initialized
+        if (entry == null) return false;
+
+        return entry.Mode != HstsPreloadMatchMode.NotMatched;
     }
 }

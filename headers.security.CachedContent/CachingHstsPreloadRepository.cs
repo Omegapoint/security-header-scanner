@@ -16,7 +16,7 @@ public class CachingHstsPreloadRepository(HstsPreloadClient client, IMemoryCache
         Priority = CacheItemPriority.NeverRemove
     };
     
-    public PreloadPolicy GetPreloadEntry(Uri target) => GetTree()?.GetOrDefault(target?.Host);
+    public PreloadMatch GetPreloadEntry(Uri target) => GetTree()?.GetOrDefault(target);
 
     private PreloadPolicyNode GetTree()
     {

@@ -23,3 +23,19 @@ public class PreloadPolicy
     public bool IncludeSubdomains { get; init; }
     public string Mode { get; init; }
 }
+
+public class PreloadMatch
+{
+    public PreloadPolicy Policy { get; init; }
+    
+    public HstsPreloadMatchMode Mode { get; init; }
+
+    public static PreloadMatch Subdomain(PreloadPolicy policy) => new()
+        { Policy = policy, Mode = HstsPreloadMatchMode.Subdomain };
+
+    public static PreloadMatch Exact(PreloadPolicy policy) => new()
+        { Policy = policy, Mode = HstsPreloadMatchMode.Exact };
+
+    public static PreloadMatch NotMatched() => new()
+        { Mode = HstsPreloadMatchMode.NotMatched };
+}

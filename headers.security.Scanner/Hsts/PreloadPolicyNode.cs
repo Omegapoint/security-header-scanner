@@ -1,6 +1,8 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Text.Json.Serialization;
+using headers.security.Common.Extensions;
+using headers.security.Common.Helpers;
 using headers.security.Scanner.Hsts.Contracts;
 
 namespace headers.security.Scanner.Hsts;
@@ -39,32 +41,32 @@ public class PreloadPolicyNode()
 
         return root.Freeze();
     }
+    
+    public PreloadMatch GetOrDefault(string domain) => GetOrDefault(UriHelpers.SplitDomainParts(domain, reversed: true), 0) ?? PreloadMatch.NotMatched();
 
-    public PreloadPolicy GetOrDefault(string domain) => string.IsNullOrWhiteSpace(domain) 
-        ? null 
-        : GetOrDefault(domain.ToLowerInvariant().Split('.').Reverse().ToImmutableArray(), 0);
+    public PreloadMatch GetOrDefault(Uri target) => GetOrDefault(target.GetHostParts(reversed: true), 0) ?? PreloadMatch.NotMatched();
 
-    private PreloadPolicy GetOrDefault(ImmutableArray<string> key, int depth)
+    private PreloadMatch GetOrDefault(ImmutableArray<string> key, int depth)
     {
         // exact match at deepest node
         if (depth == key.Length)
         {
-            return Policy;
+            return PreloadMatch.Exact(Policy);
         }
 
         // depth first recursion
         if (Nodes.TryGetValue(key[depth], out var node))
         {
-            var policy = node.GetOrDefault(key, depth + 1);
+            var status = node.GetOrDefault(key, depth + 1);
 
-            if (policy != null)
+            if (status != null)
             {
-                return policy;
+                return status;
             }
         }
 
         // if no policy found at deeper level, but current level includes subdomains, return current level policy
-        return Policy?.IncludeSubdomains == true ? Policy : null;
+        return Policy?.IncludeSubdomains == true ? PreloadMatch.Subdomain(Policy) : null;
     }
 
     /// <summary>

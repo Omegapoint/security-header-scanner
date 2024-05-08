@@ -1,4 +1,6 @@
+using System.Collections.Immutable;
 using System.Net;
+using headers.security.Common.Helpers;
 
 namespace headers.security.Common.Extensions;
 
@@ -78,5 +80,12 @@ public static class UriExtensions
         }
 
         return relativeUri.IsAbsoluteUri ? relativeUri : null;
+    }
+
+    public static ImmutableArray<string> GetHostParts(this Uri uri, bool reversed = false)
+    {
+        if (uri == null) throw new ArgumentException("Invalid URI supplied.");
+
+        return UriHelpers.SplitDomainParts(uri.Host, reversed);
     }
 }
