@@ -36,10 +36,16 @@ const IndexLazyRoute = IndexLazyImport.update({
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
     '/scan': {
+      id: '/scan'
+      path: '/scan'
+      fullPath: '/scan'
       preLoaderRoute: typeof ScanImport
       parentRoute: typeof rootRoute
     }
@@ -48,6 +54,26 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([IndexLazyRoute, ScanRoute])
+export const routeTree = rootRoute.addChildren({ IndexLazyRoute, ScanRoute })
 
 /* prettier-ignore-end */
+
+/* ROUTE_MANIFEST_START
+{
+  "routes": {
+    "__root__": {
+      "filePath": "__root.tsx",
+      "children": [
+        "/",
+        "/scan"
+      ]
+    },
+    "/": {
+      "filePath": "index.lazy.tsx"
+    },
+    "/scan": {
+      "filePath": "scan.tsx"
+    }
+  }
+}
+ROUTE_MANIFEST_END */

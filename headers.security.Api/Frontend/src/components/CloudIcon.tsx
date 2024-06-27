@@ -1,6 +1,6 @@
 import {
   IconType,
-  SiAmazonaws,
+  SiAmazonwebservices,
   SiCloudflare,
   SiDigitalocean,
   SiGooglecloud,
@@ -29,7 +29,7 @@ const getIcon = (cloudString: string): IconType | null => {
     case 'Azure':
       return SiMicrosoftazure;
     case 'AWS':
-      return SiAmazonaws;
+      return SiAmazonwebservices;
     case 'GCP':
       return SiGooglecloud;
     case 'Oracle':
