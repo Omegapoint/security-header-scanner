@@ -13,9 +13,9 @@
 
     <ItemGroup>
       <PackageReference Include="CompareNETObjects" Version="4.83.0" />
-      <PackageReference Include="HtmlAgilityPack" Version="1.11.61" />
+      <PackageReference Include="HtmlAgilityPack" Version="1.11.66" />
       <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
-      <PackageReference Include="Microsoft.Net.Http.Headers" Version="8.0.6" />
+      <PackageReference Include="Microsoft.Net.Http.Headers" Version="8.0.8" />
     </ItemGroup>
 
 </Project>
