@@ -42,7 +42,7 @@ Both the API and frontend project need to be started separately.
 #### 📜 Prerequisites
 
 - [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
-- [Node JS v20+](https://nodejs.org/en/download)
+- [Node JS v23+](https://nodejs.org/en/download)
 - [mkcert](https://github.com/FiloSottile/mkcert) (to automate setting up valid HTTPS certificates for Vite dev server)
 
 #### Starting the API

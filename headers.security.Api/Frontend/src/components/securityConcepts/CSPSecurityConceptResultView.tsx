@@ -1,6 +1,5 @@
-import { Stack } from '@mui/joy';
+import { Stack, Typography } from '@mui/joy';
 import { TypographyProps } from '@mui/joy/Typography/TypographyProps';
-import { Typography } from '@mui/material';
 import { CspPolicy, CspSecurityConceptResult } from '../../contracts/securityConcepts/cspSecurityConcept.ts';
 
 export const CSPSecurityConceptResultView = (cspResult: CspSecurityConceptResult) => {

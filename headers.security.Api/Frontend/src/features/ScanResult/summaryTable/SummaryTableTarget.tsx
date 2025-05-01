@@ -1,5 +1,4 @@
-import { Link } from '@mui/joy';
-import { Typography } from '@mui/material';
+import { Link, Typography } from '@mui/joy';
 import { useNavigate } from '@tanstack/react-router';
 import { useStore } from '@tanstack/react-store';
 import { ScanResult, TargetKind, targetKindToString } from '../../../contracts/apiTypes.ts';
