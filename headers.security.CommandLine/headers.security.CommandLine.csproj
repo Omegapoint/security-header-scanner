@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
@@ -11,6 +11,7 @@
     <Company>Omegapoint</Company>
     <Product>Security Header Scanner</Product>
     <OutputType>Exe</OutputType>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
