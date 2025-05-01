@@ -27,6 +27,22 @@ public class CloudLookupActualDataTests(CloudLookupActualDataFixture fixture)
     }
 
     [Fact]
+    public void AllVendorsHaveRanges()
+    {
+        var start = DateTime.UtcNow;
+
+        foreach (var (cloud, networks) in _networks)
+        {
+            networks.Should().NotBeEmpty($"{cloud} - no networks returned");
+        }
+
+        var stop = DateTime.UtcNow;
+
+        stop.Subtract(start)
+            .Should().BeLessThan(TimeSpan.FromSeconds(10));
+    }
+
+    [Fact]
     public void CanGetAllEntries()
     {
         var lookup = new CloudLookupCollection(_networks);

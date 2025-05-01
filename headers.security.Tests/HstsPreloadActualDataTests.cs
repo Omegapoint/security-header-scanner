@@ -12,13 +12,14 @@ public class HstsPreloadActualDataTests(HstsPreloadActualDataFixture fixture)
     [Fact]
     public void CanParseActualHstsPreloadList()
     {
-        var treeCreationAction = () => PreloadPolicyNode.Create(_preloadEntries);
-
         var start = DateTime.UtcNow;
         
-        treeCreationAction
-            .Should().NotThrow()
-            .And.Subject.Should().NotBeNull();
+        var exception = Record.Exception(() => 
+            PreloadPolicyNode.Create(_preloadEntries)
+                .Should().NotBeNull()
+        );
+        
+        Assert.Null(exception);
 
         var stop = DateTime.UtcNow;
 
@@ -35,7 +36,11 @@ public class HstsPreloadActualDataTests(HstsPreloadActualDataFixture fixture)
 
         foreach (var entry in _preloadEntries)
         {
-            tree.GetOrDefault(entry.Domain).Should().Be(entry);
+            var matchedPolicy = tree
+                .GetOrDefault(entry.Domain)
+                .Policy;
+            
+            matchedPolicy.Should().Be(entry);
         }
 
         var stop = DateTime.UtcNow;
