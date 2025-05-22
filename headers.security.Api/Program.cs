@@ -3,6 +3,7 @@ using headers.security.Api.Middlewares;
 using headers.security.CachedContent.Extensions;
 using headers.security.Scanner;
 using headers.security.Scanner.Extensions;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.OpenApi.Models;
 
@@ -34,6 +35,14 @@ builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo
     Title = "headers.security API - V1",
     Version = "v1"
 }));
+
+var allowAllCorsPolicy = new CorsPolicyBuilder()
+    .AllowAnyOrigin()
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .Build();
+
+builder.Services.AddCors(options => options.AddDefaultPolicy(allowAllCorsPolicy));
 
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
@@ -74,6 +83,7 @@ app.DenySelfRequests();
 
 app.UseFileServer();
 app.UseRouting();
+app.UseCors();
 
 if (app.Environment.IsProduction())
 {
