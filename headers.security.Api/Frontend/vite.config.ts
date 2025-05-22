@@ -16,11 +16,6 @@ export default defineConfig({
       },
     },
   },
-  resolve: {
-    alias: {
-      '@mui/material': '@mui/joy',
-    },
-  },
   build: {
     target: 'es2015',
   },
