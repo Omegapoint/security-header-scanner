@@ -1,4 +1,6 @@
+import { useTheme } from '@mui/joy';
 import Box, { BoxProps } from '@mui/joy/Box';
+import { useMediaQuery } from '@mui/material';
 
 const Root = (props: BoxProps) => (
   <Box
@@ -20,29 +22,36 @@ const Root = (props: BoxProps) => (
   />
 );
 
-const Header = (props: BoxProps) => (
-  <Box
-    component="header"
-    className="Header"
-    {...props}
-    sx={[
-      {
-        p: 2,
-        gap: 2,
-        bgcolor: 'background.body',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        gridColumn: '2',
-        position: 'sticky',
-        top: 0,
-        zIndex: 1100,
-      },
-      ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
-    ]}
-  />
-);
+const Header = (props: BoxProps) => {
+  const { breakpoints } = useTheme();
+  const isMobile = useMediaQuery(breakpoints.only("xs"));
+
+  const gap = isMobile ? 0 : 2;
+
+  return (
+    <Box
+      component="header"
+      className="Header"
+      {...props}
+      sx={[
+        {
+          p: 2,
+          gap,
+          bgcolor: 'background.body',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gridColumn: '2',
+          position: 'sticky',
+          top: 0,
+          zIndex: 1100,
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    />
+  );
+};
 
 const Banner = (props: BoxProps) => (
   <Box

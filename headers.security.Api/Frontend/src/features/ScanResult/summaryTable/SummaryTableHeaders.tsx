@@ -1,26 +1,34 @@
-import { List, ListDivider, ListItem, ListItemContent, ListItemDecorator, Typography } from '@mui/joy';
+import { List, ListDivider, ListItem, ListItemContent, ListItemDecorator, Typography, useTheme } from '@mui/joy';
+import { useMediaQuery } from '@mui/material';
 import { ImpactIcon } from '../../../components/ImpactIcon.tsx';
 import { ISecurityConceptResult, SecurityConceptHandlerName, ServerResult } from '../../../contracts/apiTypes.ts';
 
 interface SummaryTableHeadersItemProps {
   handlerResult: ISecurityConceptResult;
-  last: boolean;
+  showSeparator: boolean;
 }
 
-const SummaryTableHeadersItem = ({ handlerResult, last }: SummaryTableHeadersItemProps) => {
+const SummaryTableHeadersItem = ({ handlerResult, showSeparator }: SummaryTableHeadersItemProps) => {
+  const { breakpoints } = useTheme();
+  const isMobile = useMediaQuery(breakpoints.only("xs"));
+
   const { headerName, impact } = handlerResult;
+
+  const label = <ListItemContent>
+    <Typography level="title-sm">{headerName}</Typography>
+  </ListItemContent>
+  const decorator = <ListItemDecorator>
+    <ImpactIcon impact={impact} />
+  </ListItemDecorator>
 
   return (
     <>
       <ListItem>
-        <ListItemContent>
-          <Typography level="title-sm">{headerName}</Typography>
-        </ListItemContent>
-        <ListItemDecorator>
-          <ImpactIcon impact={impact} />
-        </ListItemDecorator>
+        {isMobile && decorator}
+        {label}
+        {!isMobile && decorator}
       </ListItem>
-      {last && <ListDivider inset="gutter" />}
+      {showSeparator && <ListDivider inset="gutter" />}
     </>
   );
 };
@@ -28,6 +36,9 @@ const SummaryTableHeadersItem = ({ handlerResult, last }: SummaryTableHeadersIte
 const hiddenHandlers = [SecurityConceptHandlerName.Server];
 
 export const SummaryTableHeaders = ({ data }: { data: ServerResult }) => {
+  const { breakpoints } = useTheme();
+  const isMobile = useMediaQuery(breakpoints.only("xs"));
+
   const headers = data.result.handlerResults.filter((h) => {
     // Remove explicitly hidden handlers
     if (hiddenHandlers.includes(h.handlerName)) {
@@ -44,10 +55,12 @@ export const SummaryTableHeaders = ({ data }: { data: ServerResult }) => {
 
   const last = headers.length - 1;
 
+  const orientation = isMobile ? 'vertical' : 'horizontal';
+
   return (
-    <List orientation="horizontal" wrap={true} size="sm" sx={{ marginLeft: '-0.5em', marginTop: '-0.1em' }}>
+    <List orientation={orientation} wrap size="sm" sx={{ marginLeft: '-0.5em', marginTop: '-0.1em' }}>
       {headers.map((handlerResult, idx) => (
-        <SummaryTableHeadersItem handlerResult={handlerResult} last={idx != last} key={idx} />
+        <SummaryTableHeadersItem handlerResult={handlerResult} showSeparator={idx != last && !isMobile} key={idx} />
       ))}
     </List>
   );
