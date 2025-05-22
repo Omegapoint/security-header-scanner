@@ -78,7 +78,8 @@ export const scan = async () => {
   store.setState((state) => ({ ...state, apiResponse: undefined, apiError: undefined, loading: true }));
 
   try {
-    const response = await axios.post<ApiResponse>('/api/Scan', payload, {
+    const url = import.meta.env.VITE_BACKEND_BASE_URL + '/api/Scan';
+    const response = await axios.post<ApiResponse>(url, payload, {
       timeout: 10000,
     });
 
