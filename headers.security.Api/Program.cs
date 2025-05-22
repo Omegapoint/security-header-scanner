@@ -21,6 +21,7 @@ builder.Services.AddSingleton(builder.Configuration
 builder.Services.AddMemoryCache();
 builder.Services.AddCachedContent();
 builder.Services.AddSecurityEngine();
+builder.Services.AddHealthChecks();
 
 builder.Services.AddSingleton<Crawler>();
 builder.Services.AddSingleton<Worker>();
@@ -91,6 +92,7 @@ if (app.Environment.IsProduction())
 }
 
 app.MapControllers().RequireRateLimiting(RateLimiterFactory.PolicyName);
+app.MapHealthChecks("/healthz");
 app.UseSpa(_ => { });
 
 app.Run();
