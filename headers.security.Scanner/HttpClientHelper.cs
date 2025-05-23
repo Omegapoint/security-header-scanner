@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using System.Net;
+using System.Net.Security;
 using headers.security.Common;
 using headers.security.Common.Constants;
 using headers.security.Common.Extensions;
@@ -11,19 +13,24 @@ public static class HttpClientHelper
 {
     public static void ConfigureClient(HttpClient httpClient)
     {
-        httpClient.DefaultRequestHeaders.EmulateChromium122();
+        httpClient.DefaultRequestHeaders.EmulateChromium();
         
         var appIdentifier = $"{AppConstants.AppIdentifier}/{ApplicationInformation.CompileDate.VersionDateString()}";
+        httpClient.DefaultRequestHeaders.Add(HeaderNames.DNT, "1");
         httpClient.DefaultRequestHeaders.Add(AppConstants.XAppIdentifierHeader, appIdentifier);
         httpClient.DefaultRequestHeaders.Add(HeaderNames.Referer, AppConstants.Referrer.ToString());
         
         httpClient.Timeout = TimeSpan.FromSeconds(25);
     }
 
-    public static HttpClientHandler ConfigureHandler(IServiceProvider _) => new()
+    public static SocketsHttpHandler ConfigureHandler(IServiceProvider _) => new()
     {
         AllowAutoRedirect = false,
         AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate | DecompressionMethods.Brotli,
-        ServerCertificateCustomValidationCallback = (_, _, _, _) => true
+        ActivityHeadersPropagator = DistributedContextPropagator.CreateNoOutputPropagator(),
+        SslOptions = new SslClientAuthenticationOptions
+        {
+            RemoteCertificateValidationCallback = delegate { return true; }
+        }
     };
 }

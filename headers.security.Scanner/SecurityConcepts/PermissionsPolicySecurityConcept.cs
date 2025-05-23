@@ -45,7 +45,7 @@ public class PermissionsPolicySecurityConcept : ISecurityConcept
             infos.Add(SecurityConceptResultInfo.Create("Multiple policies present."));
         }
         
-        //TODO: FUTURE: if we have detailed information about the application being scanned we can do better analysis
+        // TODO: FUTURE: if we have detailed information about the application being scanned we can do better analysis
 
         return result;
     }
