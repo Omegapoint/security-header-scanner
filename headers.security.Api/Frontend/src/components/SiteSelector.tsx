@@ -124,6 +124,7 @@ export const SiteSelector = () => {
           onBlur={() => setTargetInputFocused(false)}
           variant="soft"
           autoFocus={true}
+          autoComplete="off"
           startDecorator={
             <Public
               sx={(theme) => ({
