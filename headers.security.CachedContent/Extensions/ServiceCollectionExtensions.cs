@@ -1,4 +1,5 @@
 using CloudLookup.Extensions;
+using headers.security.CachedContent.Data;
 using headers.security.CachedContent.Services;
 using headers.security.Scanner.CloudLookup;
 using headers.security.Scanner.Hsts;

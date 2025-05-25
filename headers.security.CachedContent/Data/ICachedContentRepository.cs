@@ -1,4 +1,4 @@
-namespace headers.security.CachedContent;
+namespace headers.security.CachedContent.Data;
 
 public interface ICachedContentRepository
 {

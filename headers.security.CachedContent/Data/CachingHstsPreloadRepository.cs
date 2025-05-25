@@ -2,7 +2,7 @@ using headers.security.Scanner.Hsts;
 using headers.security.Scanner.Hsts.Contracts;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace headers.security.CachedContent;
+namespace headers.security.CachedContent.Data;
 
 public class CachingHstsPreloadRepository(HstsPreloadClient client, IMemoryCache cache) : IHstsPreloadRepository, ICachedContentRepository
 {

@@ -3,7 +3,7 @@ using CloudLookup;
 using headers.security.Scanner.CloudLookup;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace headers.security.CachedContent;
+namespace headers.security.CachedContent.Data;
 
 public class CachingCloudLookupRepository(CloudLookupClient client, IMemoryCache cache) : ICloudLookupRepository, ICachedContentRepository
 {
