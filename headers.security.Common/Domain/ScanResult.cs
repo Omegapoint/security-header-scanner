@@ -38,7 +38,6 @@ public class ScanResult
         if (counts[Low] == 1)                       return A;
         if (counts[Low] == 0)                       return APlus;
         
-        // TODO: LOG: that we ended up here
         return Unknown;
     }
 }

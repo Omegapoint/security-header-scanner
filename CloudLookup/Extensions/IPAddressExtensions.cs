@@ -22,7 +22,6 @@ public static class IPAddressExtensions
         return newAddress.IsIPv4MappedToIPv6 ? newAddress.MapToIPv4() : newAddress;
     }
 
-    // TODO: In .NET 9 this can be accomplished using BitConverter.ToUInt128 instead
     private static BigInteger ToBigInteger(this IPAddress address)
         => new(address.GetAddressBytes(), isBigEndian: true, isUnsigned: true);
 }

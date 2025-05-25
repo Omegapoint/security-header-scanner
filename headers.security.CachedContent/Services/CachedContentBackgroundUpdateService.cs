@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 
 namespace headers.security.CachedContent.Services;
 
-// TODO: Future, add an enum RunMode here and make sure CLI is initialized correctly before running scan
 public class CachedContentBackgroundUpdateService(
     ILogger<CachedContentBackgroundUpdateService> logger,
     IServiceProvider services,
