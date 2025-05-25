@@ -17,7 +17,8 @@ builder.Services.AddSingleton(builder.Configuration
 
 var httpClientConfiguration = builder.Configuration
     .GetSection("HttpClientOptions")
-    .Get<HttpClientConfiguration>();
+    .Get<HttpClientConfiguration>()
+    ?? new HttpClientConfiguration();
 builder.Services.AddSingleton(httpClientConfiguration);
 
 builder.Services.AddHttpClient("Scanner", client => HttpClientHelper.ConfigureClient(client, httpClientConfiguration))

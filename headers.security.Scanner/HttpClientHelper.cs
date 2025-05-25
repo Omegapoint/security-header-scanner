@@ -12,7 +12,7 @@ namespace headers.security.Scanner;
 
 public static class HttpClientHelper
 {
-    public static void ConfigureClient(HttpClient httpClient) => ConfigureClient(httpClient, null);
+    public static void ConfigureClient(HttpClient httpClient) => ConfigureClient(httpClient, new HttpClientConfiguration());
     
     public static void ConfigureClient(HttpClient httpClient, HttpClientConfiguration configuration)
     {
