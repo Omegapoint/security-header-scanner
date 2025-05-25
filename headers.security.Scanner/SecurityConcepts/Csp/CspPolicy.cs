@@ -1,5 +1,4 @@
 using headers.security.Common;
-using headers.security.Common.Constants;
 using headers.security.Common.Constants.Csp;
 using static headers.security.Common.Constants.Csp.CspDirective;
 using static headers.security.Common.Constants.Csp.CspToken;

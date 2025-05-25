@@ -1,6 +1,5 @@
 using System.Net;
 using System.Net.Sockets;
-using headers.security.Common;
 using headers.security.Common.Domain;
 using headers.security.Common.Extensions;
 using headers.security.Scanner.CloudLookup;

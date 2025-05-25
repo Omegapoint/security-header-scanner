@@ -1,5 +1,4 @@
 using headers.security.Api.Contracts;
-using headers.security.Common;
 using headers.security.Common.Domain;
 using headers.security.Scanner;
 using headers.security.Scanner.Configuration;
