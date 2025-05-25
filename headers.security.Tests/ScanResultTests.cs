@@ -1,5 +1,6 @@
 using headers.security.Common.Domain;
 using headers.security.Common.Domain.SecurityConcepts;
+using headers.security.Tests.Extensions;
 
 namespace headers.security.Tests;
 

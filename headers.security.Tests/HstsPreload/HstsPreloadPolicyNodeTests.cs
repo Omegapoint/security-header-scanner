@@ -1,9 +1,9 @@
 using headers.security.Scanner.Hsts;
 using headers.security.Scanner.Hsts.Contracts;
 
-namespace headers.security.Tests;
+namespace headers.security.Tests.HstsPreload;
 
-public class PreloadPolicyNodeTests
+public class HstsPreloadPolicyNodeTests
 {
     public static IEnumerable<object[]> PreloadEntries => [
         [

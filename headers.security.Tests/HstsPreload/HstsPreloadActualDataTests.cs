@@ -1,7 +1,7 @@
 using headers.security.Scanner.Hsts;
 using headers.security.Scanner.Hsts.Contracts;
 
-namespace headers.security.Tests;
+namespace headers.security.Tests.HstsPreload;
 
 [Trait("Category", "Integration")]
 public class HstsPreloadActualDataTests(HstsPreloadActualDataFixture fixture)

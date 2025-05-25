@@ -1,4 +1,3 @@
-using headers.security.Common.Constants;
 using headers.security.Common.Constants.Csp;
 
 namespace headers.security.Tests;

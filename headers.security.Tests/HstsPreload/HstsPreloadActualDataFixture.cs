@@ -2,7 +2,7 @@ using headers.security.Scanner.Hsts;
 using headers.security.Scanner.Hsts.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace headers.security.Tests;
+namespace headers.security.Tests.HstsPreload;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public class HstsPreloadActualDataFixture

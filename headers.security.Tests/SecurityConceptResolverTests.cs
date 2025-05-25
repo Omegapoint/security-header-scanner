@@ -26,12 +26,15 @@ public class SecurityConceptResolverTests
 
         var sp = services.BuildServiceProvider();
 
-        var registeredSecurityConcepts = sp.GetServices<ISecurityConcept>().Select(s => s.GetType());
+        var registeredSecurityConcepts = sp.GetServices<ISecurityConcept>()
+            .Select(s => s.GetType())
+            .ToList();
         
         var allSecurityConcepts = Assembly.GetAssembly(typeof(ISecurityConcept))?.GetTypes()
             .Where(t => t.GetInterfaces().Contains(typeof(ISecurityConcept)))
             .ToList();
         
+        allSecurityConcepts.Should().HaveCount(9); // I have trust issues...
         registeredSecurityConcepts.Should().BeEquivalentTo(allSecurityConcepts);
     }
 }

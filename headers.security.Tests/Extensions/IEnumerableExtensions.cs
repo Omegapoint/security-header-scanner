@@ -1,4 +1,4 @@
-namespace headers.security.Tests;
+namespace headers.security.Tests.Extensions;
 
 public static class EnumerableExtensions
 {

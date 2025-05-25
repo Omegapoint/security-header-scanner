@@ -32,7 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Data\hstspreload_example_data.2024-04-17.txt.base64">
+      <None Update="HstsPreload\Data\hstspreload_example_data.2024-04-17.txt.base64">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
