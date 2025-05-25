@@ -19,13 +19,13 @@
     "@mui/material": "^7.1.0",
     "@mui/icons-material": "^7.1.0",
     "@mui/joy": "^5.0.0-beta.52",
-    "@tanstack/react-router": "^1.120.5",
+    "@tanstack/react-router": "^1.120.10",
     "@tanstack/react-store": "^0.7.0",
     "axios": "^1.9.0",
     "lodash": "^4.17.21",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "zod": "^3.25.20"
+    "zod": "^3.25.28"
   },
   "overrides": {
     "@icons-pack/react-simple-icons": {
@@ -33,15 +33,15 @@
     }
   },
   "devDependencies": {
-    "@tanstack/react-router-devtools": "^1.120.6",
-    "@tanstack/router-vite-plugin": "^1.120.5",
+    "@tanstack/react-router-devtools": "^1.120.10",
+    "@tanstack/router-vite-plugin": "^1.120.10",
     "@types/lodash": "^4.17.17",
     "@types/node": "^22.15.21",
     "@types/react": "^19.1.5",
     "@types/react-dom": "^19.1.5",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",
-    "@vitejs/plugin-react-swc": "^3.9.0",
+    "@vitejs/plugin-react-swc": "^3.10.0",
     "eslint": "^9.27.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.0",
