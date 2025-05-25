@@ -1,4 +1,5 @@
 using headers.security.Common.Domain;
+using headers.security.Scanner.Configuration;
 
 namespace headers.security.Scanner;
 

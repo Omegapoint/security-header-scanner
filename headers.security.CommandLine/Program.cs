@@ -2,6 +2,7 @@ using System.CommandLine;
 using headers.security.CachedContent.Extensions;
 using headers.security.Scanner;
 using headers.security.Scanner.CloudLookup;
+using headers.security.Scanner.Configuration;
 using headers.security.Scanner.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 

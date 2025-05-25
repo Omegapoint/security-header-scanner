@@ -1,5 +1,6 @@
 using headers.security.Common.Domain;
 using headers.security.Common.Domain.SecurityConcepts;
+using headers.security.Scanner.Configuration;
 using headers.security.Scanner.Extensions;
 using headers.security.Scanner.SecurityConcepts;
 using HtmlAgilityPack;

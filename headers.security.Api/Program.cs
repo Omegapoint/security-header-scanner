@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using headers.security.Api.Middlewares;
 using headers.security.CachedContent.Extensions;
 using headers.security.Scanner;
+using headers.security.Scanner.Configuration;
 using headers.security.Scanner.Extensions;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.HttpOverrides;

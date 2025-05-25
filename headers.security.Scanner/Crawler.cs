@@ -4,6 +4,7 @@ using headers.security.Common;
 using headers.security.Common.Domain;
 using headers.security.Common.Extensions;
 using headers.security.Scanner.CloudLookup;
+using headers.security.Scanner.Configuration;
 using headers.security.Scanner.Extensions;
 
 namespace headers.security.Scanner;

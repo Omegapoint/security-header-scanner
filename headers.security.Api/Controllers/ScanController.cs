@@ -2,6 +2,7 @@ using headers.security.Api.Contracts;
 using headers.security.Common;
 using headers.security.Common.Domain;
 using headers.security.Scanner;
+using headers.security.Scanner.Configuration;
 using Microsoft.AspNetCore.Mvc;
 
 namespace headers.security.Api.Controllers;
@@ -30,7 +31,6 @@ public class ScanController(ILogger<ScanController> logger, Worker worker) : Con
         }
         catch (ScannerException e)
         {
-            // TODO: LOG: these are errors that the UI knows about, but maybe log something here for monitoring?
             return BadRequest(new ScanError
             {
                 Message = e.Message,
@@ -39,7 +39,6 @@ public class ScanController(ILogger<ScanController> logger, Worker worker) : Con
         }
         catch (Exception e)
         {
-            // TODO: LOG: should add app insights for tracking when this happens
             logger.LogTrace(e, "Unrecoverable error");
 
             return StatusCode(StatusCodes.Status500InternalServerError, new ScanError

@@ -4,6 +4,7 @@ using System.Net.Security;
 using headers.security.Common;
 using headers.security.Common.Constants;
 using headers.security.Common.Extensions;
+using headers.security.Scanner.Configuration;
 using headers.security.Scanner.Extensions;
 using Microsoft.Net.Http.Headers;
 

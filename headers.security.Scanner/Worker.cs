@@ -1,6 +1,7 @@
 using headers.security.Common;
 using headers.security.Common.Domain;
 using headers.security.Common.Extensions;
+using headers.security.Scanner.Configuration;
 
 namespace headers.security.Scanner;
 

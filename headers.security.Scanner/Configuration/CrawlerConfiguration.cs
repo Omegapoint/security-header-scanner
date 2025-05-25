@@ -1,7 +1,7 @@
 using headers.security.Common.Domain;
 using headers.security.Scanner.Extensions;
 
-namespace headers.security.Scanner;
+namespace headers.security.Scanner.Configuration;
 
 public class CrawlerConfiguration
 {
