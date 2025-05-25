@@ -1,13 +1,16 @@
 <Solution>
   <Folder Name="/Solution Items/">
-    <File Path=".github/dependabot.yaml" />
-    <File Path=".github/workflows/container_app_deploy.yml" />
     <File Path=".gitignore" />
     <File Path="headers.security.Api/Dockerfile" />
     <File Path="headers.security.Api/.dockerignore" />
     <File Path="docker-compose.yml" />
     <File Path="Makefile" />
     <File Path="README.md" />
+    <File Path="global.json" />
+  </Folder>
+  <Folder Name="/Solution Items/Pipelines/">
+    <File Path=".github/dependabot.yaml" />
+    <File Path=".github/workflows/container_app_deploy.yml" />
   </Folder>
   <Project Path="CloudLookup.Tests/CloudLookup.Tests.csproj" />
   <Project Path="CloudLookup/CloudLookup.csproj" />

@@ -10,13 +10,29 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
-    - name: 'Checkout GitHub Action'
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v4
+      
+    - name: Install dependencies
+      run: dotnet restore
+      
+    - name: Test with the dotnet CLI
+      run: dotnet test
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+    - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: 'Login via Azure CLI'
+    - name: Login via Azure CLI
       uses: azure/login@v2
       with:
        client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -28,6 +44,6 @@ jobs:
       run: |
        az acr build --image ${{ vars.REGISTRY_LOGIN_SERVER }}/securityheaders:${{ github.sha }} --registry ${{ vars.REGISTRY_LOGIN_SERVER }} --file "headers.security.Api/Dockerfile" .
 
-    - name: 'Switch to new image'
+    - name: Switch to new image
       run: |
        az containerapp update -n ${{ vars.CONTAINER_APP_NAME }} -g ${{ vars.RESOURCE_GROUP }} --image ${{ vars.REGISTRY_LOGIN_SERVER }}/securityheaders:${{ github.sha }}
