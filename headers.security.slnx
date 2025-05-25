@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".github/dependabot.yaml" />
+    <File Path=".github/workflows/container_app_deploy.yml" />
+    <File Path=".gitignore" />
+    <File Path="headers.security.Api/Dockerfile" />
+    <File Path="headers.security.Api/.dockerignore" />
+    <File Path="docker-compose.yml" />
+    <File Path="Makefile" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="CloudLookup.Tests/CloudLookup.Tests.csproj" />
+  <Project Path="CloudLookup/CloudLookup.csproj" />
+  <Project Path="headers.security.Api/headers.security.Api.csproj" />
+  <Project Path="headers.security.CachedContent/headers.security.CachedContent.csproj" />
+  <Project Path="headers.security.CommandLine/headers.security.CommandLine.csproj" />
+  <Project Path="headers.security.Common/headers.security.Common.csproj" />
+  <Project Path="headers.security.Scanner/headers.security.Scanner.csproj" />
+  <Project Path="headers.security.Tests/headers.security.Tests.csproj" />
+</Solution>
