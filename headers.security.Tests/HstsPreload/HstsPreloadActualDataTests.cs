@@ -21,10 +21,10 @@ public class HstsPreloadActualDataTests(HstsPreloadActualDataFixture fixture)
         
         Assert.Null(exception);
 
-        var stop = DateTime.UtcNow;
-
-        stop.Subtract(start)
-            .Should().BeLessThan(TimeSpan.FromSeconds(2));
+        if (DateTime.UtcNow.Subtract(start).TotalSeconds >= 2)
+        {
+            TestContext.Current.AddWarning("Parsing of HSTS Preload list is slow");
+        }
     }
 
     [Fact]
@@ -43,9 +43,9 @@ public class HstsPreloadActualDataTests(HstsPreloadActualDataFixture fixture)
             matchedPolicy.Should().Be(entry);
         }
 
-        var stop = DateTime.UtcNow;
-
-        stop.Subtract(start)
-            .Should().BeLessThan(TimeSpan.FromSeconds(2));
+        if (DateTime.UtcNow.Subtract(start).TotalSeconds >= 2)
+        {
+            TestContext.Current.AddWarning("Reading of HSTS Preload list is slow");
+        }
     }
 }

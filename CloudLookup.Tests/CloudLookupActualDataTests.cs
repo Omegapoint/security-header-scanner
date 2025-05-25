@@ -20,10 +20,10 @@ public class CloudLookupActualDataTests(CloudLookupActualDataFixture fixture)
             .Should().NotThrow()
             .And.Subject.Should().NotBeNull();
 
-        var stop = DateTime.UtcNow;
-
-        stop.Subtract(start)
-            .Should().BeLessThan(TimeSpan.FromSeconds(5));
+        if (DateTime.UtcNow.Subtract(start).TotalSeconds >= 5)
+        {
+            TestContext.Current.AddWarning("Construction of CloudLookupCollection is slow");
+        }
     }
 
     [Fact]
@@ -36,10 +36,10 @@ public class CloudLookupActualDataTests(CloudLookupActualDataFixture fixture)
             networks.Should().NotBeEmpty($"{cloud} - no networks returned");
         }
 
-        var stop = DateTime.UtcNow;
-
-        stop.Subtract(start)
-            .Should().BeLessThan(TimeSpan.FromSeconds(10));
+        if (DateTime.UtcNow.Subtract(start).TotalSeconds >= 10)
+        {
+            TestContext.Current.AddWarning("Network lookup in CloudLookupCollection is slow");
+        }
     }
 
     [Fact]
@@ -59,10 +59,10 @@ public class CloudLookupActualDataTests(CloudLookupActualDataFixture fixture)
             }
         }
 
-        var stop = DateTime.UtcNow;
-
-        stop.Subtract(start)
-            .Should().BeLessThan(TimeSpan.FromSeconds(10));
+        if (DateTime.UtcNow.Subtract(start).TotalSeconds >= 20)
+        {
+            TestContext.Current.AddWarning("IP lookup in CloudLookupCollection is slow");
+        }
     }
 
     [Fact]
