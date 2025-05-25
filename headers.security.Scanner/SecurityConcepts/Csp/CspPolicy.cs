@@ -1,7 +1,8 @@
 using headers.security.Common;
 using headers.security.Common.Constants;
-using static headers.security.Common.Constants.CspDirective;
-using static headers.security.Common.Constants.CspToken;
+using headers.security.Common.Constants.Csp;
+using static headers.security.Common.Constants.Csp.CspDirective;
+using static headers.security.Common.Constants.Csp.CspToken;
 
 namespace headers.security.Scanner.SecurityConcepts.Csp;
 

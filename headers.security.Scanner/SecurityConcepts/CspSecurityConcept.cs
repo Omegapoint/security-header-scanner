@@ -2,7 +2,7 @@ using headers.security.Common.Domain;
 using headers.security.Common.Domain.SecurityConcepts;
 using headers.security.Scanner.SecurityConcepts.Csp;
 using Microsoft.Net.Http.Headers;
-using static headers.security.Common.Constants.CspDirective;
+using static headers.security.Common.Constants.Csp.CspDirective;
 
 namespace headers.security.Scanner.SecurityConcepts;
 

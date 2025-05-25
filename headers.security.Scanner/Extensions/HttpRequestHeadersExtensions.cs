@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using headers.security.Common.Constants;
+using headers.security.Common.Constants.Http;
 using Microsoft.Net.Http.Headers;
 
 namespace headers.security.Scanner.Extensions;

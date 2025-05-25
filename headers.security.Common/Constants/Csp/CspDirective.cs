@@ -1,5 +1,5 @@
 // ReSharper disable MemberCanBePrivate.Global
-namespace headers.security.Common.Constants;
+namespace headers.security.Common.Constants.Csp;
 
 public static class CspDirective
 {

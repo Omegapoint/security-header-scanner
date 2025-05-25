@@ -1,5 +1,5 @@
 using headers.security.Common;
-using static headers.security.Common.Constants.CspDirective;
+using static headers.security.Common.Constants.Csp.CspDirective;
 
 namespace headers.security.Scanner.SecurityConcepts.Csp;
 

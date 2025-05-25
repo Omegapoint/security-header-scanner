@@ -1,4 +1,4 @@
-namespace headers.security.Common.Constants;
+namespace headers.security.Common.Constants.Http;
 
 // Refer to Microsoft.Net.Http.Headers in first hand, this contains headers not included there
 public static class SecurityHeaderNames

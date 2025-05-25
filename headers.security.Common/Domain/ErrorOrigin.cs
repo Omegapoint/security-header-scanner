@@ -1,4 +1,4 @@
-namespace headers.security.Common;
+namespace headers.security.Common.Domain;
 
 public enum ErrorOrigin
 {

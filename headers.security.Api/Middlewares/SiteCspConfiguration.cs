@@ -1,6 +1,6 @@
 using headers.security.Scanner.SecurityConcepts.Csp;
-using static headers.security.Common.Constants.CspDirective;
-using static headers.security.Common.Constants.CspToken;
+using static headers.security.Common.Constants.Csp.CspDirective;
+using static headers.security.Common.Constants.Csp.CspToken;
 
 namespace headers.security.Api.Middlewares;
 

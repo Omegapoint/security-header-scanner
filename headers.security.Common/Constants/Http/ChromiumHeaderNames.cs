@@ -1,4 +1,4 @@
-namespace headers.security.Common.Constants;
+namespace headers.security.Common.Constants.Http;
 
 public static class ChromiumHeaderNames
 {

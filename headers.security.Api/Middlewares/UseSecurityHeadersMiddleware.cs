@@ -1,7 +1,7 @@
 using headers.security.Common.Constants;
 using headers.security.Scanner.SecurityConcepts;
 using static Microsoft.Net.Http.Headers.HeaderNames;
-using static headers.security.Common.Constants.SecurityHeaderNames;
+using static headers.security.Common.Constants.Http.SecurityHeaderNames;
 
 namespace headers.security.Api.Middlewares;
 

@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace headers.security.Common.Constants;
+namespace headers.security.Common.Constants.Csp;
 
 public static partial class KnownCspBypassUris
 {
