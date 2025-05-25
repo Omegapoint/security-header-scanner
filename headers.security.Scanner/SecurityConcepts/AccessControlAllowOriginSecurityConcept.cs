@@ -1,11 +1,11 @@
-using headers.security.Common.Constants;
 using headers.security.Common.Domain.SecurityConcepts;
+using headers.security.Scanner.Configuration;
 using Microsoft.Net.Http.Headers;
 
 namespace headers.security.Scanner.SecurityConcepts;
 
 // ReSharper disable once UnusedType.Global
-public class AccessControlAllowOriginSecurityConcept : ISecurityConcept
+public class AccessControlAllowOriginSecurityConcept(HttpClientConfiguration httpClientConfiguration) : ISecurityConcept
 {
     public static readonly string HeaderName = HeaderNames.AccessControlAllowOrigin;
 
@@ -33,7 +33,7 @@ public class AccessControlAllowOriginSecurityConcept : ISecurityConcept
             infos.Add(SecurityConceptResultInfo.Create(Warning));
         }
 
-        if (firstHeader.Trim().Contains(AppConstants.Referrer.Host, StringComparison.OrdinalIgnoreCase))
+        if (firstHeader.Trim().Contains(httpClientConfiguration.Referrer, StringComparison.OrdinalIgnoreCase))
         {
             infos.Add(SecurityConceptResultInfo.Create(WarningReferrer));
         }

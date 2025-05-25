@@ -12,14 +12,20 @@ namespace headers.security.Scanner;
 
 public static class HttpClientHelper
 {
-    public static void ConfigureClient(HttpClient httpClient)
+    public static void ConfigureClient(HttpClient httpClient) => ConfigureClient(httpClient, null);
+    
+    public static void ConfigureClient(HttpClient httpClient, HttpClientConfiguration configuration)
     {
         httpClient.DefaultRequestHeaders.EmulateChromium();
         
         var appIdentifier = $"{AppConstants.AppIdentifier}/{ApplicationInformation.CompileDate.VersionDateString()}";
         httpClient.DefaultRequestHeaders.Add(HeaderNames.DNT, "1");
         httpClient.DefaultRequestHeaders.Add(AppConstants.XAppIdentifierHeader, appIdentifier);
-        httpClient.DefaultRequestHeaders.Add(HeaderNames.Referer, AppConstants.Referrer.ToString());
+        
+        if (!string.IsNullOrEmpty(configuration?.Referrer))
+        {
+            httpClient.DefaultRequestHeaders.Add(HeaderNames.Referer, configuration.Referrer);
+        }
         
         httpClient.Timeout = TimeSpan.FromSeconds(25);
     }

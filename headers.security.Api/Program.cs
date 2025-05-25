@@ -10,14 +10,18 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHttpClient("Scanner", HttpClientHelper.ConfigureClient)
-    .ConfigurePrimaryHttpMessageHandler(HttpClientHelper.ConfigureHandler);
-
-// Add services to the container.
 builder.Services.AddSingleton(builder.Configuration
     .GetSection("WorkerOptions")
     .Get<WorkerConfiguration>()
 );
+
+var httpClientConfiguration = builder.Configuration
+    .GetSection("HttpClientOptions")
+    .Get<HttpClientConfiguration>();
+builder.Services.AddSingleton(httpClientConfiguration);
+
+builder.Services.AddHttpClient("Scanner", client => HttpClientHelper.ConfigureClient(client, httpClientConfiguration))
+    .ConfigurePrimaryHttpMessageHandler(HttpClientHelper.ConfigureHandler);
 
 builder.Services.AddMemoryCache();
 builder.Services.AddCachedContent();

@@ -1,4 +1,5 @@
 using System.Reflection;
+using headers.security.Scanner.Configuration;
 using headers.security.Scanner.Extensions;
 using headers.security.Scanner.Hsts;
 using headers.security.Scanner.SecurityConcepts;
@@ -16,9 +17,11 @@ public class SecurityConceptResolverTests
     public void RegistersAllSecurityConcepts()
     {
         var hstsPreloadServiceMock = new Mock<IHstsPreloadService>();
+        var httpClientConfigurationMock = new Mock<HttpClientConfiguration>();
         
         var services = new ServiceCollection();
         services.AddSingleton(hstsPreloadServiceMock.Object);
+        services.AddSingleton(httpClientConfigurationMock.Object);
         services.AddSecurityEngine();
 
         var sp = services.BuildServiceProvider();
