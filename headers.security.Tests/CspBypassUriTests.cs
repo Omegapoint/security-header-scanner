@@ -4,7 +4,7 @@ namespace headers.security.Tests;
 
 public class CspBypassUriTests
 {
-    public static IEnumerable<object[]> AllKnownBypassUris() => KnownCspBypassUris.All
+    public static IEnumerable<object[]> AllKnownBypassUris() => KnownCspBypassUris.Uris
         .Select(verbatimUri => (object[])[verbatimUri]);
 
     [Theory]

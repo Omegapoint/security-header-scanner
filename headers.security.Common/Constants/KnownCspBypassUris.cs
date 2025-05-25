@@ -4,8 +4,7 @@ namespace headers.security.Common.Constants;
 
 public static partial class KnownCspBypassUris
 {
-    // TODO: FUTURE: might be better to use full URI here and do more advanced matching, e.g. query parameters can come in any order, this is good enough for now
-    public static readonly List<string> All = [
+    public static readonly List<string> Uris = [
         "google.com/complete/search",
         "youtube.com/oembed"
     ];
@@ -19,7 +18,7 @@ public static partial class KnownCspBypassUris
             return true;
         }
 
-        return All.Any(bypassToken => cleanedToken.StartsWith("*.")
+        return Uris.Any(bypassToken => cleanedToken.StartsWith("*.")
             ? bypassToken.StartsWith(cleanedToken[2..]) || bypassToken.Split('.').Last().StartsWith(cleanedToken[2..])
             : bypassToken.StartsWith(cleanedToken));
     }
