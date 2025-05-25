@@ -1,22 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>disable</Nullable>
-        <PublishAot>true</PublishAot>
-        <LangVersion>default</LangVersion>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\headers.security.Common\headers.security.Common.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="CompareNETObjects" Version="4.83.0" />
-      <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
-      <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.5" />
-      <PackageReference Include="Microsoft.Net.Http.Headers" Version="9.0.5" />
-    </ItemGroup>
-
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <PublishAot>true</PublishAot>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\headers.security.Common\headers.security.Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CompareNETObjects" />
+    <PackageReference Include="HtmlAgilityPack" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Net.Http.Headers" />
+  </ItemGroup>
 </Project>
