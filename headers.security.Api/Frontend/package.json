@@ -15,7 +15,7 @@
     "@fontsource/roboto": "^5.2.5",
     "@fontsource/roboto-mono": "^5.2.5",
     "@fontsource/roboto-slab": "^5.2.5",
-    "@icons-pack/react-simple-icons": "9.6.1",
+    "@icons-pack/react-simple-icons": "12.8.0",
     "@mui/material": "^7.1.0",
     "@mui/icons-material": "^7.1.0",
     "@mui/joy": "^5.0.0-beta.52",
