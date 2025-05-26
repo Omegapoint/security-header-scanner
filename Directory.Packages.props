@@ -8,7 +8,7 @@
     <PackageVersion Include="CompareNETObjects" Version="4.83.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <!-- FluentAssertions >7.x is no longer open source, pin to 7.x -->
-    <PackageVersion Include="FluentAssertions" Version="[7.2.0]" />
+    <PackageVersion Include="FluentAssertions" Version="[8.3.0]" />
     <PackageVersion Include="HtmlAgilityPack" Version="1.12.1" />
     <PackageVersion Include="IPAddressRange" Version="6.2.0" />
     <PackageVersion Include="JetBrains.Annotations" Version="2024.3.0" />
