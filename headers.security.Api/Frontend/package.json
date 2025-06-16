@@ -12,20 +12,20 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@fontsource/roboto": "^5.2.5",
+    "@fontsource/roboto": "^5.2.6",
     "@fontsource/roboto-mono": "^5.2.6",
-    "@fontsource/roboto-slab": "^5.2.5",
+    "@fontsource/roboto-slab": "^5.2.6",
     "@icons-pack/react-simple-icons": "9.6.1",
     "@mui/material": "^7.1.1",
     "@mui/icons-material": "^7.1.1",
     "@mui/joy": "^5.0.0-beta.52",
-    "@tanstack/react-router": "^1.120.13",
+    "@tanstack/react-router": "^1.121.16",
     "@tanstack/react-store": "^0.7.1",
-    "axios": "^1.9.0",
+    "axios": "^1.10.0",
     "lodash": "^4.17.21",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "zod": "^3.25.48"
+    "zod": "^3.25.64"
   },
   "overrides": {
     "@icons-pack/react-simple-icons": {
@@ -33,15 +33,15 @@
     }
   },
   "devDependencies": {
-    "@tanstack/react-router-devtools": "^1.120.13",
-    "@tanstack/router-vite-plugin": "^1.120.13",
+    "@tanstack/react-router-devtools": "^1.121.16",
+    "@tanstack/router-vite-plugin": "^1.121.16",
     "@types/lodash": "^4.17.17",
-    "@types/node": "^22.15.29",
-    "@types/react": "^19.1.6",
-    "@types/react-dom": "^19.1.5",
-    "@typescript-eslint/eslint-plugin": "^8.33.0",
+    "@types/node": "^24.0.2",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@typescript-eslint/eslint-plugin": "^8.34.0",
     "@typescript-eslint/parser": "^8.32.1",
-    "@vitejs/plugin-react-swc": "^3.10.0",
+    "@vitejs/plugin-react-swc": "^3.10.2",
     "eslint": "^9.27.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.1",
